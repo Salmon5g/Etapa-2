@@ -61,6 +61,65 @@ CREATE TABLE mantenimiento_equipo (
     FOREIGN KEY (id_equipo) REFERENCES equipo_oficina(id_equipo)
 );
 
+
+
+
+
+-- ============================================================
+-- RF-07: Módulo de Software
+-- Relación N:M entre software y equipo_oficina
+-- ============================================================
+
+-- Tabla maestra de software
+CREATE TABLE software (
+    id_software      INT PRIMARY KEY AUTO_INCREMENT,
+    nombre           VARCHAR(100) NOT NULL,
+    version          VARCHAR(30)  NOT NULL,
+    fabricante       VARCHAR(100) NOT NULL,
+    fecha_registro   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabla puente: un equipo puede tener varios software,
+-- un software puede estar en varios equipos
+CREATE TABLE software_equipo (
+    id_software_equipo  INT PRIMARY KEY AUTO_INCREMENT,
+    id_software         INT NOT NULL,
+    id_equipo           INT NOT NULL,
+    fecha_instalacion   DATE NOT NULL,
+    estado              ENUM('Activo','Desinstalado') NOT NULL DEFAULT 'Activo',
+    CONSTRAINT fk_se_software FOREIGN KEY (id_software) REFERENCES software(id_software)   ON DELETE CASCADE,
+    CONSTRAINT fk_se_equipo   FOREIGN KEY (id_equipo)   REFERENCES equipo_oficina(id_equipo) ON DELETE CASCADE,
+    CONSTRAINT uq_software_equipo UNIQUE (id_software, id_equipo)
+);
+
+
+-- ============================================================
+-- RF-09: Control de inventario de piezas
+-- ============================================================
+
+-- Tabla maestra de piezas (inventario)
+CREATE TABLE pieza (
+    id_pieza        INT PRIMARY KEY AUTO_INCREMENT,
+    nombre          VARCHAR(100) NOT NULL,
+    descripcion     VARCHAR(255),
+    stock           INT          NOT NULL DEFAULT 0,
+    fecha_registro  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabla puente: piezas usadas en un mantenimiento
+-- Un mantenimiento puede usar varias piezas,
+-- una pieza puede usarse en varios mantenimientos
+CREATE TABLE detalle_pieza_mantenimiento (
+    id_detalle        INT PRIMARY KEY AUTO_INCREMENT,
+    id_mantenimiento  INT NOT NULL,
+    id_pieza          INT NOT NULL,
+    cantidad          INT NOT NULL DEFAULT 1,
+    CONSTRAINT fk_dpm_mantenimiento FOREIGN KEY (id_mantenimiento) 
+        REFERENCES mantenimiento_equipo(id_mantenimiento) ON DELETE CASCADE,
+    CONSTRAINT fk_dpm_pieza FOREIGN KEY (id_pieza) 
+        REFERENCES pieza(id_pieza) ON DELETE RESTRICT
+);
+
 -- ============================================
 -- ÍNDICES
 -- ============================================
