@@ -100,8 +100,7 @@ VALUES ('PC', 'Dell', 'SN-DELL-0001', 'Operativo');
 INSERT INTO mantenimiento_equipo (id_equipo, tipo_mantenimiento, fecha_entrada, fecha_salida, descripcion)
 VALUES (1, 'Preventivo', '2026-05-02', '2026-05-03', 'Limpieza interna, actualización de sistema operativo y revisión de componentes del PC Dell SN-DELL-0001');
 
-
-	SELECT * FROM equipo_oficina;
+SELECT * FROM equipo_oficina;
 SELECT * FROM personal;
 SELECT * FROM camion;
 
