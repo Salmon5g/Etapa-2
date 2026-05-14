@@ -8,6 +8,7 @@ com\mycompany\transporte_mercancia\GUI\FrmLogin$1.class
 com\mycompany\transporte_mercancia\GUI\FrmMantenimientoEquipos$8.class
 com\mycompany\transporte_mercancia\Data\DAOCamion.class
 com\mycompany\transporte_mercancia\Data\DAOPersonal.class
+com\mycompany\transporte_mercancia\Data\DAOSoftware.class
 com\mycompany\transporte_mercancia\GUI\FrmMantenimiento$4.class
 com\mycompany\transporte_mercancia\GUI\FrmPersonalCompañia$2.class
 com\mycompany\transporte_mercancia\GUI\Principal$2.class
@@ -19,6 +20,7 @@ com\mycompany\transporte_mercancia\GUI\FrmMantenimiento$1.class
 com\mycompany\transporte_mercancia\GUI\FrmPersonalCompañia$5.class
 com\mycompany\transporte_mercancia\Logica\Camion.class
 com\mycompany\transporte_mercancia\GUI\FrmConductores$2.class
+com\mycompany\transporte_mercancia\Logica\Software.class
 com\mycompany\transporte_mercancia\GUI\FrmCamiones$4.class
 com\mycompany\transporte_mercancia\Data\DAOEquipoOficina.class
 com\mycompany\transporte_mercancia\GUI\FrmMantenimiento$2.class
@@ -34,6 +36,7 @@ com\mycompany\transporte_mercancia\GUI\Principal$3.class
 com\mycompany\transporte_mercancia\GUI\FrmMantenimiento$5.class
 com\mycompany\transporte_mercancia\GUI\FrmMantenimientoEquipos$2.class
 com\mycompany\transporte_mercancia\GUI\FrmKilometraje$2.class
+com\mycompany\transporte_mercancia\Data\DAOSoftwareEquipo.class
 com\mycompany\transporte_mercancia\GUI\FrmLogin.class
 com\mycompany\transporte_mercancia\GUI\FrmPersonalCompañia$4.class
 com\mycompany\transporte_mercancia\GUI\FrmMantenimientoEquipos$3.class
@@ -52,6 +55,7 @@ com\mycompany\transporte_mercancia\Data\DAOMantenimientoEquipo.class
 com\mycompany\transporte_mercancia\GUI\FrmEquiposDeOficina$6.class
 com\mycompany\transporte_mercancia\GUI\FrmMantenimientoEquipos$6.class
 com\mycompany\transporte_mercancia\Data\DAOMantenimiento.class
+com\mycompany\transporte_mercancia\Logica\SoftwareEquipo.class
 com\mycompany\transporte_mercancia\GUI\FrmKilometraje$3.class
 com\mycompany\transporte_mercancia\GUI\FrmPersonalCompañia.class
 com\mycompany\transporte_mercancia\GUI\FrmConductores$4.class
