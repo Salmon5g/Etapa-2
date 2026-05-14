@@ -4,17 +4,30 @@
  */
 package com.mycompany.transporte_mercancia.GUI;
 
+import com.mycompany.transporte_mercancia.Data.DAOSoftware;
+import com.mycompany.transporte_mercancia.Logica.Software;
+
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author ebisu
  */
 public class FmrSoftware extends javax.swing.JInternalFrame {
-    
+
+    DAOSoftware dao = new DAOSoftware();
+
     /**
      * Creates new form FmrSoftware
      */
     public FmrSoftware() {
         initComponents();
+        limpiarFormulario();
+        cargarTabla();
+        /*activarModoEditar(); [Verificar si funciona con o sin esto]*/
+        bt_modificar.setEnabled(false);
+        bt_eliminar.setEnabled(false);
     }
 
     /**
@@ -27,13 +40,21 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        tbl_software = new javax.swing.JTable();
+        bt_agregar = new javax.swing.JButton();
+        bt_modificar = new javax.swing.JButton();
+        bt_eliminar = new javax.swing.JButton();
+        bt_listar = new javax.swing.JButton();
+        txt_nombre = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        txt_version = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        txt_fabricante = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txt_id = new javax.swing.JTextField();
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_software.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -44,15 +65,27 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tbl_software);
 
-        jButton5.setText("Agregar");
+        bt_agregar.setText("Agregar");
+        bt_agregar.addActionListener(this::bt_agregarActionPerformed);
 
-        jButton6.setText("Modificar");
+        bt_modificar.setText("Modificar");
+        bt_modificar.addActionListener(this::bt_modificarActionPerformed);
 
-        jButton7.setText("Eliminar");
+        bt_eliminar.setText("Eliminar");
+        bt_eliminar.addActionListener(this::bt_eliminarActionPerformed);
 
-        jButton8.setText("Listar");
+        bt_listar.setText("Listar");
+        bt_listar.addActionListener(this::bt_listarActionPerformed);
+
+        jLabel1.setText("Nombre");
+
+        jLabel2.setText("Version");
+
+        jLabel3.setText("Fabricante");
+
+        jLabel4.setText("ID");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -61,12 +94,36 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton6)
-                    .addComponent(jButton5)
-                    .addComponent(jButton7)
-                    .addComponent(jButton8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 528, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txt_fabricante, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txt_nombre, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
+                                    .addComponent(txt_version)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(31, 31, 31)
+                                .addComponent(jLabel4)
+                                .addGap(18, 18, 18)
+                                .addComponent(txt_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(bt_agregar)
+                            .addComponent(bt_listar))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(bt_eliminar)
+                            .addComponent(bt_modificar))
+                        .addGap(31, 31, 31)))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -75,27 +132,104 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(81, 81, 81)
-                .addComponent(jButton5)
+                .addGap(43, 43, 43)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txt_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jButton6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addGap(18, 18, 18)
-                .addComponent(jButton7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_version, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
                 .addGap(18, 18, 18)
-                .addComponent(jButton8)
-                .addContainerGap(127, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txt_fabricante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bt_modificar)
+                    .addComponent(bt_agregar))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bt_eliminar)
+                    .addComponent(bt_listar))
+                .addGap(86, 86, 86))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void bt_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_agregarActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_bt_agregarActionPerformed
+
+    private void activarModoNuevo(){
+
+        bt_agregar.setEnabled(true);
+        bt_modificar.setEnabled(false);
+        bt_eliminar.setEnabled(false);
+    }
+    
+    private void bt_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_modificarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bt_modificarActionPerformed
+
+    private void activarModoEditar(){
+
+        bt_agregar.setEnabled(false);
+
+        bt_modificar.setEnabled(true);
+        bt_eliminar.setEnabled(true);
+    }
+    
+    private void bt_listarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_listarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bt_listarActionPerformed
+
+    private void limpiarFormulario() {
+
+        txt_id.setText("");
+        txt_nombre.setText("");
+        txt_version.setText("");
+        txt_fabricante.setText("");
+    }
+
+    public void cargarTabla() {
+
+        Object columnas[] = {"ID", "Nombre", "Version", "Fabricante", "Fecha Registro"};
+        DefaultTableModel modelo
+                = new DefaultTableModel(columnas, 0);
+        for (Software s : dao.listarTodos()) {
+            Object fila[] = {s.getIdSoftware(), s.getNombre(), s.getVersion(), s.getFabricante(), s.getFechaRegistro()};
+            modelo.addRow(fila);
+        }
+        tbl_software.setModel(modelo);
+    }
+
+
+    private void bt_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_eliminarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bt_eliminarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
+    private javax.swing.JButton bt_agregar;
+    private javax.swing.JButton bt_eliminar;
+    private javax.swing.JButton bt_listar;
+    private javax.swing.JButton bt_modificar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tbl_software;
+    private javax.swing.JTextField txt_fabricante;
+    private javax.swing.JTextField txt_id;
+    private javax.swing.JTextField txt_nombre;
+    private javax.swing.JTextField txt_version;
     // End of variables declaration//GEN-END:variables
 }
