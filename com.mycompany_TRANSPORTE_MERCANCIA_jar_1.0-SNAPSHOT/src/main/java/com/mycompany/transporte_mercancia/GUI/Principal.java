@@ -176,8 +176,10 @@ public class Principal extends javax.swing.JFrame {
         cutMenuItem.setVisible(false);    // Kilometraje
         pasteMenuItem.setVisible(false);  // Camiones
         jMenuItem1.setVisible(false);     // Conductores
-        jMenuItem2.setVisible(false);     // Mantenimiento
+        jMenuItem2.setVisible(false);     // MantenimientoCamiones
         jMenuItem3.setVisible(false);     // Personal
+        jMenuItem4.setVisible(false);     //equiposOfcina
+        jMenuItem5.setVisible(false);     //mantenimientoEquipos
         
         switch (rolActivo) {
             case "conductor":
@@ -189,6 +191,7 @@ public class Principal extends javax.swing.JFrame {
                 break;
             case "admin_mantenimiento":
                 jMenuItem2.setVisible(true);
+                jMenuItem5.setVisible(true);
                 break;
             case "admin_jefe":
                 cutMenuItem.setVisible(true);
@@ -196,7 +199,11 @@ public class Principal extends javax.swing.JFrame {
                 jMenuItem1.setVisible(true);
                 jMenuItem2.setVisible(true);
                 jMenuItem3.setVisible(true);
+                jMenuItem4.setVisible(true);
+                jMenuItem5.setVisible(true);
                 break;
+            case "tecnico_equipo":
+                
         }
     }
 /**

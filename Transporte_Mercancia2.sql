@@ -5,7 +5,7 @@ USE Transporte_mercancia;
 -- ============================================
 -- TABLAS
 -- ============================================
-
+drop table personal;
 
 CREATE TABLE personal (
     id_personal    INT PRIMARY KEY AUTO_INCREMENT,
@@ -15,6 +15,7 @@ CREATE TABLE personal (
     rol            ENUM('jefe_flota', 'admin_mantenimiento', 'admin_jefe', 'conductor', 'tecnico_equipo') NOT NULL,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
 
 CREATE TABLE camion (
     id_camion        INT PRIMARY KEY AUTO_INCREMENT,
@@ -27,8 +28,8 @@ CREATE TABLE camion (
     fecha_creacion   TIMESTAMP    DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT fk_camion_conductor
-        FOREIGN KEY (id_conductor)
-        REFERENCES personal(id_personal)              
+    FOREIGN KEY (id_conductor)
+	REFERENCES personal(id_personal)              
 );
 
 CREATE TABLE mantenimiento (
