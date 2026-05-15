@@ -22,6 +22,7 @@ com\mycompany\transporte_mercancia\GUI\FrmMantenimiento$1.class
 com\mycompany\transporte_mercancia\GUI\FrmPersonalCompañia$5.class
 com\mycompany\transporte_mercancia\Logica\Camion.class
 com\mycompany\transporte_mercancia\GUI\FrmConductores$2.class
+com\mycompany\transporte_mercancia\GUI\FrmMantenimientoEquipos$9.class
 com\mycompany\transporte_mercancia\Logica\Software.class
 com\mycompany\transporte_mercancia\GUI\FrmCamiones$4.class
 com\mycompany\transporte_mercancia\Data\DAOEquipoOficina.class

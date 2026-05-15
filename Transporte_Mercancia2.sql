@@ -52,15 +52,21 @@ CREATE TABLE equipo_oficina (
     fecha_registro TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
 );
 
+DROP TABLE MANTENIMIENTO_EQUIPO;
+SET FOREIGN_KEY_CHECKS = 1;
 CREATE TABLE mantenimiento_equipo (
-    id_mantenimiento   INT AUTO_INCREMENT PRIMARY KEY,
-    id_equipo          INT NOT NULL,
-    tipo_mantenimiento VARCHAR(20) NOT NULL,          -- 'Preventivo' o 'Correctivo'
-    fecha_entrada      DATE NOT NULL,
-    fecha_salida       DATE NOT NULL,
-    descripcion        VARCHAR(500),
+    id_mantenimiento    INT AUTO_INCREMENT PRIMARY KEY,
+    id_equipo           INT NOT NULL,
+    tipo_mantenimiento  VARCHAR(20) NOT NULL,           -- 'Preventivo' o 'Correctivo'
+    estado              VARCHAR(20) NOT NULL DEFAULT 'En progreso', -- 'En progreso', 'Postergado', 'Terminado'
+    fecha_entrada       DATE NOT NULL,                  -- fecha de inicio del mantenimiento
+    fecha_fin           DATE,                           -- se llena automáticamente al marcar 'Terminado'
+    dias_activos        INT NOT NULL DEFAULT 0,         -- días acumulados en estado 'En progreso'
+    fecha_ultimo_inicio DATE,                           -- última vez que pasó a 'En progreso'
+    descripcion         VARCHAR(500),
     FOREIGN KEY (id_equipo) REFERENCES equipo_oficina(id_equipo)
 );
+
 
 
 
