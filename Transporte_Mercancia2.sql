@@ -32,15 +32,21 @@ CREATE TABLE camion (
 	REFERENCES personal(id_personal)              
 );
 
+
+
 CREATE TABLE mantenimiento (
-    id_mantenimiento INT  PRIMARY KEY AUTO_INCREMENT,
-    id_camion        INT  NOT NULL,
-    fechaEntrada     DATE NOT NULL,
-    fechaSalida      DATE NOT NULL,
-    descripcion      VARCHAR(255) NOT NULL,
-    CONSTRAINT chk_fecha_salida CHECK (fechaSalida > fechaEntrada),
+    id_mantenimiento    INT          PRIMARY KEY AUTO_INCREMENT,
+    id_camion           INT          NOT NULL,
+    fechaEntrada        DATE         NOT NULL,
+    estado              VARCHAR(20)  NOT NULL DEFAULT 'En progreso',
+    fecha_fin           DATE         NULL,
+    dias_activos        INT          NOT NULL DEFAULT 0,
+    fecha_ultimo_inicio DATE         NULL,
+    descripcion         VARCHAR(255) NOT NULL,
     FOREIGN KEY (id_camion) REFERENCES camion(id_camion)
 );
+
+select * from mantenimiento;
 
 
 CREATE TABLE equipo_oficina (

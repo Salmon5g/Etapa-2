@@ -101,7 +101,7 @@ public class DAOCamion {
                 + "WHERE NOT EXISTS ("
                 + "  SELECT 1 FROM mantenimiento m "
                 + "  WHERE m.id_camion = c.id_camion "
-                + "  AND m.fechaSalida >= CURDATE()"
+                + "  AND m.fecha_fin >= CURDATE()"
                 + ")";
 
         try (Connection conn = Conn.get(); PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {

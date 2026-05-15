@@ -54,7 +54,7 @@ public class DAOMantenimientoTest {
         Mantenimiento m = new Mantenimiento();
         m.setMatricula(MATRICULA_EXISTENTE);
         m.setFechaEntrada(Date.valueOf("2030-08-01")); // fecha futura para no interferir
-        m.setFechaSalida(Date.valueOf("2030-08-15"));
+        
         m.setDescripcion("Prueba unitaria - mantenimiento de test");
         daoMant.create(m);
 
@@ -117,14 +117,13 @@ public class DAOMantenimientoTest {
 
         Mantenimiento existente = daoMant.buscarPorId(idMantenimientoCreado);
         existente.setDescripcion("Descripcion actualizada en prueba");
-        existente.setFechaSalida(Date.valueOf("2030-08-20"));
+        
         daoMant.update(existente);
 
         Mantenimiento actualizado = daoMant.buscarPorId(idMantenimientoCreado);
         assertEquals("Descripcion actualizada en prueba", actualizado.getDescripcion(),
             "La descripción debe haberse actualizado");
-        assertEquals(Date.valueOf("2030-08-20"), actualizado.getFechaSalida(),
-            "La fecha de salida debe haberse actualizado");
+       
     }
 
     // ----------------------------------------------------------
@@ -172,7 +171,7 @@ public class DAOMantenimientoTest {
         Mantenimiento invalido = new Mantenimiento();
         invalido.setMatricula(MATRICULA_EXISTENTE);
         invalido.setFechaEntrada(Date.valueOf("2030-09-15")); // entrada DESPUÉS de salida
-        invalido.setFechaSalida(Date.valueOf("2030-09-01"));  // salida ANTES de entrada
+      
         invalido.setDescripcion("Test fechas invalidas");
 
         // La BD tiene un CHECK constraint que impide fechaSalida <= fechaEntrada
