@@ -40,6 +40,7 @@ com\mycompany\transporte_mercancia\GUI\Principal$3.class
 com\mycompany\transporte_mercancia\GUI\FrmMantenimiento$5.class
 com\mycompany\transporte_mercancia\GUI\FrmMantenimientoEquipos$2.class
 com\mycompany\transporte_mercancia\GUI\FrmKilometraje$2.class
+com\mycompany\transporte_mercancia\GUI\Principal$10.class
 com\mycompany\transporte_mercancia\Data\DAOSoftwareEquipo.class
 com\mycompany\transporte_mercancia\GUI\FrmLogin.class
 com\mycompany\transporte_mercancia\GUI\FrmPersonalCompañia$4.class
