@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.mycompany.transporte_mercancia.Data.DAOCamionTest
+-------------------------------------------------------------------------------
+Tests run: 3, Failures: 0, Errors: 0, Skipped: 3, Time elapsed: 0.324 s -- in com.mycompany.transporte_mercancia.Data.DAOCamionTest

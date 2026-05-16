@@ -25,7 +25,7 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
         initComponents();
         limpiarFormulario();
         cargarTabla();
-        /*activarModoEditar(); [Verificar si funciona con o sin esto]*/
+        activarModoEditar();
         bt_modificar.setEnabled(false);
         bt_eliminar.setEnabled(false);
     }
@@ -164,30 +164,83 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
 
     private void bt_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_agregarActionPerformed
         // TODO add your handling code here:
+        String nombre = txt_nombre.getText().trim();
+        String version = txt_version.getText().trim();
+        String fabricante = txt_fabricante.getText().trim();
 
+        if (nombre.isEmpty() || version.isEmpty() || fabricante.isEmpty()){
+            JOptionPane.showMessageDialog(this,
+                    "Complete todos los campos");
+            return;
+        }
+
+        if (dao.existeSoftware(nombre, version)) {
+            JOptionPane.showMessageDialog(this,
+                    "El software ya existe");
+            return;
+        }
+
+        Software s = new Software();
+        s.setNombre(nombre);
+        s.setVersion(version);
+        s.setFabricante(fabricante);
+
+        dao.create(s);
+        JOptionPane.showMessageDialog(this,
+                "Software registrado correctamente");
+
+        cargarTabla();
+        limpiarFormulario();
     }//GEN-LAST:event_bt_agregarActionPerformed
 
-    private void activarModoNuevo(){
+    private void activarModoNuevo() {
 
         bt_agregar.setEnabled(true);
         bt_modificar.setEnabled(false);
         bt_eliminar.setEnabled(false);
     }
-    
+
     private void bt_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_modificarActionPerformed
         // TODO add your handling code here:
+        int id
+                = Integer.parseInt(txt_id.getText());
+
+        String nombre = txt_nombre.getText().trim();
+        String version = txt_version.getText().trim();
+        String fabricante = txt_fabricante.getText().trim();
+
+        if (dao.existeSoftware(nombre, version, id)) {
+            JOptionPane.showMessageDialog(this,
+                    "Ya existe otro software igual");
+            return;
+        }
+
+        Software s = new Software();
+
+        s.setIdSoftware(id);
+        s.setNombre(nombre);
+        s.setVersion(version);
+        s.setFabricante(fabricante);
+        dao.update(s);
+        JOptionPane.showMessageDialog(this,
+                "Software modificado correctamente");
+
+        cargarTabla();
+        activarModoNuevo();
+        limpiarFormulario();
     }//GEN-LAST:event_bt_modificarActionPerformed
 
-    private void activarModoEditar(){
+    private void activarModoEditar() {
 
         bt_agregar.setEnabled(false);
 
         bt_modificar.setEnabled(true);
         bt_eliminar.setEnabled(true);
     }
-    
+
     private void bt_listarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_listarActionPerformed
         // TODO add your handling code here:
+        cargarTabla();
     }//GEN-LAST:event_bt_listarActionPerformed
 
     private void limpiarFormulario() {
@@ -213,6 +266,15 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
 
     private void bt_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_eliminarActionPerformed
         // TODO add your handling code here:
+        int id
+                = Integer.parseInt(txt_id.getText());
+        dao.delete(id);
+        JOptionPane.showMessageDialog(this,
+                "Software eliminado correctamente");
+
+        cargarTabla();
+        activarModoNuevo();
+        limpiarFormulario();
     }//GEN-LAST:event_bt_eliminarActionPerformed
 
 

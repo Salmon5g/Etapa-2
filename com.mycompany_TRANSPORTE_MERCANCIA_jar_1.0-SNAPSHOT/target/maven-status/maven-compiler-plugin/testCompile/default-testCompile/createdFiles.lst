@@ -1,0 +1,6 @@
+com\mycompany\transporte_mercancia\Data\DAOMantenimientoTest.class
+com\mycompany\transporte_mercancia\Data\DAOCamionTest.class
+com\mycompany\transporte_mercancia\Logica\MantenimientoTest.class
+com\mycompany\transporte_mercancia\Data\DAOPersonalTest.class
+com\mycompany\transporte_mercancia\Logica\CamionTest.class
+com\mycompany\transporte_mercancia\Logica\PersonalTest.class

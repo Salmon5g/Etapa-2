@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.mycompany.transporte_mercancia.Data.DAOPersonalTest
+-------------------------------------------------------------------------------
+Tests run: 9, Failures: 0, Errors: 0, Skipped: 9, Time elapsed: 0.188 s -- in com.mycompany.transporte_mercancia.Data.DAOPersonalTest
