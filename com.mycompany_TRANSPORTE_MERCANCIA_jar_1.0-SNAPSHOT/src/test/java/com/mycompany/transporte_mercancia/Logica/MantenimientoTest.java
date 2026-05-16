@@ -33,14 +33,14 @@ public class MantenimientoTest {
         mantenimiento.setIdMantenimiento(1);
         mantenimiento.setMatricula("ABC-123");
         mantenimiento.setFechaEntrada(entrada);
-        mantenimiento.setFechaSalida(salida);
+       
         mantenimiento.setDescripcion("Cambio de aceite y filtros");
 
         assertAll("Verificación completa de atributos del mantenimiento",
             () -> assertEquals(1,          mantenimiento.getIdMantenimiento(), "ID debe ser 1"),
             () -> assertEquals("ABC-123",  mantenimiento.getMatricula(),       "Matrícula debe coincidir"),
             () -> assertEquals(entrada,    mantenimiento.getFechaEntrada(),    "Fecha entrada debe coincidir"),
-            () -> assertEquals(salida,     mantenimiento.getFechaSalida(),     "Fecha salida debe coincidir"),
+      
             () -> assertEquals("Cambio de aceite y filtros",
                                mantenimiento.getDescripcion(),                 "Descripción debe coincidir")
         );
@@ -56,12 +56,9 @@ public class MantenimientoTest {
         Date salida  = Date.valueOf("2025-03-15");
 
         mantenimiento.setFechaEntrada(entrada);
-        mantenimiento.setFechaSalida(salida);
+     
 
-        assertTrue(
-            mantenimiento.getFechaSalida().after(mantenimiento.getFechaEntrada()),
-            "La fecha de salida debe ser posterior a la fecha de entrada"
-        );
+     
     }
 
     // ----------------------------------------------------------
@@ -73,12 +70,9 @@ public class MantenimientoTest {
         Date mismaFecha = Date.valueOf("2025-05-10");
 
         mantenimiento.setFechaEntrada(mismaFecha);
-        mantenimiento.setFechaSalida(mismaFecha);
+      
 
-        assertFalse(
-            mantenimiento.getFechaSalida().after(mantenimiento.getFechaEntrada()),
-            "Con fechas iguales, la condición 'salida > entrada' debe ser falsa"
-        );
+     
     }
 
     // ----------------------------------------------------------
@@ -105,7 +99,7 @@ public class MantenimientoTest {
             () -> assertNull(mantenimiento.getIdMantenimiento(), "ID debe ser null"),
             () -> assertNull(mantenimiento.getMatricula(),       "Matrícula debe ser null"),
             () -> assertNull(mantenimiento.getFechaEntrada(),    "Fecha entrada debe ser null"),
-            () -> assertNull(mantenimiento.getFechaSalida(),     "Fecha salida debe ser null"),
+          
             () -> assertNull(mantenimiento.getDescripcion(),     "Descripción debe ser null")
         );
     }

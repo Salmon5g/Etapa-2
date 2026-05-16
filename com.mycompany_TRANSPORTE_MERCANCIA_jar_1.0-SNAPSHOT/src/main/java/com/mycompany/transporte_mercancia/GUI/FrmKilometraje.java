@@ -12,7 +12,6 @@ import com.mycompany.transporte_mercancia.Logica.Personal;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-
 /**
  *
  * @author saave
@@ -30,7 +29,7 @@ public class FrmKilometraje extends javax.swing.JInternalFrame {
         cargarTabla();
         bt_actualizar_pestaña.addActionListener(e -> cargarTabla());
         bt_cerrar_pestaña.addActionListener(e -> dispose());
-       
+
     }
 
     /**
@@ -238,7 +237,7 @@ public class FrmKilometraje extends javax.swing.JInternalFrame {
 
             if (kilometraje >= 5000) {
                 DAOMantenimiento dm = new DAOMantenimiento();
-                if (!dm.tieneMantenimientoProgramado(c.getIdCamion())) {
+                if (!dm.tieneMantenimientoActivo(c.getIdCamion())) {
                     JOptionPane.showMessageDialog(
                             null,
                             "⚠️ El camión " + c.getMatricula() + " ha alcanzado " + kilometraje + " km.\n"
@@ -298,7 +297,7 @@ public class FrmKilometraje extends javax.swing.JInternalFrame {
                 if (c.getIdCamion() == id_seleccionado) {
                     this.txt_kilo_total.setText(c.getKilometrajeTotal().toString());
                 }
-                
+
             }
     }//GEN-LAST:event_tbl_camionesMouseClicked
     }
@@ -329,8 +328,6 @@ public class FrmKilometraje extends javax.swing.JInternalFrame {
 
         this.tbl_camiones.setModel(modelo);
     }
-
-    
 
     /**
      * Objeto de acceso a datos para operaciones CRUD sobre {@link Camion}.

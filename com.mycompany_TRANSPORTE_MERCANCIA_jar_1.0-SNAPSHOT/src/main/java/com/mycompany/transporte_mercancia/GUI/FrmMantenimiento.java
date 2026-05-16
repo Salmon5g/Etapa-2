@@ -22,12 +22,19 @@ public class FrmMantenimiento extends javax.swing.JInternalFrame {
      */
     public FrmMantenimiento() {
         initComponents();
+
+        // Poblar combo estado
+        cmb_estado.addItem("En progreso");
+        cmb_estado.addItem("Postergado");
+        cmb_estado.addItem("Terminado");
+
         cargarTabla();
         cargarComboCamion();
         formatoFechas();
+        activarModoNuevo();
+
         bt_actualizar_pestaña.addActionListener(e -> cargarTabla());
         bt_cerrar_pestaña.addActionListener(e -> dispose());
-
     }
 
     /**
@@ -51,12 +58,12 @@ public class FrmMantenimiento extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_mantenimientos = new javax.swing.JTable();
         dc_fecha_entrada = new com.toedter.calendar.JDateChooser();
-        dc_fecha_salida = new com.toedter.calendar.JDateChooser();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         txt_id_mantenciones = new javax.swing.JTextField();
         bt_cerrar_pestaña = new javax.swing.JButton();
         bt_actualizar_pestaña = new javax.swing.JButton();
+        cmb_estado = new javax.swing.JComboBox<>();
 
         jLabel1.setText("Seleccione el camion");
 
@@ -110,7 +117,7 @@ public class FrmMantenimiento extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(tbl_mantenimientos);
 
-        jLabel4.setText("Fecha salida");
+        jLabel4.setText("Estado");
 
         jLabel5.setText("ID");
 
@@ -123,18 +130,14 @@ public class FrmMantenimiento extends javax.swing.JInternalFrame {
         bt_actualizar_pestaña.setForeground(new java.awt.Color(255, 255, 255));
         bt_actualizar_pestaña.setText("🔄");
 
+        cmb_estado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "En progreso", "Postergado", "Terminado" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(dc_fecha_entrada, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
-                            .addComponent(dc_fecha_salida, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txt_descripcion, javax.swing.GroupLayout.Alignment.LEADING)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(66, 66, 66)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -162,7 +165,13 @@ public class FrmMantenimiento extends javax.swing.JInternalFrame {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(cmb_matricula, 0, 93, Short.MAX_VALUE)
                                             .addComponent(txt_id_mantenciones))
-                                        .addGap(8, 8, 8)))))))
+                                        .addGap(8, 8, 8))))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(dc_fecha_entrada, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
+                            .addComponent(txt_descripcion, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cmb_estado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 518, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(58, 58, 58))
@@ -191,11 +200,11 @@ public class FrmMantenimiento extends javax.swing.JInternalFrame {
                                 .addGap(26, 26, 26)
                                 .addComponent(dc_fecha_entrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(dc_fecha_salida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
-                        .addGap(32, 32, 32)
+                        .addGap(15, 15, 15)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(cmb_estado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(29, 29, 29)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txt_descripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
@@ -225,10 +234,26 @@ public class FrmMantenimiento extends javax.swing.JInternalFrame {
     public void cargarComboCamion() {
         DAOCamion dao = new DAOCamion();
         cmb_matricula.removeAllItems();
-
         for (Camion c : dao.listarDisponibles()) {
             cmb_matricula.addItem(c.getMatricula());
         }
+    }
+    
+    
+    /**
+     * Carga el combo en modo edición: incluye la matrícula actual aunque
+     * el camión esté en mantenimiento (no aparecería en listarDisponibles).
+     */
+    public void cargarComboCamionEdicion(String matriculaActual) {
+        DAOCamion dao = new DAOCamion();
+        cmb_matricula.removeAllItems();
+
+        boolean encontrada = false;
+        for (Camion c : dao.listarDisponibles()) {
+            cmb_matricula.addItem(c.getMatricula());
+            if (c.getMatricula().equals(matriculaActual)) encontrada = true;
+        }
+        if (!encontrada) cmb_matricula.addItem(matriculaActual);
     }
 
     /**
@@ -240,32 +265,25 @@ public class FrmMantenimiento extends javax.swing.JInternalFrame {
      * @param evt evento de acción generado por el botón bt_registrar
      */
     private void bt_registrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_registrarActionPerformed
-        Mantenimiento m = new Mantenimiento();
-
-        String matricula = (String) this.cmb_matricula.getSelectedItem();
-        m.setMatricula(matricula);
-
-        java.util.Date fechaEntrada = dc_fecha_entrada.getDate();
-        java.util.Date fechaSalida = dc_fecha_salida.getDate();
-        java.sql.Date fechaEntradaSQL = new java.sql.Date(fechaEntrada.getTime());
-        java.sql.Date fechaSalidaSQL = new java.sql.Date(fechaSalida.getTime());
-
-        if (!fechaSalidaSQL.after(fechaEntradaSQL)) {
+       java.util.Date fechaEntrada = dc_fecha_entrada.getDate();
+        if (fechaEntrada == null) {
             JOptionPane.showMessageDialog(this,
-                    "La fecha de salida debe ser posterior a la fecha de entrada.",
-                    "Error de fechas",
-                    JOptionPane.ERROR_MESSAGE);
+                "Debe seleccionar la fecha de ingreso.",
+                "Campo requerido", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        m.setFechaEntrada(fechaEntradaSQL);
-        m.setFechaSalida(fechaSalidaSQL);
-        m.setDescripcion(this.txt_descripcion.getText());
+        Mantenimiento m = new Mantenimiento();
+        m.setMatricula((String) cmb_matricula.getSelectedItem());
+        m.setFechaEntrada(new java.sql.Date(fechaEntrada.getTime()));
+        m.setDescripcion(txt_descripcion.getText());
+        // estado siempre "En progreso" al crear — lo fija el DAO
 
         dp.create(m);
         cargarTabla();
         cargarComboCamion();
         limpiarFormulario();
+        activarModoNuevo();
     }//GEN-LAST:event_bt_registrarActionPerformed
     /**
      * Maneja el evento de clic sobre la tabla de mantenimientos. Al seleccionar
@@ -275,45 +293,28 @@ public class FrmMantenimiento extends javax.swing.JInternalFrame {
      * @param evt evento de ratón generado al hacer clic en la tabla
      */
     private void tbl_mantenimientosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_mantenimientosMouseClicked
-        int selectedRow = this.tbl_mantenimientos.getSelectedRow();
-        if (selectedRow != -1) {
-            Object cellValue = this.tbl_mantenimientos.getValueAt(selectedRow, 0);
-            Integer id_seleccionado = (Integer) cellValue;
-            this.txt_id_mantenciones.setText(id_seleccionado.toString());
+         int fila = tbl_mantenimientos.getSelectedRow();
+        if (fila == -1) return;
 
-            for (Mantenimiento m : dp.listarTodos()) {
-                if (m.getIdMantenimiento() == id_seleccionado) {
-                    dc_fecha_entrada.setDate(new java.util.Date(m.getFechaEntrada().getTime()));
-                    dc_fecha_salida.setDate(new java.util.Date(m.getFechaSalida().getTime()));
-                    this.txt_descripcion.setText(m.getDescripcion());
-                    this.cmb_matricula.setSelectedItem(m.getMatricula());
-                }
-            }
+        Integer id = (Integer) tbl_mantenimientos.getValueAt(fila, 0);
+        txt_id_mantenciones.setText(id.toString());
+
+        Mantenimiento m = dp.buscarPorId(id);
+        if (m == null) return;
+
+        dc_fecha_entrada.setDate(new java.util.Date(m.getFechaEntrada().getTime()));
+        txt_descripcion.setText(m.getDescripcion());
+        cargarComboCamionEdicion(m.getMatricula());
+        cmb_matricula.setSelectedItem(m.getMatricula());
+        cmb_estado.setSelectedItem(m.getEstado());
+
+        if ("Terminado".equals(m.getEstado())) {
+            activarModoTerminado();
+        } else {
             activarModoEditar();
         }
     }//GEN-LAST:event_tbl_mantenimientosMouseClicked
-    /**
-     * Activa el modo edición del formulario habilitando los botones "Cancelar",
-     * "Modificar" y "Eliminar", y deshabilitando "Registrar". Se invoca cuando
-     * el usuario selecciona un registro existente en la tabla.
-     */
-    private void activarModoEditar() {
-        this.bt_cancelar.setEnabled(true);
-        this.bt_modificar.setEnabled(true);
-        this.bt_eliminar.setEnabled(true);
-        this.bt_registrar.setEnabled(false);
-    }
 
-    /**
-     * Cambia el formulario a modo nuevo, preparando para registrar una
-     * habitación.
-     */
-    private void activarModoNuevo() {
-        this.bt_cancelar.setEnabled(false);
-        this.bt_modificar.setEnabled(false);
-        this.bt_eliminar.setEnabled(false);
-        this.bt_registrar.setEnabled(true);
-    }
 
     /**
      * Maneja el evento del botón "Modificar". Construye un objeto
@@ -325,30 +326,21 @@ public class FrmMantenimiento extends javax.swing.JInternalFrame {
      * @param evt evento de acción generado por el botón bt_modificar
      */
     private void bt_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_modificarActionPerformed
-        Mantenimiento m = new Mantenimiento();
-        Integer id_seleccionado = Integer.parseInt(this.txt_id_mantenciones.getText());
-        m.setIdMantenimiento(id_seleccionado);
-
-        String matricula = (String) this.cmb_matricula.getSelectedItem();
-        m.setMatricula(matricula);
-
         java.util.Date fechaEntrada = dc_fecha_entrada.getDate();
-        java.util.Date fechaSalida = dc_fecha_salida.getDate();
-        java.sql.Date fechaEntradaSQL = new java.sql.Date(fechaEntrada.getTime());
-        java.sql.Date fechaSalidaSQL = new java.sql.Date(fechaSalida.getTime());
-
-        m.setFechaEntrada(fechaEntradaSQL);
-        m.setFechaSalida(fechaSalidaSQL);
-        m.setDescripcion(this.txt_descripcion.getText());
-        
-      
-        if (!fechaSalidaSQL.after(fechaEntradaSQL)) {
+        if (fechaEntrada == null) {
             JOptionPane.showMessageDialog(this,
-                    "La fecha de salida debe ser posterior a la fecha de entrada.",
-                    "Error de fechas",
-                    JOptionPane.ERROR_MESSAGE);
+                "Debe seleccionar la fecha de ingreso.",
+                "Campo requerido", JOptionPane.WARNING_MESSAGE);
             return;
         }
+
+        Mantenimiento m = new Mantenimiento();
+        m.setIdMantenimiento(Integer.parseInt(txt_id_mantenciones.getText()));
+        m.setMatricula((String) cmb_matricula.getSelectedItem());
+        m.setFechaEntrada(new java.sql.Date(fechaEntrada.getTime()));
+        m.setDescripcion(txt_descripcion.getText());
+        m.setEstado((String) cmb_estado.getSelectedItem());
+
         dp.update(m);
         cargarTabla();
         cargarComboCamion();
@@ -364,28 +356,65 @@ public class FrmMantenimiento extends javax.swing.JInternalFrame {
      * @param evt evento de acción generado por el botón bt_eliminar
      */
     private void bt_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_eliminarActionPerformed
-        Integer id_seleccionado = Integer.parseInt(this.txt_id_mantenciones.getText());
-        Mantenimiento m_encontrado = new Mantenimiento();
-        for (Mantenimiento m : dp.listarTodos()) {
-            if (m.getIdMantenimiento() == id_seleccionado) {
-                m_encontrado = m;
-            }
-        }
-        dp.delete(m_encontrado.getIdMantenimiento());
-        cargarTabla();
-        this.activarModoNuevo();
-        limpiarFormulario();
-    }//GEN-LAST:event_bt_eliminarActionPerformed
-    /**
-     * Limpia los campos editables del formulario de mantenimiento, vaciando el
-     * área de descripción y restableciendo las fechas de entrada y salida a
-     * {@code null}.
-     */
-    private void limpiarFormulario() {
+         int confirm = JOptionPane.showConfirmDialog(this,
+            "¿Eliminar este registro de mantenimiento?",
+            "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+        if (confirm != JOptionPane.YES_OPTION) return;
 
-        this.txt_descripcion.setText("");
+        dp.delete(Integer.parseInt(txt_id_mantenciones.getText()));
+        cargarTabla();
+        cargarComboCamion();
+        limpiarFormulario();
+        activarModoNuevo();
+    }//GEN-LAST:event_bt_eliminarActionPerformed
+    // -------------------------------------------------------
+    // MODOS DEL FORMULARIO
+    // -------------------------------------------------------
+    private void activarModoNuevo() {
+        bt_registrar.setEnabled(true);
+        bt_modificar.setEnabled(false);
+        bt_eliminar.setEnabled(false);
+        bt_cancelar.setEnabled(false);
+
+        // En modo nuevo el estado siempre es "En progreso" y no editable
+        cmb_estado.setSelectedItem("En progreso");
+        cmb_estado.setEnabled(false);
+
+        cmb_matricula.setEnabled(true);
+        dc_fecha_entrada.setEnabled(true);
+        txt_descripcion.setEnabled(true);
+    }
+
+    private void activarModoEditar() {
+        bt_registrar.setEnabled(false);
+        bt_modificar.setEnabled(true);
+        bt_eliminar.setEnabled(true);
+        bt_cancelar.setEnabled(true);
+
+        cmb_estado.setEnabled(true);
+        cmb_matricula.setEnabled(true);
+        dc_fecha_entrada.setEnabled(true);
+        txt_descripcion.setEnabled(true);
+    }
+
+    /** Registro Terminado: solo se puede eliminar, todo lo demás bloqueado. */
+    private void activarModoTerminado() {
+        bt_registrar.setEnabled(false);
+        bt_modificar.setEnabled(false);
+        bt_eliminar.setEnabled(true);
+        bt_cancelar.setEnabled(true);
+
+        cmb_estado.setEnabled(false);
+        cmb_matricula.setEnabled(false);
+        dc_fecha_entrada.setEnabled(false);
+        txt_descripcion.setEnabled(false);
+    }
+    
+        private void limpiarFormulario() {
+        txt_descripcion.setText("");
         dc_fecha_entrada.setDate(null);
-        dc_fecha_salida.setDate(null);
+        txt_id_mantenciones.setText("");
+        cmb_estado.setSelectedItem("En progreso");
     }
 
     /**
@@ -404,29 +433,26 @@ public class FrmMantenimiento extends javax.swing.JInternalFrame {
      * "Entrada" y "salida", construye el modelo y lo asigna a la {@code JTable}
      * del formulario.
      */
-    public void cargarTabla() {
+   public void cargarTabla() {
+        Object[] columnas = {"ID", "Matrícula", "Estado", "Entrada", "Fin", "Días activos", "Descripción"};
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
 
-        // 1. Define los datos y encabezados
-        Object[] nombresColumnas = {"id", "Matricula", "Entrada", "salida"};
-
-        // 2. Crea el modelo de tabla
-        DefaultTableModel modelo = new DefaultTableModel(nombresColumnas, 0);
-
-        // 3. Carga datos desde el arraylist
         for (Mantenimiento m : dp.listarTodos()) {
-            Object[] row1 = {m.getIdMantenimiento(), m.getMatricula(), m.getFechaEntrada(), m.getFechaSalida()};
-            modelo.addRow(row1); 
+            modelo.addRow(new Object[]{
+                m.getIdMantenimiento(),
+                m.getMatricula(),
+                m.getEstado(),
+                m.getFechaEntrada(),
+                m.getFechaFin(),
+                m.getDiasActivos(),
+                m.getDescripcion()
+            });
         }
-
-        // 4. Establece el modelo de tabla a la JTable
-        this.tbl_mantenimientos.setModel(modelo);
-
+        tbl_mantenimientos.setModel(modelo);
     }
 
-    private void formatoFechas() {
-
-        this.dc_fecha_entrada.setDateFormatString("dd/MM/yy");
-        this.dc_fecha_salida.setDateFormatString("dd/MM/yy");
+     private void formatoFechas() {
+        dc_fecha_entrada.setDateFormatString("dd/MM/yy");
     }
 
     DAOMantenimiento dp = new DAOMantenimiento();
@@ -437,9 +463,9 @@ public class FrmMantenimiento extends javax.swing.JInternalFrame {
     private javax.swing.JButton bt_eliminar;
     private javax.swing.JButton bt_modificar;
     private javax.swing.JButton bt_registrar;
+    private javax.swing.JComboBox<String> cmb_estado;
     private javax.swing.JComboBox<String> cmb_matricula;
     private com.toedter.calendar.JDateChooser dc_fecha_entrada;
-    private com.toedter.calendar.JDateChooser dc_fecha_salida;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

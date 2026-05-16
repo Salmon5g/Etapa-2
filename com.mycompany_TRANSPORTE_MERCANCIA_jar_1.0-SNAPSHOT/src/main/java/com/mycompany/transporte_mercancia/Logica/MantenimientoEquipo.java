@@ -9,14 +9,16 @@ import java.sql.Date;
 public class MantenimientoEquipo {
 
     private int idMantenimiento;
-    private int id_equipo;
+    private int idEquipo;
     private String tipoMantenimiento;   // "Preventivo" o "Correctivo"
-    private Date fechaEntrada;
-    private Date fechaSalida;
+    private String estado;              // "En progreso", "Postergado", "Terminado"
+    private Date fechaEntrada;        // fecha de inicio
+    private Date fechaFin;            // fecha de cierre (se llena al terminar)
+    private int diasActivos;         // días acumulados en estado "En progreso"
+    private Date fechaUltimoInicio;   // última vez que arrancó "En progreso"
     private String descripcion;
 
     // --- Getters & Setters ---
-
     public int getIdMantenimiento() {
         return idMantenimiento;
     }
@@ -26,14 +28,12 @@ public class MantenimientoEquipo {
     }
 
     public int getIdEquipo() {
-        return id_equipo;
+        return idEquipo;
     }
 
-    public void setIdEquipo(int id_equipo) {
-        this.id_equipo = id_equipo;
+    public void setIdEquipo(int idEquipo) {
+        this.idEquipo = idEquipo;
     }
-
-  
 
     public String getTipoMantenimiento() {
         return tipoMantenimiento;
@@ -41,6 +41,14 @@ public class MantenimientoEquipo {
 
     public void setTipoMantenimiento(String tipoMantenimiento) {
         this.tipoMantenimiento = tipoMantenimiento;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public Date getFechaEntrada() {
@@ -51,12 +59,28 @@ public class MantenimientoEquipo {
         this.fechaEntrada = fechaEntrada;
     }
 
-    public Date getFechaSalida() {
-        return fechaSalida;
+    public Date getFechaFin() {
+        return fechaFin;
     }
 
-    public void setFechaSalida(Date fechaSalida) {
-        this.fechaSalida = fechaSalida;
+    public void setFechaFin(Date fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
+    public int getDiasActivos() {
+        return diasActivos;
+    }
+
+    public void setDiasActivos(int diasActivos) {
+        this.diasActivos = diasActivos;
+    }
+
+    public Date getFechaUltimoInicio() {
+        return fechaUltimoInicio;
+    }
+
+    public void setFechaUltimoInicio(Date fechaUltimoInicio) {
+        this.fechaUltimoInicio = fechaUltimoInicio;
     }
 
     public String getDescripcion() {
@@ -66,5 +90,4 @@ public class MantenimientoEquipo {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    
 }

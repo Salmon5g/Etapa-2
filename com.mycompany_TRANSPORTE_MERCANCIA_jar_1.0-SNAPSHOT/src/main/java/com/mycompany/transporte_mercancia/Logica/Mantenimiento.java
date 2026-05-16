@@ -9,17 +9,20 @@ import java.sql.Date;
 public class Mantenimiento {
 
     private Integer idMantenimiento;
-    private String matricula;        // reemplaza al objeto Camion
+    private String matricula;
+    private String estado;
     private Date fechaEntrada;
-    private Date fechaSalida;
+    private Date fechaFin;
+    private int diasActivos;
+    private Date fechaUltimoInicio;
     private String descripcion;
 
     public Integer getIdMantenimiento() {
         return idMantenimiento;
     }
 
-    public void setIdMantenimiento(Integer idMantenimiento) {
-        this.idMantenimiento = idMantenimiento;
+    public void setIdMantenimiento(Integer id) {
+        this.idMantenimiento = id;
     }
 
     public String getMatricula() {
@@ -30,6 +33,14 @@ public class Mantenimiento {
         this.matricula = matricula;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     public Date getFechaEntrada() {
         return fechaEntrada;
     }
@@ -38,12 +49,28 @@ public class Mantenimiento {
         this.fechaEntrada = fechaEntrada;
     }
 
-    public Date getFechaSalida() {
-        return fechaSalida;
+    public Date getFechaFin() {
+        return fechaFin;
     }
 
-    public void setFechaSalida(Date fechaSalida) {
-        this.fechaSalida = fechaSalida;
+    public void setFechaFin(Date fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
+    public int getDiasActivos() {
+        return diasActivos;
+    }
+
+    public void setDiasActivos(int diasActivos) {
+        this.diasActivos = diasActivos;
+    }
+
+    public Date getFechaUltimoInicio() {
+        return fechaUltimoInicio;
+    }
+
+    public void setFechaUltimoInicio(Date fechaUltimoInicio) {
+        this.fechaUltimoInicio = fechaUltimoInicio;
     }
 
     public String getDescripcion() {

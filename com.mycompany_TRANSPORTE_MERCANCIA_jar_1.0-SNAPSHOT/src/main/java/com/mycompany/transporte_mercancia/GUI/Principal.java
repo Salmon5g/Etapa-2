@@ -48,6 +48,7 @@ public class Principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuItem6 = new javax.swing.JMenuItem();
         desktopPane = new javax.swing.JDesktopPane();
         menuBar = new javax.swing.JMenuBar();
         editMenu = new javax.swing.JMenu();
@@ -59,6 +60,10 @@ public class Principal extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem7 = new javax.swing.JMenuItem();
+
+        jMenuItem6.setText("jMenuItem6");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -128,6 +133,18 @@ public class Principal extends javax.swing.JFrame {
         jMenu1.add(jMenuItem5);
 
         menuBar.add(jMenu1);
+
+        jMenu2.setText("Consultas");
+
+        jMenuItem7.setText("Mantenimiento Equipos");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem7);
+
+        menuBar.add(jMenu2);
 
         setJMenuBar(menuBar);
 
@@ -282,9 +299,16 @@ public class Principal extends javax.swing.JFrame {
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         FrmMantenimientoEquipos frm = new  FrmMantenimientoEquipos();
         this.desktopPane.add(frm);
-        frm.setSize(958, 578);
+        frm.setSize(1270, 650);
         frm.setVisible(true);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        FrmConsultaMantenimientoEquipos frm = new  FrmConsultaMantenimientoEquipos();
+        this.desktopPane.add(frm);
+        frm.setSize(865, 540);
+        frm.setVisible(true);
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
 
    /**
      * Punto de entrada de la aplicación. Configura el Look and Feel Nimbus
@@ -331,11 +355,14 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JDesktopPane desktopPane;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem pasteMenuItem;
     // End of variables declaration//GEN-END:variables
