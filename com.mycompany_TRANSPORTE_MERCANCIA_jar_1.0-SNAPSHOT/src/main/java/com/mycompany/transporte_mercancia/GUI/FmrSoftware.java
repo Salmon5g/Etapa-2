@@ -65,6 +65,11 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tbl_software.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_softwareMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbl_software);
 
         bt_agregar.setText("Agregar");
@@ -282,6 +287,10 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
         activarModoNuevo();
         limpiarFormulario();
     }//GEN-LAST:event_bt_eliminarActionPerformed
+
+    private void tbl_softwareMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_softwareMouseClicked
+   
+    }//GEN-LAST:event_tbl_softwareMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
