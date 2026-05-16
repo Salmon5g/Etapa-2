@@ -111,17 +111,15 @@ CREATE TABLE software_equipo (
 -- ============================================================
 
 -- Tabla maestra de piezas (inventario)
+DROP TABLE detalle_pieza_mantenimiento;
 CREATE TABLE pieza (
     id_pieza        INT PRIMARY KEY AUTO_INCREMENT,
-    nombre          VARCHAR(100) NOT NULL,
+    nombre          VARCHAR(100) NOT NULL UNIQUE,  -- ← agregar UNIQUE (flujo alterno: pieza duplicada)
     descripcion     VARCHAR(255),
-    stock           INT          NOT NULL DEFAULT 0,
+    stock           INT NOT NULL DEFAULT 0,
     fecha_registro  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Tabla puente: piezas usadas en un mantenimiento
--- Un mantenimiento puede usar varias piezas,
--- una pieza puede usarse en varios mantenimientos
 CREATE TABLE detalle_pieza_mantenimiento (
     id_detalle        INT PRIMARY KEY AUTO_INCREMENT,
     id_mantenimiento  INT NOT NULL,
@@ -130,7 +128,8 @@ CREATE TABLE detalle_pieza_mantenimiento (
     CONSTRAINT fk_dpm_mantenimiento FOREIGN KEY (id_mantenimiento) 
         REFERENCES mantenimiento_equipo(id_mantenimiento) ON DELETE CASCADE,
     CONSTRAINT fk_dpm_pieza FOREIGN KEY (id_pieza) 
-        REFERENCES pieza(id_pieza) ON DELETE RESTRICT
+        REFERENCES pieza(id_pieza) ON DELETE RESTRICT,
+    CONSTRAINT uq_mant_pieza UNIQUE (id_mantenimiento, id_pieza)  -- ← evita duplicar pieza en mismo mantenimiento
 );
 
 -- ============================================
