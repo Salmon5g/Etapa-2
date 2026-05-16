@@ -31,7 +31,7 @@ public class DAOSoftware {
         String sql = """
             SELECT id_software, nombre, version, fabricante, fecha_registro
             FROM software
-            ORDER BY nombre ASC
+            ORDER BY id_software ASC
         """;
 
         try (Connection conn = Conn.get();

@@ -57,6 +57,7 @@ com\mycompany\transporte_mercancia\Data\Conn.class
 com\mycompany\transporte_mercancia\GUI\Principal$7.class
 com\mycompany\transporte_mercancia\Logica\MantenimientoEquipo.class
 com\mycompany\transporte_mercancia\Data\DAOMantenimientoEquipo.class
+com\mycompany\transporte_mercancia\GUI\FmrSoftware$1.class
 com\mycompany\transporte_mercancia\GUI\FrmEquiposDeOficina$6.class
 com\mycompany\transporte_mercancia\GUI\FrmMantenimientoEquipos$6.class
 com\mycompany\transporte_mercancia\Data\DAOMantenimiento.class

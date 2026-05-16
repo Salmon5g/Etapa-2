@@ -25,9 +25,7 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
         initComponents();
         limpiarFormulario();
         cargarTabla();
-        activarModoEditar();
-        bt_modificar.setEnabled(false);
-        bt_eliminar.setEnabled(false);
+        activarModoNuevo();
     }
 
     /**
@@ -44,7 +42,7 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
         bt_agregar = new javax.swing.JButton();
         bt_modificar = new javax.swing.JButton();
         bt_eliminar = new javax.swing.JButton();
-        bt_listar = new javax.swing.JButton();
+        bt_cancelar = new javax.swing.JButton();
         txt_nombre = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         txt_version = new javax.swing.JTextField();
@@ -81,8 +79,8 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
         bt_eliminar.setText("Eliminar");
         bt_eliminar.addActionListener(this::bt_eliminarActionPerformed);
 
-        bt_listar.setText("Listar");
-        bt_listar.addActionListener(this::bt_listarActionPerformed);
+        bt_cancelar.setText("Cancelar");
+        bt_cancelar.addActionListener(this::bt_cancelarActionPerformed);
 
         jLabel1.setText("Nombre");
 
@@ -103,7 +101,7 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(bt_listar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(bt_cancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(bt_agregar, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -112,25 +110,26 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(65, 65, 65)
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txt_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGap(48, 48, 48)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel2)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(txt_version, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel1)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel1)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(17, 17, 17)
+                                                .addComponent(jLabel4)))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(txt_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(txt_id)
+                                            .addComponent(txt_nombre, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)))))
+                            .addGroup(layout.createSequentialGroup()
                                 .addGap(33, 33, 33)
                                 .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                                 .addComponent(txt_fabricante, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(14, 14, 14)))
                 .addGap(49, 49, 49)
@@ -166,7 +165,7 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
                 .addGap(51, 51, 51)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bt_eliminar)
-                    .addComponent(bt_listar))
+                    .addComponent(bt_cancelar))
                 .addGap(86, 86, 86))
         );
 
@@ -179,7 +178,7 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
         String version = txt_version.getText().trim();
         String fabricante = txt_fabricante.getText().trim();
 
-        if (nombre.isEmpty() || version.isEmpty() || fabricante.isEmpty()){
+        if (nombre.isEmpty() || version.isEmpty() || fabricante.isEmpty()) {
             JOptionPane.showMessageDialog(this,
                     "Complete todos los campos");
             return;
@@ -241,18 +240,12 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
         limpiarFormulario();
     }//GEN-LAST:event_bt_modificarActionPerformed
 
-    private void activarModoEditar() {
-
-        bt_agregar.setEnabled(false);
-
-        bt_modificar.setEnabled(true);
-        bt_eliminar.setEnabled(true);
-    }
-
-    private void bt_listarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_listarActionPerformed
+    private void bt_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_cancelarActionPerformed
         // TODO add your handling code here:
-        cargarTabla();
-    }//GEN-LAST:event_bt_listarActionPerformed
+        limpiarFormulario();
+        activarModoNuevo();
+        tbl_software.clearSelection();
+    }//GEN-LAST:event_bt_cancelarActionPerformed
 
     private void limpiarFormulario() {
 
@@ -289,14 +282,37 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_bt_eliminarActionPerformed
 
     private void tbl_softwareMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_softwareMouseClicked
-   
+        int fila = tbl_software.getSelectedRow();
+
+        if (fila != -1) {
+
+            txt_id.setText(
+                    tbl_software.getValueAt(fila, 0).toString());
+
+            txt_nombre.setText(
+                    tbl_software.getValueAt(fila, 1).toString());
+
+            txt_version.setText(
+                    tbl_software.getValueAt(fila, 2).toString());
+
+            txt_fabricante.setText(
+                    tbl_software.getValueAt(fila, 3).toString());
+
+            activarModoEditar();
+        }
     }//GEN-LAST:event_tbl_softwareMouseClicked
+
+    private void activarModoEditar() {
+        bt_agregar.setEnabled(false);
+        bt_modificar.setEnabled(true);
+        bt_eliminar.setEnabled(true);
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_agregar;
+    private javax.swing.JButton bt_cancelar;
     private javax.swing.JButton bt_eliminar;
-    private javax.swing.JButton bt_listar;
     private javax.swing.JButton bt_modificar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
