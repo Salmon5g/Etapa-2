@@ -58,6 +58,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
@@ -120,6 +121,14 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         editMenu.add(jMenuItem8);
+
+        jMenuItem9.setText("Piezas");
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
+        editMenu.add(jMenuItem9);
 
         menuBar.add(editMenu);
 
@@ -326,6 +335,13 @@ public class Principal extends javax.swing.JFrame {
         frm.setVisible(true);
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        FrmPiezaRepuestos frm = new  FrmPiezaRepuestos();
+        this.desktopPane.add(frm);
+        frm.setSize(850, 500);
+        frm.setVisible(true);  
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
    /**
      * Punto de entrada de la aplicación. Configura el Look and Feel Nimbus
      * (si está disponible) y lanza el formulario de login en el hilo de
@@ -380,6 +396,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem pasteMenuItem;
     // End of variables declaration//GEN-END:variables
