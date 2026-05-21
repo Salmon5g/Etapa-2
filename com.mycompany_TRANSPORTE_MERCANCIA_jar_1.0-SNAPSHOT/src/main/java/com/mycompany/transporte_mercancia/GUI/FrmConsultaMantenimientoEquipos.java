@@ -187,86 +187,83 @@ public class FrmConsultaMantenimientoEquipos extends javax.swing.JInternalFrame 
     }//GEN-LAST:event_bt_limpiarActionPerformed
  
     private void configurarTabla() {
-        String[] columnas = {
-            "ID",               // 0 — oculto
-            "N° Serie",         // 1
-            "Marca",            // 2
-            "Tipo Equipo",      // 3
-            "Tipo Mant.",       // 4
-            "Fecha Entrada",    // 5
-            "Fecha Salida",     // 6
-            "Descripción"       // 7
-        };
+    String[] columnas = {
+        "ID",               // 0 — oculto
+        "N° Serie",         // 1
+        "Marca",            // 2
+        "Tipo Equipo",      // 3
+        "Tipo Mant.",       // 4
+        "Estado",           // 5  ← nuevo
+        "Fecha Entrada",    // 6
+        "Fecha Fin",        // 7  ← era "Fecha Salida"
+        "Días Activos",     // 8  ← nuevo
+        "Descripción"       // 9
+    };
 
-        DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
-            @Override
-            public boolean isCellEditable(int row, int col) {
-                return false; // tabla de solo lectura
-            }
-        };
-
-        tbl_historial.setModel(modelo);
-        tbl_historial.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        tbl_historial.setAutoCreateRowSorter(true); // permite ordenar columnas con clic
-
-        // Ocultar columna ID
-        tbl_historial.getColumnModel().getColumn(0).setMinWidth(0);
-        tbl_historial.getColumnModel().getColumn(0).setMaxWidth(0);
-        tbl_historial.getColumnModel().getColumn(0).setWidth(0);
-
-        // Ajustar anchos sugeridos
-        tbl_historial.getColumnModel().getColumn(1).setPreferredWidth(110); // N° Serie
-        tbl_historial.getColumnModel().getColumn(2).setPreferredWidth(100); // Marca
-        tbl_historial.getColumnModel().getColumn(3).setPreferredWidth(80);  // Tipo Equipo
-        tbl_historial.getColumnModel().getColumn(4).setPreferredWidth(90);  // Tipo Mant.
-        tbl_historial.getColumnModel().getColumn(5).setPreferredWidth(90);  // Fecha Entrada
-        tbl_historial.getColumnModel().getColumn(6).setPreferredWidth(90);  // Fecha Salida
-        tbl_historial.getColumnModel().getColumn(7).setPreferredWidth(200); // Descripción
-    }
-    
-     /**
-     * Consulta el historial aplicando los filtros recibidos y puebla la tabla.
-     *
-     * @param numeroSerie       parcial o null para sin filtro.
-     * @param tipoMantenimiento "Todos", "Preventivo" o "Correctivo".
-     * @param fechaDesde        fecha mínima de entrada; null para ignorar.
-     * @param fechaHasta        fecha máxima de entrada; null para ignorar.
-     */
-    private void cargarDatos(String numeroSerie,
-                              String tipoMantenimiento,
-                              java.sql.Date fechaDesde,
-                              java.sql.Date fechaHasta) {
-
-        DefaultTableModel modelo = (DefaultTableModel) tbl_historial.getModel();
-        modelo.setRowCount(0); // limpiar filas anteriores
-
-        ArrayList<Object[]> lista = dao.listarHistorialFiltrado(
-                numeroSerie, tipoMantenimiento, fechaDesde, fechaHasta);
-
-        if (lista.isEmpty()) {
-            lbl_total.setText("No se encontraron registros.");
-            return;
+    DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
+        @Override
+        public boolean isCellEditable(int row, int col) {
+            return false;
         }
+    };
 
-        for (Object[] fila : lista) {
-            // Formatear fechas para mostrar en la tabla
-            String fechaEntrada = (fila[5] != null) ? SDF.format(fila[5]) : "—";
-            String fechaSalida  = (fila[6] != null) ? SDF.format(fila[6]) : "—";
+    tbl_historial.setModel(modelo);
+    tbl_historial.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+    tbl_historial.setAutoCreateRowSorter(true);
 
-            modelo.addRow(new Object[]{
-                fila[0],        // ID (oculto)
-                fila[1],        // N° Serie
-                fila[2],        // Marca
-                fila[3],        // Tipo Equipo
-                fila[4],        // Tipo Mant.
-                fechaEntrada,   // Fecha Entrada formateada
-                fechaSalida,    // Fecha Salida formateada
-                fila[7]         // Descripción
-            });
-        }
+    // Ocultar columna ID
+    tbl_historial.getColumnModel().getColumn(0).setMinWidth(0);
+    tbl_historial.getColumnModel().getColumn(0).setMaxWidth(0);
+    tbl_historial.getColumnModel().getColumn(0).setWidth(0);
 
-        lbl_total.setText("Total registros: " + lista.size());
+    // Anchos
+    tbl_historial.getColumnModel().getColumn(1).setPreferredWidth(110); // N° Serie
+    tbl_historial.getColumnModel().getColumn(2).setPreferredWidth(100); // Marca
+    tbl_historial.getColumnModel().getColumn(3).setPreferredWidth(80);  // Tipo Equipo
+    tbl_historial.getColumnModel().getColumn(4).setPreferredWidth(90);  // Tipo Mant.
+    tbl_historial.getColumnModel().getColumn(5).setPreferredWidth(90);  // Estado
+    tbl_historial.getColumnModel().getColumn(6).setPreferredWidth(90);  // Fecha Entrada
+    tbl_historial.getColumnModel().getColumn(7).setPreferredWidth(90);  // Fecha Fin
+    tbl_historial.getColumnModel().getColumn(8).setPreferredWidth(70);  // Días Activos
+    tbl_historial.getColumnModel().getColumn(9).setPreferredWidth(200); // Descripción
+}
+
+private void cargarDatos(String numeroSerie,
+                          String tipoMantenimiento,
+                          java.sql.Date fechaDesde,
+                          java.sql.Date fechaHasta) {
+
+    DefaultTableModel modelo = (DefaultTableModel) tbl_historial.getModel();
+    modelo.setRowCount(0);
+
+    ArrayList<Object[]> lista = dao.listarHistorialFiltrado(
+            numeroSerie, tipoMantenimiento, fechaDesde, fechaHasta);
+
+    if (lista.isEmpty()) {
+        lbl_total.setText("No se encontraron registros.");
+        return;
     }
+
+    for (Object[] fila : lista) {
+        String fechaEntrada = (fila[6] != null) ? SDF.format(fila[6]) : "—";
+        String fechaFin     = (fila[7] != null) ? SDF.format(fila[7]) : "—";
+
+        modelo.addRow(new Object[]{
+            fila[0],        // ID (oculto)
+            fila[1],        // N° Serie
+            fila[2],        // Marca
+            fila[3],        // Tipo Equipo
+            fila[4],        // Tipo Mant.
+            fila[5],        // Estado
+            fechaEntrada,   // Fecha Entrada
+            fechaFin,       // Fecha Fin
+            fila[8],        // Días Activos
+            fila[9]         // Descripción
+        });
+    }
+
+    lbl_total.setText("Total registros: " + lista.size());
+}
     
     
     

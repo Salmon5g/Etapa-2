@@ -278,7 +278,10 @@ public class FrmMantenimiento extends javax.swing.JInternalFrame {
         m.setFechaEntrada(new java.sql.Date(fechaEntrada.getTime()));
         m.setDescripcion(txt_descripcion.getText());
         // estado siempre "En progreso" al crear — lo fija el DAO
-
+        
+      
+        
+        
         dp.create(m);
         cargarTabla();
         cargarComboCamion();
@@ -293,7 +296,7 @@ public class FrmMantenimiento extends javax.swing.JInternalFrame {
      * @param evt evento de ratón generado al hacer clic en la tabla
      */
     private void tbl_mantenimientosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_mantenimientosMouseClicked
-         int fila = tbl_mantenimientos.getSelectedRow();
+        int fila = tbl_mantenimientos.getSelectedRow();
         if (fila == -1) return;
 
         Integer id = (Integer) tbl_mantenimientos.getValueAt(fila, 0);
