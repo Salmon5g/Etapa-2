@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 public class Pieza {
 
     private int idPieza;
+    private String codigo;
     private String nombre;
     private String descripcion;
     private int stock;
@@ -17,20 +18,31 @@ public class Pieza {
     public Pieza() {
     }
 
-    public Pieza(int idPieza, String nombre, String descripcion, int stock, Timestamp fechaRegistro) {
+    public Pieza(int idPieza, String codigo, String nombre, String descripcion,
+            int stock, Timestamp fechaRegistro) {
         this.idPieza = idPieza;
+        this.codigo = codigo;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.stock = stock;
         this.fechaRegistro = fechaRegistro;
     }
 
+    // --- Getters & Setters ---
     public int getIdPieza() {
         return idPieza;
     }
 
     public void setIdPieza(int idPieza) {
         this.idPieza = idPieza;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public String getNombre() {
@@ -65,4 +77,3 @@ public class Pieza {
         this.fechaRegistro = fechaRegistro;
     }
 }
-

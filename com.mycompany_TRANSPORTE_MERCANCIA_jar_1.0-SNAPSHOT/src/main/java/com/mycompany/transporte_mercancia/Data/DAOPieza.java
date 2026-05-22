@@ -14,37 +14,40 @@ import java.util.ArrayList;
 public class DAOPieza {
 
     // ---------------------------------------------------
+    // HELPER: mapear ResultSet → Pieza
+    // ---------------------------------------------------
+    private Pieza mapear(ResultSet rs) throws SQLException {
+        Pieza p = new Pieza();
+        p.setIdPieza(rs.getInt("id_pieza"));
+        p.setCodigo(rs.getString("codigo"));
+        p.setNombre(rs.getString("nombre"));
+        p.setDescripcion(rs.getString("descripcion"));
+        p.setStock(rs.getInt("stock"));
+        p.setFechaRegistro(rs.getTimestamp("fecha_registro"));
+        return p;
+    }
+
+    // ---------------------------------------------------
     // LISTAR TODAS LAS PIEZAS
     // ---------------------------------------------------
     /**
-     * Recupera todas las piezas registradas en la base de datos,
-     * ordenadas por ID ascendente.
+     * Recupera todas las piezas registradas, ordenadas por código ASC.
      *
-     * @return {@link ArrayList} con todos los objetos {@link Pieza}
-     *         encontrados; lista vacía si no hay registros o si ocurre
-     *         un error de base de datos.
+     * @return lista de {@link Pieza}; vacía si no hay registros o error.
      */
     public ArrayList<Pieza> listarTodos() {
         ArrayList<Pieza> lista = new ArrayList<>();
 
         String sql = """
-            SELECT id_pieza, nombre, descripcion, stock, fecha_registro
-            FROM pieza
-            ORDER BY id_pieza ASC
-        """;
+              SELECT id_pieza, codigo, nombre, descripcion, stock, fecha_registro
+              FROM pieza
+              ORDER BY codigo ASC
+          """;
 
-        try (Connection conn = Conn.get();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
+        try (Connection conn = Conn.get(); PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
-                Pieza p = new Pieza();
-                p.setIdPieza(rs.getInt("id_pieza"));
-                p.setNombre(rs.getString("nombre"));
-                p.setDescripcion(rs.getString("descripcion"));
-                p.setStock(rs.getInt("stock"));
-                p.setFechaRegistro(rs.getTimestamp("fecha_registro"));
-                lista.add(p);
+                lista.add(mapear(rs));
             }
 
         } catch (SQLException e) {
@@ -58,33 +61,25 @@ public class DAOPieza {
     // LISTAR PIEZAS CON STOCK DISPONIBLE
     // ---------------------------------------------------
     /**
-     * Recupera solo las piezas que tienen stock mayor a 0.
-     * Útil para llenar el ComboBox al agregar piezas a un mantenimiento.
+     * Recupera solo las piezas con stock > 0. Útil para el ComboBox al agregar
+     * piezas a un mantenimiento.
      *
-     * @return {@link ArrayList} con las piezas disponibles.
+     * @return lista de {@link Pieza} disponibles.
      */
     public ArrayList<Pieza> listarConStock() {
         ArrayList<Pieza> lista = new ArrayList<>();
 
         String sql = """
-            SELECT id_pieza, nombre, descripcion, stock, fecha_registro
-            FROM pieza
-            WHERE stock > 0
-            ORDER BY nombre ASC
-        """;
+              SELECT id_pieza, codigo, nombre, descripcion, stock, fecha_registro
+              FROM pieza
+              WHERE stock > 0
+              ORDER BY codigo ASC
+          """;
 
-        try (Connection conn = Conn.get();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
+        try (Connection conn = Conn.get(); PreparedStatement pstmt = conn.prepareStatement(sql); ResultSet rs = pstmt.executeQuery()) {
 
             while (rs.next()) {
-                Pieza p = new Pieza();
-                p.setIdPieza(rs.getInt("id_pieza"));
-                p.setNombre(rs.getString("nombre"));
-                p.setDescripcion(rs.getString("descripcion"));
-                p.setStock(rs.getInt("stock"));
-                p.setFechaRegistro(rs.getTimestamp("fecha_registro"));
-                lista.add(p);
+                lista.add(mapear(rs));
             }
 
         } catch (SQLException e) {
@@ -95,111 +90,122 @@ public class DAOPieza {
     }
 
     // ---------------------------------------------------
-    // BUSCAR PIEZA POR ID
+    // BUSCAR POR ID
     // ---------------------------------------------------
     /**
-     * Busca una pieza en la base de datos por su identificador único.
+     * Busca una pieza por su ID.
      *
-     * @param id identificador de la pieza a buscar.
-     * @return el objeto {@link Pieza} encontrado, o {@code null} si no
-     *         existe ninguna pieza con ese ID o si ocurre un error.
+     * @param id identificador de la pieza.
+     * @return {@link Pieza} encontrada, o {@code null}.
      */
     public Pieza buscarPorId(int id) {
-        Pieza p = null;
-
         String sql = """
-            SELECT id_pieza, nombre, descripcion, stock, fecha_registro
-            FROM pieza
-            WHERE id_pieza = ?
-        """;
+              SELECT id_pieza, codigo, nombre, descripcion, stock, fecha_registro
+              FROM pieza
+              WHERE id_pieza = ?
+          """;
 
-        try (Connection conn = Conn.get();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conn.get(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
-
             if (rs.next()) {
-                p = new Pieza();
-                p.setIdPieza(rs.getInt("id_pieza"));
-                p.setNombre(rs.getString("nombre"));
-                p.setDescripcion(rs.getString("descripcion"));
-                p.setStock(rs.getInt("stock"));
-                p.setFechaRegistro(rs.getTimestamp("fecha_registro"));
+                return mapear(rs);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return p;
+        return null;
     }
 
     // ---------------------------------------------------
-    // BUSCAR PIEZA POR NOMBRE (para flujo alterno: duplicados)
+    // BUSCAR POR CÓDIGO
     // ---------------------------------------------------
     /**
-     * Busca una pieza por su nombre exacto.
-     * Útil para validar el flujo alterno del RF-09:
-     * "Si se intenta agregar una pieza que ya existe, se muestra advertencia."
+     * Busca una pieza por su código exacto. Útil para validar duplicados al
+     * registrar.
      *
-     * @param nombre nombre de la pieza a buscar.
-     * @return el objeto {@link Pieza} encontrado, o {@code null} si no existe.
+     * @param codigo código de la pieza.
+     * @return {@link Pieza} encontrada, o {@code null}.
      */
-    public Pieza buscarPorNombre(String nombre) {
-        Pieza p = null;
-
+    public Pieza buscarPorCodigo(String codigo) {
         String sql = """
-            SELECT id_pieza, nombre, descripcion, stock, fecha_registro
-            FROM pieza
-            WHERE nombre = ?
-        """;
+              SELECT id_pieza, codigo, nombre, descripcion, stock, fecha_registro
+              FROM pieza
+              WHERE codigo = ?
+          """;
 
-        try (Connection conn = Conn.get();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conn.get(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, nombre);
+            pstmt.setString(1, codigo);
             ResultSet rs = pstmt.executeQuery();
-
             if (rs.next()) {
-                p = new Pieza();
-                p.setIdPieza(rs.getInt("id_pieza"));
-                p.setNombre(rs.getString("nombre"));
-                p.setDescripcion(rs.getString("descripcion"));
-                p.setStock(rs.getInt("stock"));
-                p.setFechaRegistro(rs.getTimestamp("fecha_registro"));
+                return mapear(rs);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return p;
+        return null;
+    }
+
+    // ---------------------------------------------------
+    // BUSCAR POR NOMBRE
+    // ---------------------------------------------------
+    /**
+     * Busca una pieza por su nombre exacto. Útil para el flujo alterno RF-09
+     * (detección de duplicados).
+     *
+     * @param nombre nombre de la pieza.
+     * @return {@link Pieza} encontrada, o {@code null}.
+     */
+    public Pieza buscarPorNombre(String nombre) {
+        String sql = """
+              SELECT id_pieza, codigo, nombre, descripcion, stock, fecha_registro
+              FROM pieza
+              WHERE nombre = ?
+          """;
+
+        try (Connection conn = Conn.get(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, nombre);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return mapear(rs);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     // ---------------------------------------------------
     // CREAR PIEZA
     // ---------------------------------------------------
     /**
-     * Inserta una nueva pieza en la base de datos.
-     * La fecha de registro se genera automáticamente por la BD.
+     * Inserta una nueva pieza. La fecha de registro la genera la BD.
      *
-     * @param p objeto {@link Pieza} con los datos a insertar.
-     * @return {@code true} si se insertó correctamente, {@code false}
-     *         si ocurrió un error (ej. nombre duplicado).
+     * @param p pieza a insertar.
+     * @return {@code true} si se insertó; {@code false} si hubo error (ej.
+     * código o nombre duplicado).
      */
     public boolean create(Pieza p) {
         String sql = """
-            INSERT INTO pieza (nombre, descripcion, stock)
-            VALUES (?, ?, ?)
-        """;
+              INSERT INTO pieza (codigo, nombre, descripcion, stock)
+              VALUES (?, ?, ?, ?)
+          """;
 
-        try (Connection conn = Conn.get();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conn.get(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, p.getNombre());
-            pstmt.setString(2, p.getDescripcion());
-            pstmt.setInt(3, p.getStock());
+            pstmt.setString(1, p.getCodigo());
+            pstmt.setString(2, p.getNombre());
+            pstmt.setString(3, p.getDescripcion());
+            pstmt.setInt(4, p.getStock());
             pstmt.executeUpdate();
             return true;
 
@@ -213,24 +219,24 @@ public class DAOPieza {
     // ACTUALIZAR PIEZA
     // ---------------------------------------------------
     /**
-     * Actualiza los datos de una pieza existente en la base de datos.
+     * Actualiza los datos de una pieza existente.
      *
-     * @param p objeto {@link Pieza} con los datos actualizados.
+     * @param p pieza con los datos actualizados (debe tener idPieza).
      */
     public void update(Pieza p) {
         String sql = """
-            UPDATE pieza
-            SET nombre = ?, descripcion = ?, stock = ?
-            WHERE id_pieza = ?
-        """;
+              UPDATE pieza
+              SET codigo = ?, nombre = ?, descripcion = ?, stock = ?
+              WHERE id_pieza = ?
+          """;
 
-        try (Connection conn = Conn.get();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conn.get(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setString(1, p.getNombre());
-            pstmt.setString(2, p.getDescripcion());
-            pstmt.setInt(3, p.getStock());
-            pstmt.setInt(4, p.getIdPieza());
+            pstmt.setString(1, p.getCodigo());
+            pstmt.setString(2, p.getNombre());
+            pstmt.setString(3, p.getDescripcion());
+            pstmt.setInt(4, p.getStock());
+            pstmt.setInt(5, p.getIdPieza());
             pstmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -239,16 +245,16 @@ public class DAOPieza {
     }
 
     // ---------------------------------------------------
-    // ACTUALIZAR STOCK (descontar piezas usadas)
+    // DESCONTAR STOCK (dentro de transacción)
     // ---------------------------------------------------
     /**
-     * Descuenta una cantidad del stock de una pieza.
-     * Se usa cuando se registran piezas en un mantenimiento.
+     * Descuenta cantidad del stock. Lanza excepción si el stock es
+     * insuficiente.
      *
-     * @param idPieza   ID de la pieza.
-     * @param cantidad  cantidad a descontar del stock.
-     * @param conn      conexión existente (para usar dentro de transacción).
-     * @throws SQLException si ocurre un error de base de datos.
+     * @param idPieza ID de la pieza.
+     * @param cantidad cantidad a descontar.
+     * @param conn conexión de la transacción activa.
+     * @throws SQLException si stock insuficiente o error de BD.
      */
     public void descontarStock(int idPieza, int cantidad, Connection conn) throws SQLException {
         String sql = "UPDATE pieza SET stock = stock - ? WHERE id_pieza = ? AND stock >= ?";
@@ -266,16 +272,15 @@ public class DAOPieza {
     }
 
     // ---------------------------------------------------
-    // RESTAURAR STOCK (al eliminar un mantenimiento)
+    // RESTAURAR STOCK (dentro de transacción)
     // ---------------------------------------------------
     /**
-     * Restaura una cantidad al stock de una pieza.
-     * Se usa cuando se elimina un mantenimiento y se devuelven las piezas.
+     * Devuelve cantidad al stock de una pieza.
      *
-     * @param idPieza   ID de la pieza.
-     * @param cantidad  cantidad a restaurar al stock.
-     * @param conn      conexión existente (para usar dentro de transacción).
-     * @throws SQLException si ocurre un error de base de datos.
+     * @param idPieza ID de la pieza.
+     * @param cantidad cantidad a restaurar.
+     * @param conn conexión de la transacción activa.
+     * @throws SQLException si ocurre un error de BD.
      */
     public void restaurarStock(int idPieza, int cantidad, Connection conn) throws SQLException {
         String sql = "UPDATE pieza SET stock = stock + ? WHERE id_pieza = ?";
@@ -291,19 +296,16 @@ public class DAOPieza {
     // ELIMINAR PIEZA
     // ---------------------------------------------------
     /**
-     * Elimina una pieza de la base de datos según su identificador.
-     * Fallará si la pieza está siendo usada en algún detalle de mantenimiento
-     * (por el RESTRICT en la FK).
+     * Elimina una pieza. Fallará si está referenciada en algún mantenimiento
+     * (FK RESTRICT).
      *
-     * @param id identificador de la pieza a eliminar.
-     * @return {@code true} si se eliminó, {@code false} si no se pudo
-     *         (ej. pieza en uso).
+     * @param id ID de la pieza a eliminar.
+     * @return {@code true} si se eliminó; {@code false} si está en uso.
      */
     public boolean delete(int id) {
         String sql = "DELETE FROM pieza WHERE id_pieza = ?";
 
-        try (Connection conn = Conn.get();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Conn.get(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, id);
             pstmt.executeUpdate();

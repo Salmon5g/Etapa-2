@@ -111,7 +111,7 @@ CREATE TABLE software_equipo (
 -- ============================================================
 
 -- Tabla maestra de piezas (inventario)
-DROP TABLE detalle_pieza_mantenimiento;
+
 CREATE TABLE pieza (
     id_pieza        INT PRIMARY KEY AUTO_INCREMENT,
     nombre          VARCHAR(100) NOT NULL UNIQUE,  -- ← agregar UNIQUE (flujo alterno: pieza duplicada)
@@ -119,6 +119,8 @@ CREATE TABLE pieza (
     stock           INT NOT NULL DEFAULT 0,
     fecha_registro  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+ALTER TABLE pieza ADD COLUMN codigo VARCHAR(50) NOT NULL UNIQUE AFTER id_pieza;
 
 CREATE TABLE detalle_pieza_mantenimiento (
     id_detalle        INT PRIMARY KEY AUTO_INCREMENT,

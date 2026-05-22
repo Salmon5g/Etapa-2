@@ -47,6 +47,7 @@ com\mycompany\transporte_mercancia\GUI\FrmPiezaRepuestos.class
 com\mycompany\transporte_mercancia\Data\DAOSoftware.class
 com\mycompany\transporte_mercancia\GUI\FrmPersonalCompañia$2.class
 com\mycompany\transporte_mercancia\GUI\FrmCamiones$2.class
+com\mycompany\transporte_mercancia\GUI\FrmPiezaRepuestos$2.class
 com\mycompany\transporte_mercancia\GUI\FrmMantenimientoEquipos$1.class
 com\mycompany\transporte_mercancia\GUI\FrmEquiposDeOficina$1.class
 com\mycompany\transporte_mercancia\GUI\FrmPersonalCompañia$5.class

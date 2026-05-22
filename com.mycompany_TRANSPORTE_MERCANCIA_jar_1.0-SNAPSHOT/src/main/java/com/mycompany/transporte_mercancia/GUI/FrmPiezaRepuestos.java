@@ -3,60 +3,109 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package com.mycompany.transporte_mercancia.GUI;
+
 import com.mycompany.transporte_mercancia.Logica.Pieza;
 import com.mycompany.transporte_mercancia.Data.DAOPieza;
 import java.util.ArrayList;
-import javax.swing.table.DefaultTableModel; 
+import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
 /**
  *
  * @author Vicente Morales
  */
+
+/**
+ * Formulario CRUD de Piezas / Repuestos (RF-09).
+ *
+ * Componentes que deben existir en el Designer de NetBeans: - cod_txt
+ * (JTextField) + JLabel "Código" ← NUEVO - nom_txt (JTextField) + JLabel
+ * "Nombre" - desc_txt (JTextField) + JLabel "Descripción" - sto_txt
+ * (JTextField) + JLabel "Stock" - id_txt (JTextField, no editable, oculto o con
+ * JLabel "ID") - tbl_piezas (JTable) dentro de jScrollPane1 - bt_agregar,
+ * bt_editar, bt_eliminar, bt_limpiar (JButton)
+ */
 public class FrmPiezaRepuestos extends javax.swing.JInternalFrame {
 
-    private DAOPieza dao = new DAOPieza();
+    private final DAOPieza dao = new DAOPieza();
     private int idSeleccionado = -1;
-    
-    
+
+    // -------------------------------------------------------
+    // CONSTRUCTOR
+    // -------------------------------------------------------
     public FrmPiezaRepuestos() {
         initComponents();
+        configurarTabla();
         cargarTabla();
-        
-    tbl_piezas.getSelectionModel().addListSelectionListener(e -> {
-        if (!e.getValueIsAdjusting()) {
-            int fila = tbl_piezas.getSelectedRow();
-            if (fila == -1) return;
 
-            idSeleccionado = (int) tbl_piezas.getValueAt(fila, 0);
-            id_txt.setText(String.valueOf(idSeleccionado));
-            nom_txt.setText(tbl_piezas.getValueAt(fila, 1).toString());
-            desc_txt.setText(tbl_piezas.getValueAt(fila, 2).toString());
-            sto_txt.setText(tbl_piezas.getValueAt(fila, 3).toString());
-        }
-    });
-}
-    
-    
-    
-    private void cargarTabla() {
-    DefaultTableModel modelo = (DefaultTableModel) tbl_piezas.getModel();
-    modelo.setRowCount(0);
-    ArrayList<Pieza> lista = dao.listarTodos();
-    for (Pieza p : lista) {
-        modelo.addRow(new Object[]{
-            p.getIdPieza(),
-            p.getNombre(),
-            p.getDescripcion(),
-            p.getStock(),
-            p.getFechaRegistro()
+        // Listener de selección en tabla
+        tbl_piezas.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                int fila = tbl_piezas.getSelectedRow();
+                if (fila == -1) {
+                    return;
+                }
+
+                // Índices: 0=id, 1=codigo, 2=nombre, 3=descripcion, 4=stock
+                idSeleccionado = (int) tbl_piezas.getValueAt(fila, 0);
+                id_txt.setText(String.valueOf(idSeleccionado));
+                cod_txt.setText(tbl_piezas.getValueAt(fila, 1).toString());
+                nom_txt.setText(tbl_piezas.getValueAt(fila, 2).toString());
+
+                Object desc = tbl_piezas.getValueAt(fila, 3);
+                desc_txt.setText(desc != null ? desc.toString() : "");
+
+                sto_txt.setText(tbl_piezas.getValueAt(fila, 4).toString());
+            }
         });
     }
-}
-    
-    
-    
+
+    // -------------------------------------------------------
+    // CONFIGURAR COLUMNAS DE LA TABLA
+    // -------------------------------------------------------
+    /**
+     * Define el modelo de la tabla con las columnas correctas. La columna ID
+     * (índice 0) se oculta fijando su ancho a 0.
+     */
+    private void configurarTabla() {
+        DefaultTableModel modelo = new DefaultTableModel(
+                new String[]{"ID", "Código", "Nombre", "Descripción", "Stock", "Fecha Registro"},
+                0
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        tbl_piezas.setModel(modelo);
+
+        // Ocultar columna ID
+        tbl_piezas.getColumnModel().getColumn(0).setMinWidth(0);
+        tbl_piezas.getColumnModel().getColumn(0).setMaxWidth(0);
+        tbl_piezas.getColumnModel().getColumn(0).setWidth(0);
+    }
+
+    // -------------------------------------------------------
+    // CARGAR TABLA
+    // -------------------------------------------------------
+    private void cargarTabla() {
+        DefaultTableModel modelo = (DefaultTableModel) tbl_piezas.getModel();
+        modelo.setRowCount(0);
+
+        ArrayList<Pieza> lista = dao.listarTodos();
+        for (Pieza p : lista) {
+            modelo.addRow(new Object[]{
+                p.getIdPieza(), // col 0 – oculta
+                p.getCodigo(), // col 1
+                p.getNombre(), // col 2
+                p.getDescripcion(), // col 3
+                p.getStock(), // col 4
+                p.getFechaRegistro() // col 5
+            });
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -81,6 +130,8 @@ public class FrmPiezaRepuestos extends javax.swing.JInternalFrame {
         bt_editar = new javax.swing.JButton();
         bt_eliminar = new javax.swing.JButton();
         bt_limpiar = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        cod_txt = new javax.swing.JTextField();
 
         tbl_piezas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -128,6 +179,8 @@ public class FrmPiezaRepuestos extends javax.swing.JInternalFrame {
         bt_limpiar.setText("Limpiar");
         bt_limpiar.addActionListener(this::bt_limpiarActionPerformed);
 
+        jLabel5.setText("Codigo:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -145,13 +198,15 @@ public class FrmPiezaRepuestos extends javax.swing.JInternalFrame {
                                     .addComponent(jLabel3)
                                     .addComponent(jLabel4)
                                     .addComponent(jLabel2)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel5))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(sto_txt, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
                                     .addComponent(desc_txt)
                                     .addComponent(nom_txt)
-                                    .addComponent(id_txt, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(id_txt, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cod_txt)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(20, 20, 20)
                                 .addComponent(bt_eliminar)))
@@ -182,14 +237,18 @@ public class FrmPiezaRepuestos extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(nom_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(14, 14, 14)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(cod_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(desc_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(desc_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(sto_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
+                            .addComponent(jLabel4)
+                            .addComponent(sto_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(bt_editar)
@@ -213,90 +272,160 @@ public class FrmPiezaRepuestos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_sto_txtActionPerformed
 
     private void bt_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_agregarActionPerformed
-        String nombre = nom_txt.getText().trim();
-String descripcion = desc_txt.getText().trim();
-String stock = sto_txt.getText().trim();
-
-// Validar campos vacíos
-if (nombre.isEmpty() || stock.isEmpty()) {
-    JOptionPane.showMessageDialog(this, "Nombre y Stock son obligatorios.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-    return;
-}
-
-// Flujo Alterno: verificar si ya existe
-Pieza existente = dao.buscarPorNombre(nombre);
-if (existente != null) {
-    JOptionPane.showMessageDialog(this, "ADVERTENCIA: La pieza \"" + nombre + "\" ya existe.", "Duplicado", JOptionPane.WARNING_MESSAGE);
-    return;
-}
-
-Pieza nueva = new Pieza();
-nueva.setNombre(nombre);
-nueva.setDescripcion(descripcion);
-nueva.setStock(Integer.parseInt(stock));
-
-boolean ok = dao.create(nueva);
-if (ok) {
-    JOptionPane.showMessageDialog(this, "Pieza agregada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-    cargarTabla();
-} else {
-    JOptionPane.showMessageDialog(this, "ERROR: El sistema falló al guardar los datos.", "Error", JOptionPane.ERROR_MESSAGE);
-}
+        String codigo = cod_txt.getText().trim();
+          String nombre = nom_txt.getText().trim();
+          String descripcion = desc_txt.getText().trim();
+          String stockTxt = sto_txt.getText().trim();
+  
+          // Validar obligatorios
+          if (codigo.isEmpty() || nombre.isEmpty() || stockTxt.isEmpty()) {
+              JOptionPane.showMessageDialog(this,
+                  "Código, Nombre y Stock son obligatorios.",
+                  "Advertencia", JOptionPane.WARNING_MESSAGE);
+              return;
+          }
+  
+          // Flujo alterno: código duplicado
+          if (dao.buscarPorCodigo(codigo) != null) {
+              JOptionPane.showMessageDialog(this,
+                  "ADVERTENCIA: Ya existe una pieza con el código \"" + codigo + "\".",
+                  "Duplicado", JOptionPane.WARNING_MESSAGE);
+              return;
+          }
+  
+          // Flujo alterno: nombre duplicado
+          if (dao.buscarPorNombre(nombre) != null) {
+              JOptionPane.showMessageDialog(this,
+                  "ADVERTENCIA: Ya existe una pieza con el nombre \"" + nombre + "\".",
+                  "Duplicado", JOptionPane.WARNING_MESSAGE);
+              return;
+          }
+  
+          int stock;
+          try {
+              stock = Integer.parseInt(stockTxt);
+              if (stock < 0) throw new NumberFormatException();
+          } catch (NumberFormatException ex) {
+              JOptionPane.showMessageDialog(this,
+                  "El stock debe ser un número entero mayor o igual a 0.",
+                  "Advertencia", JOptionPane.WARNING_MESSAGE);
+              return;
+          }
+  
+          Pieza nueva = new Pieza();
+          nueva.setCodigo(codigo);
+          nueva.setNombre(nombre);
+          nueva.setDescripcion(descripcion);
+          nueva.setStock(stock);
+  
+          if (dao.create(nueva)) {
+              JOptionPane.showMessageDialog(this,
+                  "Pieza agregada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+              cargarTabla();
+              limpiar();
+          } else {
+              JOptionPane.showMessageDialog(this,
+                  "ERROR: El sistema falló al guardar los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+          }
     }//GEN-LAST:event_bt_agregarActionPerformed
 
     private void bt_limpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_limpiarActionPerformed
-       id_txt.setText("");
-       nom_txt.setText("");
-       desc_txt.setText("");
-       sto_txt.setText("");
-       idSeleccionado = -1;
-       tbl_piezas.clearSelection();
+    limpiar();
     }//GEN-LAST:event_bt_limpiarActionPerformed
 
+    /** Limpia el formulario y deselecciona la tabla. */
+      private void limpiar() {
+          id_txt.setText("");
+          cod_txt.setText("");
+          nom_txt.setText("");
+          desc_txt.setText("");
+          sto_txt.setText("");
+          idSeleccionado = -1;
+          tbl_piezas.clearSelection();
+      }
     private void bt_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_eliminarActionPerformed
         if (idSeleccionado == -1) {
-    JOptionPane.showMessageDialog(this, "Seleccione una pieza de la tabla.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-    return;
-}
-
-int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar esta pieza?", "Confirmar", JOptionPane.YES_NO_OPTION);
-
-if (confirm == JOptionPane.YES_OPTION) {
-    boolean ok = dao.delete(idSeleccionado);
-    if (ok) {
-        JOptionPane.showMessageDialog(this, "Pieza eliminada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        cargarTabla();
-        bt_limpiar.doClick();
-    } else {
-        JOptionPane.showMessageDialog(this, "ERROR: No se pudo eliminar. La pieza puede estar en uso.", "Error", JOptionPane.ERROR_MESSAGE);
-    }
-}
+              JOptionPane.showMessageDialog(this,
+                  "Seleccione una pieza de la tabla.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+              return;
+          }
+  
+          int confirm = JOptionPane.showConfirmDialog(this,
+              "¿Está seguro de eliminar esta pieza?", "Confirmar", JOptionPane.YES_NO_OPTION);
+  
+          if (confirm == JOptionPane.YES_OPTION) {
+              if (dao.delete(idSeleccionado)) {
+                  JOptionPane.showMessageDialog(this,
+                      "Pieza eliminada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                  cargarTabla();
+                  limpiar();
+              } else {
+                  JOptionPane.showMessageDialog(this,
+                      "ERROR: No se pudo eliminar. La pieza puede estar en uso.",
+                      "Error", JOptionPane.ERROR_MESSAGE);
+              }
+          }
     }//GEN-LAST:event_bt_eliminarActionPerformed
 
     private void bt_editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_editarActionPerformed
         if (idSeleccionado == -1) {
-    JOptionPane.showMessageDialog(this, "Seleccione una pieza de la tabla.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-    return;
-}
-
-String nombre = nom_txt.getText().trim();
-String stock = sto_txt.getText().trim();
-
-if (nombre.isEmpty() || stock.isEmpty()) {
-    JOptionPane.showMessageDialog(this, "Nombre y Stock son obligatorios.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-    return;
-}
-
-Pieza p = new Pieza();
-p.setIdPieza(idSeleccionado);
-p.setNombre(nombre);
-p.setDescripcion(desc_txt.getText().trim());
-p.setStock(Integer.parseInt(stock));
-
-dao.update(p);
-JOptionPane.showMessageDialog(this, "Pieza actualizada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-cargarTabla();
-bt_limpiar.doClick();
+              JOptionPane.showMessageDialog(this,
+                  "Seleccione una pieza de la tabla.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+              return;
+          }
+  
+          String codigo = cod_txt.getText().trim();
+          String nombre = nom_txt.getText().trim();
+          String stockTxt = sto_txt.getText().trim();
+  
+          if (codigo.isEmpty() || nombre.isEmpty() || stockTxt.isEmpty()) {
+              JOptionPane.showMessageDialog(this,
+                  "Código, Nombre y Stock son obligatorios.",
+                  "Advertencia", JOptionPane.WARNING_MESSAGE);
+              return;
+          }
+  
+          // Validar que el código no lo use OTRA pieza
+          Pieza porCodigo = dao.buscarPorCodigo(codigo);
+          if (porCodigo != null && porCodigo.getIdPieza() != idSeleccionado) {
+              JOptionPane.showMessageDialog(this,
+                  "Ya existe otra pieza con el código \"" + codigo + "\".",
+                  "Duplicado", JOptionPane.WARNING_MESSAGE);
+              return;
+          }
+  
+          // Validar que el nombre no lo use OTRA pieza
+          Pieza porNombre = dao.buscarPorNombre(nombre);
+          if (porNombre != null && porNombre.getIdPieza() != idSeleccionado) {
+              JOptionPane.showMessageDialog(this,
+                  "Ya existe otra pieza con el nombre \"" + nombre + "\".",
+                  "Duplicado", JOptionPane.WARNING_MESSAGE);
+              return;
+          }
+  
+          int stock;
+          try {
+              stock = Integer.parseInt(stockTxt);
+              if (stock < 0) throw new NumberFormatException();
+          } catch (NumberFormatException ex) {
+              JOptionPane.showMessageDialog(this,
+                  "El stock debe ser un número entero mayor o igual a 0.",
+                  "Advertencia", JOptionPane.WARNING_MESSAGE);
+              return;
+          }
+  
+          Pieza p = new Pieza();
+          p.setIdPieza(idSeleccionado);
+          p.setCodigo(codigo);
+          p.setNombre(nombre);
+          p.setDescripcion(desc_txt.getText().trim());
+          p.setStock(stock);
+  
+          dao.update(p);
+          JOptionPane.showMessageDialog(this,
+              "Pieza actualizada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+          cargarTabla();
+          limpiar();
     }//GEN-LAST:event_bt_editarActionPerformed
 
 
@@ -305,12 +434,14 @@ bt_limpiar.doClick();
     private javax.swing.JButton bt_editar;
     private javax.swing.JButton bt_eliminar;
     private javax.swing.JButton bt_limpiar;
+    private javax.swing.JTextField cod_txt;
     private javax.swing.JTextField desc_txt;
     private javax.swing.JTextField id_txt;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField nom_txt;
     private javax.swing.JTextField sto_txt;
