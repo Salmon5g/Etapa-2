@@ -12,6 +12,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import com.mycompany.transporte_mercancia.Data.DAODetallePiezaMantenimiento;
+import com.mycompany.transporte_mercancia.Data.DAOPieza;
+import com.mycompany.transporte_mercancia.Logica.DetallePiezaMantenimiento;
+import com.mycompany.transporte_mercancia.Logica.Pieza;
+import javax.swing.SpinnerNumberModel;
 
 /**
  *
@@ -21,6 +26,13 @@ public class FrmMantenimientoEquipos extends javax.swing.JInternalFrame {
 
     DAOMantenimientoEquipo daoMant = new DAOMantenimientoEquipo();
     DAOEquipoOficina daoEquipo = new DAOEquipoOficina();
+    DAODetallePiezaMantenimiento daoDetalle = new DAODetallePiezaMantenimiento(); // ← nuevo
+    DAOPieza daoPieza = new DAOPieza();                            // ← nuevo
+
+// Lista en memoria de piezas para el mantenimiento actual
+    ArrayList<DetallePiezaMantenimiento> detallesTemp = new ArrayList<>();
+// Lista paralela para mapear índice del combo → objeto Pieza
+    ArrayList<Pieza> piezasEnCombo = new ArrayList<>();
 
     /**
      * Creates new form FrmMantenimientoEquipos
@@ -31,6 +43,9 @@ public class FrmMantenimientoEquipos extends javax.swing.JInternalFrame {
         cargarComboEquipo();
         cargarComboTipo();
         cargarComboEstado();
+        configurarTablaPiezas();   // ← nuevo
+        cargarComboPiezas();        // ← nuevo
+        spn_cantidad.setModel(new SpinnerNumberModel(1, 1, 9999, 1)); // ← nuevo
         bt_actualizar_pestaña.addActionListener(e -> {
             cargarTabla();
             cargarComboEquipo();
@@ -71,6 +86,14 @@ public class FrmMantenimientoEquipos extends javax.swing.JInternalFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        cmb_pieza = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
+        spn_cantidad = new javax.swing.JSpinner();
+        bt_agregar_pieza = new javax.swing.JButton();
+        bt_quitar_pieza = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tbl_piezas = new javax.swing.JTable();
+        jLabel10 = new javax.swing.JLabel();
 
         jLabel1.setText("ID");
 
@@ -166,6 +189,37 @@ public class FrmMantenimientoEquipos extends javax.swing.JInternalFrame {
 
         jLabel8.setText("Registro repuestos:");
 
+        jLabel9.setText("Pieza del inventario");
+
+        bt_agregar_pieza.setText("Agregar");
+        bt_agregar_pieza.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_agregar_piezaActionPerformed(evt);
+            }
+        });
+
+        bt_quitar_pieza.setText("Quitar seleccionada");
+        bt_quitar_pieza.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_quitar_piezaActionPerformed(evt);
+            }
+        });
+
+        tbl_piezas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane3.setViewportView(tbl_piezas);
+
+        jLabel10.setText("Cantidad");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -173,7 +227,7 @@ public class FrmMantenimientoEquipos extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(44, 44, 44)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(bt_actualizar_pestaña)
@@ -182,39 +236,69 @@ public class FrmMantenimientoEquipos extends javax.swing.JInternalFrame {
                         .addGap(26, 26, 26))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel4)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(130, 130, 130)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 769, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel7)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(143, 143, 143)
-                                .addComponent(bt_registrar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(38, 38, 38)
-                                .addComponent(bt_modificar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(68, 68, 68)
+                                .addGap(24, 24, 24)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel2)
+                                            .addComponent(jLabel1))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(cmb_equipo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txt_id, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(cmb_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(jLabel6)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(jLabel4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(dc_fecha_entrada, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(jLabel7)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(cmb_estado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(172, 172, 172)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel8)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(bt_eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(44, 44, 44)
-                                        .addComponent(bt_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(16, 315, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(cmb_estado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(69, 69, 69)
+                                        .addComponent(bt_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(8, 8, 8)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel8)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel9)
+                                                    .addComponent(jLabel10))
+                                                .addGap(50, 50, 50)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(spn_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(cmb_pieza, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(bt_agregar_pieza, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(47, 47, 47)
+                                        .addComponent(bt_quitar_pieza))))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(74, 74, 74)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(dc_fecha_entrada, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmb_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmb_equipo, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_id, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                                .addGap(147, 147, 147)
+                                .addComponent(bt_registrar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(49, 49, 49)
+                                .addComponent(bt_modificar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(160, 160, 160)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 769, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(111, 111, 111))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -224,45 +308,58 @@ public class FrmMantenimientoEquipos extends javax.swing.JInternalFrame {
                     .addComponent(bt_cerrar_pestaña)
                     .addComponent(jLabel5)
                     .addComponent(jLabel8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txt_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(16, 16, 16)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmb_equipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(cmb_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(dc_fecha_entrada, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(jLabel7)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel6)
-                        .addGap(136, 136, 136)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel1)
+                                    .addComponent(txt_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(16, 16, 16)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(cmb_pieza, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel9))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(bt_modificar)
-                            .addComponent(bt_registrar)
-                            .addComponent(bt_eliminar)
-                            .addComponent(bt_cancelar))
-                        .addGap(26, 26, 26)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cmb_estado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmb_equipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(cmb_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3))
+                                .addGap(12, 12, 12)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(dc_fecha_entrada, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(spn_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel10)))
+                        .addGap(9, 9, 9)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cmb_estado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(bt_quitar_pieza)
+                            .addComponent(bt_agregar_pieza)
+                            .addComponent(jLabel7))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(9, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(68, 68, 68)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bt_registrar)
+                    .addComponent(bt_modificar)
+                    .addComponent(bt_eliminar)
+                    .addComponent(bt_cancelar))
+                .addGap(28, 28, 28)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(100, Short.MAX_VALUE))
         );
 
         pack();
@@ -311,15 +408,17 @@ private void cargarComboEquipo() {
             return;
         }
 
-        // Cargar equipo en combo (incluye los que están en mantención)
         cargarComboEquipoEdicion(m.getIdEquipo());
-
         cmb_tipo.setSelectedItem(m.getTipoMantenimiento());
         cmb_estado.setSelectedItem(m.getEstado());
         dc_fecha_entrada.setDate(new java.util.Date(m.getFechaEntrada().getTime()));
         txt_descripcion.setText(m.getDescripcion());
 
-        // Si ya está Terminado, bloquear todos los campos
+        // ← Cargar piezas del mantenimiento seleccionado
+        detallesTemp = daoDetalle.listarPorMantenimiento(idMant);
+        cargarTablaPiezas();
+        cargarComboPiezas(); // refrescar stocks actuales
+
         if ("Terminado".equals(m.getEstado())) {
             activarModoTerminado();
         } else {
@@ -346,77 +445,134 @@ private void cargarComboEquipo() {
         // Seleccionar el actual
         cmb_equipo.setSelectedIndex(0);
     }
+
+    // ── Cargar combo de piezas (solo con stock disponible) ──────────────────────
+    private void cargarComboPiezas() {
+        cmb_pieza.removeAllItems();
+        piezasEnCombo.clear();
+        for (Pieza p : daoPieza.listarConStock()) {
+            cmb_pieza.addItem(p.getNombre() + "  (stock: " + p.getStock() + ")");
+            piezasEnCombo.add(p);
+        }
+    }
+
+// ── Obtener pieza seleccionada en el combo ───────────────────────────────────
+    private Pieza obtenerPiezaSeleccionada() {
+        int idx = cmb_pieza.getSelectedIndex();
+        if (idx < 0 || idx >= piezasEnCombo.size()) {
+            return null;
+        }
+        return piezasEnCombo.get(idx);
+    }
+
+// ── Configurar tabla de piezas ───────────────────────────────────────────────
+    private void configurarTablaPiezas() {
+        DefaultTableModel model = new DefaultTableModel(
+                new String[]{"Pieza", "Cantidad"}, 0) {
+            @Override
+            public boolean isCellEditable(int r, int c) {
+                return false;
+            }
+        };
+        tbl_piezas.setModel(model);
+        tbl_piezas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        tbl_piezas.getColumnModel().getColumn(0).setPreferredWidth(200);
+        tbl_piezas.getColumnModel().getColumn(1).setPreferredWidth(70);
+    }
+
+// ── Refrescar tabla de piezas desde detallesTemp ────────────────────────────
+    private void cargarTablaPiezas() {
+        DefaultTableModel model = (DefaultTableModel) tbl_piezas.getModel();
+        model.setRowCount(0);
+        for (DetallePiezaMantenimiento d : detallesTemp) {
+            model.addRow(new Object[]{d.getNombrePieza(), d.getCantidad()});
+        }
+    }
+
     private void bt_registrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_registrarActionPerformed
         if (cmb_equipo.getSelectedItem() == null) {
-            JOptionPane.showMessageDialog(this,
-                    "No hay equipos operativos disponibles.",
+            JOptionPane.showMessageDialog(this, "No hay equipos operativos disponibles.",
                     "Sin equipos", JOptionPane.ERROR_MESSAGE);
             return;
         }
         if (dc_fecha_entrada.getDate() == null) {
-            JOptionPane.showMessageDialog(this,
-                    "Debe seleccionar la fecha de inicio del mantenimiento.",
+            JOptionPane.showMessageDialog(this, "Debe seleccionar la fecha de inicio.",
                     "Campo vacío", JOptionPane.WARNING_MESSAGE);
             return;
         }
         if (txt_descripcion.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this,
-                    "Debe ingresar una descripción del mantenimiento.",
+            JOptionPane.showMessageDialog(this, "Debe ingresar una descripción.",
                     "Campo vacío", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         MantenimientoEquipo m = new MantenimientoEquipo();
-        m.setIdEquipo         (obtenerIdEquipoSeleccionado());
+        m.setIdEquipo(obtenerIdEquipoSeleccionado());
         m.setTipoMantenimiento((String) cmb_tipo.getSelectedItem());
-        m.setEstado           ("En progreso"); // siempre inicia en progreso
-        m.setFechaEntrada     (new java.sql.Date(dc_fecha_entrada.getDate().getTime()));
-        m.setDescripcion      (txt_descripcion.getText().trim());
+        m.setEstado("En progreso");
+        m.setFechaEntrada(new java.sql.Date(dc_fecha_entrada.getDate().getTime()));
+        m.setDescripcion(txt_descripcion.getText().trim());
 
         if (daoMant.create(m)) {
+            // Guardar piezas y descontar stock
+            if (!detallesTemp.isEmpty()) {
+                boolean piezasOk = daoDetalle.guardarDetalles(m.getIdMantenimiento(), detallesTemp);
+                if (!piezasOk) {
+                    JOptionPane.showMessageDialog(this,
+                            "Mantenimiento registrado, pero hubo un error al guardar las piezas.\n"
+                            + "Verifique el stock e intente agregar las piezas manualmente.",
+                            "Advertencia", JOptionPane.WARNING_MESSAGE);
+                }
+            }
             JOptionPane.showMessageDialog(this, "Mantenimiento registrado correctamente.");
             cargarTabla();
             cargarComboEquipo();
             limpiarFormulario();
         } else {
-            JOptionPane.showMessageDialog(this,
-                    "Error al registrar el mantenimiento.",
+            JOptionPane.showMessageDialog(this, "Error al registrar el mantenimiento.",
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_bt_registrarActionPerformed
 
     private void bt_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_modificarActionPerformed
-       if (txt_descripcion.getText().trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this,
-                    "Debe ingresar una descripción.",
+        if (txt_descripcion.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe ingresar una descripción.",
                     "Campo vacío", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         String estadoNuevo = (String) cmb_estado.getSelectedItem();
 
-        // Confirmación especial al terminar
         if ("Terminado".equals(estadoNuevo)) {
             int confirm = JOptionPane.showConfirmDialog(this,
                     "¿Está seguro de marcar este mantenimiento como TERMINADO?\n"
-                  + "Esta acción no se puede deshacer.",
+                    + "Esta acción no se puede deshacer.",
                     "Confirmar cierre", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-            if (confirm != JOptionPane.YES_OPTION) return;
+            if (confirm != JOptionPane.YES_OPTION) {
+                return;
+            }
         }
 
+        int idMant = Integer.parseInt(txt_id.getText());
+
         MantenimientoEquipo m = new MantenimientoEquipo();
-        m.setIdMantenimiento  (Integer.parseInt(txt_id.getText()));
-        m.setIdEquipo         (obtenerIdEquipoSeleccionado());
+        m.setIdMantenimiento(idMant);
+        m.setIdEquipo(obtenerIdEquipoSeleccionado());
         m.setTipoMantenimiento((String) cmb_tipo.getSelectedItem());
-        m.setEstado           (estadoNuevo);
-        m.setFechaEntrada     (new java.sql.Date(dc_fecha_entrada.getDate().getTime()));
-        m.setDescripcion      (txt_descripcion.getText().trim());
+        m.setEstado(estadoNuevo);
+        m.setFechaEntrada(new java.sql.Date(dc_fecha_entrada.getDate().getTime()));
+        m.setDescripcion(txt_descripcion.getText().trim());
 
         if (daoMant.update(m)) {
+            // Actualizar piezas: borrar anteriores (restaura stock) y re-insertar
+            daoDetalle.eliminarDetallesYRestaurarStock(idMant);
+            if (!detallesTemp.isEmpty()) {
+                daoDetalle.guardarDetalles(idMant, detallesTemp);
+            }
+
             String mensaje = "Mantenimiento actualizado correctamente.";
             if ("Terminado".equals(estadoNuevo)) {
-                // Calcular días finales para mostrar en mensaje
-                MantenimientoEquipo actualizado = daoMant.buscarPorId(m.getIdMantenimiento());
+                MantenimientoEquipo actualizado = daoMant.buscarPorId(idMant);
                 if (actualizado != null) {
                     mensaje = "¡Mantenimiento cerrado exitosamente!\n"
                             + "Días activos totales: " + actualizado.getDiasActivos() + " día(s).";
@@ -429,31 +585,33 @@ private void cargarComboEquipo() {
             activarModoNuevo();
         } else {
             JOptionPane.showMessageDialog(this,
-                    "No se pudo actualizar. Recuerda que los mantenimientos\n"
-                  + "en estado 'Terminado' no se pueden modificar.",
+                    "No se pudo actualizar. Los mantenimientos 'Terminado' no se pueden modificar.",
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_bt_modificarActionPerformed
 
     private void bt_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_eliminarActionPerformed
         int idMant = Integer.parseInt(txt_id.getText());
-        int confirm = JOptionPane.showConfirmDialog(this,
-                "¿Está seguro de eliminar este registro de mantenimiento?",
-                "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+    int confirm = JOptionPane.showConfirmDialog(this,
+            "¿Está seguro de eliminar este registro de mantenimiento?\n"
+          + "Se restaurará el stock de las piezas asociadas.",
+            "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
 
-        if (confirm == JOptionPane.YES_OPTION) {
-            if (daoMant.delete(idMant)) {
-                JOptionPane.showMessageDialog(this, "Mantenimiento eliminado.");
-                cargarTabla();
-                cargarComboEquipo();
-                limpiarFormulario();
-                activarModoNuevo();
-            } else {
-                JOptionPane.showMessageDialog(this,
-                        "Error al eliminar el mantenimiento.",
-                        "Error", JOptionPane.ERROR_MESSAGE);
-            }
+    if (confirm == JOptionPane.YES_OPTION) {
+        // Primero restaurar stock de piezas (antes del CASCADE)
+        daoDetalle.eliminarDetallesYRestaurarStock(idMant);
+        // Luego eliminar el mantenimiento
+        if (daoMant.delete(idMant)) {
+            JOptionPane.showMessageDialog(this, "Mantenimiento eliminado.");
+            cargarTabla();
+            cargarComboEquipo();
+            limpiarFormulario();
+            activarModoNuevo();
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al eliminar el mantenimiento.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
     }//GEN-LAST:event_bt_eliminarActionPerformed
 
     private void bt_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_cancelarActionPerformed
@@ -463,90 +621,165 @@ private void cargarComboEquipo() {
     }//GEN-LAST:event_bt_cancelarActionPerformed
 
     private void bt_cerrar_pestañaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_cerrar_pestañaActionPerformed
-       dispose();
+        dispose();
     }//GEN-LAST:event_bt_cerrar_pestañaActionPerformed
 
     private void bt_actualizar_pestañaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_actualizar_pestañaActionPerformed
         cargarTabla();
         cargarComboEquipo();
     }//GEN-LAST:event_bt_actualizar_pestañaActionPerformed
-   
-    
+
+    private void bt_agregar_piezaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_agregar_piezaActionPerformed
+        Pieza pieza = obtenerPiezaSeleccionada();
+        if (pieza == null) {
+            JOptionPane.showMessageDialog(this,
+                    "Seleccione una pieza del inventario.",
+                    "Sin selección", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int cantidad = (Integer) spn_cantidad.getValue();
+
+        // Verificar duplicado en la lista temporal
+        for (DetallePiezaMantenimiento d : detallesTemp) {
+            if (d.getIdPieza() == pieza.getIdPieza()) {
+                JOptionPane.showMessageDialog(this,
+                        "Esa pieza ya está en la lista.\n"
+                        + "Quítela primero si desea cambiar la cantidad.",
+                        "Duplicado", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        }
+
+        // Verificar stock suficiente
+        if (cantidad > pieza.getStock()) {
+            JOptionPane.showMessageDialog(this,
+                    "Stock insuficiente. Disponible: " + pieza.getStock() + " unidades.",
+                    "Sin stock", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        DetallePiezaMantenimiento d = new DetallePiezaMantenimiento();
+        d.setIdPieza(pieza.getIdPieza());
+        d.setNombrePieza(pieza.getNombre());
+        d.setCantidad(cantidad);
+        detallesTemp.add(d);
+
+        cargarTablaPiezas();
+        spn_cantidad.setValue(1);
+    }//GEN-LAST:event_bt_agregar_piezaActionPerformed
+
+    private void bt_quitar_piezaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_quitar_piezaActionPerformed
+        int fila = tbl_piezas.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this,
+                    "Seleccione una pieza de la lista para quitarla.",
+                    "Sin selección", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        detallesTemp.remove(fila);
+        cargarTablaPiezas();
+    }//GEN-LAST:event_bt_quitar_piezaActionPerformed
+
     public void cargarTabla() {
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy"); // ← agregar esto
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy"); // ← agregar esto
 
-    Object[] columnas = {"ID", "ID Equipo", "Tipo Mant.", "Estado",
-                         "Fecha Inicio", "Fecha Fin", "Días Activos", "Descripción"};
-    DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
-        @Override
-        public boolean isCellEditable(int row, int column) { return false; }
-    };
-
-    for (MantenimientoEquipo m : daoMant.listarTodos()) {
-        Object[] fila = {
-            m.getIdMantenimiento(),
-            m.getIdEquipo(),
-            m.getTipoMantenimiento(),
-            m.getEstado(),
-            m.getFechaEntrada() != null ? sdf.format(m.getFechaEntrada()) : "—",
-            m.getFechaFin()     != null ? sdf.format(m.getFechaFin())     : "—", 
-            m.getDiasActivos() + " día(s)",
-            m.getDescripcion()
+        Object[] columnas = {"ID", "ID Equipo", "Tipo Mant.", "Estado",
+            "Fecha Inicio", "Fecha Fin", "Días Activos", "Descripción"};
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
         };
-        modelo.addRow(fila);
+
+        for (MantenimientoEquipo m : daoMant.listarTodos()) {
+            Object[] fila = {
+                m.getIdMantenimiento(),
+                m.getIdEquipo(),
+                m.getTipoMantenimiento(),
+                m.getEstado(),
+                m.getFechaEntrada() != null ? sdf.format(m.getFechaEntrada()) : "—",
+                m.getFechaFin() != null ? sdf.format(m.getFechaFin()) : "—",
+                m.getDiasActivos() + " día(s)",
+                m.getDescripcion()
+            };
+            modelo.addRow(fila);
+        }
+        tbl_mantenimientos.setModel(modelo);
     }
-    tbl_mantenimientos.setModel(modelo);
-}
 
     private void limpiarFormulario() {
-        txt_id.setText("");
-        txt_descripcion.setText("");
-        dc_fecha_entrada.setDate(null);
-        cmb_estado.setSelectedIndex(0); // "En progreso"
-    }
+    txt_id.setText("");
+    txt_descripcion.setText("");
+    dc_fecha_entrada.setDate(null);
+    cmb_estado.setSelectedIndex(0);
+    detallesTemp.clear();          // ← nuevo
+    cargarTablaPiezas();           // ← nuevo
+    cargarComboPiezas();           // ← nuevo (refresca stocks)
+}
 
-    private void activarModoNuevo() {
-        bt_registrar.setEnabled(true);
-        bt_modificar.setEnabled(false);
-        bt_eliminar .setEnabled(false);
-        bt_cancelar .setEnabled(false);
-        cmb_estado  .setEnabled(false); // al crear siempre es "En progreso"
-        cmb_equipo  .setEnabled(true);
-        dc_fecha_entrada.setEnabled(true);
-    }
+   private void activarModoNuevo() {
+    bt_registrar.setEnabled(true);
+    bt_modificar.setEnabled(false);
+    bt_eliminar .setEnabled(false);
+    bt_cancelar .setEnabled(false);
+    cmb_estado  .setEnabled(false);
+    cmb_equipo  .setEnabled(true);
+    dc_fecha_entrada.setEnabled(true);
+    // Piezas
+    cmb_pieza      .setEnabled(true);
+    spn_cantidad   .setEnabled(true);
+    bt_agregar_pieza.setEnabled(true);
+    bt_quitar_pieza .setEnabled(true);
+}
 
-    private void activarModoEditar() {
-        bt_registrar.setEnabled(false);
-        bt_modificar.setEnabled(true);
-        bt_eliminar .setEnabled(true);
-        bt_cancelar .setEnabled(true);
-        cmb_estado  .setEnabled(true);  // en edición sí se puede cambiar
-        cmb_equipo  .setEnabled(false); // no se cambia el equipo en edición
-        dc_fecha_entrada.setEnabled(false); // fecha de inicio es fija
-    }
+private void activarModoEditar() {
+    bt_registrar.setEnabled(false);
+    bt_modificar.setEnabled(true);
+    bt_eliminar .setEnabled(true);
+    bt_cancelar .setEnabled(true);
+    cmb_estado  .setEnabled(true);
+    cmb_equipo  .setEnabled(false);
+    dc_fecha_entrada.setEnabled(false);
+    // Piezas
+    cmb_pieza      .setEnabled(true);
+    spn_cantidad   .setEnabled(true);
+    bt_agregar_pieza.setEnabled(true);
+    bt_quitar_pieza .setEnabled(true);
+}
 
-    private void activarModoTerminado() {
-        bt_registrar.setEnabled(false);
-        bt_modificar.setEnabled(false);  // bloqueado: ya terminó
-        bt_eliminar .setEnabled(true);   // se puede eliminar el registro si se necesita
-        bt_cancelar .setEnabled(true);
-        cmb_estado  .setEnabled(false);
-        cmb_equipo  .setEnabled(false);
-        dc_fecha_entrada.setEnabled(false);
-    }
-   
+private void activarModoTerminado() {
+    bt_registrar.setEnabled(false);
+    bt_modificar.setEnabled(false);
+    bt_eliminar .setEnabled(true);
+    bt_cancelar .setEnabled(true);
+    cmb_estado  .setEnabled(false);
+    cmb_equipo  .setEnabled(false);
+    dc_fecha_entrada.setEnabled(false);
+    // Piezas — solo lectura
+    cmb_pieza      .setEnabled(false);
+    spn_cantidad   .setEnabled(false);
+    bt_agregar_pieza.setEnabled(false);
+    bt_quitar_pieza .setEnabled(false);
+}
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_actualizar_pestaña;
+    private javax.swing.JButton bt_agregar_pieza;
     private javax.swing.JButton bt_cancelar;
     private javax.swing.JButton bt_cerrar_pestaña;
     private javax.swing.JButton bt_eliminar;
     private javax.swing.JButton bt_modificar;
+    private javax.swing.JButton bt_quitar_pieza;
     private javax.swing.JButton bt_registrar;
     private javax.swing.JComboBox<String> cmb_equipo;
     private javax.swing.JComboBox<String> cmb_estado;
+    private javax.swing.JComboBox<String> cmb_pieza;
     private javax.swing.JComboBox<String> cmb_tipo;
     private com.toedter.calendar.JDateChooser dc_fecha_entrada;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -554,9 +787,13 @@ private void cargarComboEquipo() {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JSpinner spn_cantidad;
     private javax.swing.JTable tbl_mantenimientos;
+    private javax.swing.JTable tbl_piezas;
     private javax.swing.JTextArea txt_descripcion;
     private javax.swing.JTextField txt_id;
     // End of variables declaration//GEN-END:variables

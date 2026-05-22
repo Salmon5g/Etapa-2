@@ -317,7 +317,7 @@ public class Principal extends javax.swing.JFrame {
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         FrmMantenimientoEquipos frm = new  FrmMantenimientoEquipos();
         this.desktopPane.add(frm);
-        frm.setSize(1270, 650);
+        frm.setSize(1470, 1050);
         frm.setVisible(true);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
