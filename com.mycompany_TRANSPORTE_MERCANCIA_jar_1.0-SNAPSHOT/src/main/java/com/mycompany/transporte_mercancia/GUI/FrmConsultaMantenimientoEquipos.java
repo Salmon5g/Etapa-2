@@ -3,15 +3,29 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package com.mycompany.transporte_mercancia.GUI;
+import com.mycompany.transporte_mercancia.Data.DAODetallePiezaMantenimiento;
 import com.mycompany.transporte_mercancia.Data.DAOMantenimientoEquipo;
+import com.mycompany.transporte_mercancia.Logica.DetallePiezaMantenimiento;
+import java.awt.BorderLayout;
+import java.awt.Dialog;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
-/**
- *
- * @author saave
- */
+
 public class FrmConsultaMantenimientoEquipos extends javax.swing.JInternalFrame {
 
     /**
@@ -24,6 +38,7 @@ public class FrmConsultaMantenimientoEquipos extends javax.swing.JInternalFrame 
       private void initConsulta() {
         configurarTabla();
         cargarDatos(null, "Todos", null, null);
+        configurarSeleccionTabla();  
     }
 
     /**
@@ -45,6 +60,7 @@ public class FrmConsultaMantenimientoEquipos extends javax.swing.JInternalFrame 
         bt_buscar = new javax.swing.JButton();
         bt_limpiar = new javax.swing.JButton();
         lbl_total = new javax.swing.JLabel();
+        bt_ver_detalles = new javax.swing.JButton();
 
         tbl_historial.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -79,6 +95,13 @@ public class FrmConsultaMantenimientoEquipos extends javax.swing.JInternalFrame 
 
         lbl_total.setText("Total registros: 0");
 
+        bt_ver_detalles.setText("Detalles");
+        bt_ver_detalles.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_ver_detallesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -86,15 +109,6 @@ public class FrmConsultaMantenimientoEquipos extends javax.swing.JInternalFrame 
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(57, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lbl_total)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(53, 53, 53))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(22, 22, 22)
                         .addComponent(cmb_tipo_mant, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -109,7 +123,19 @@ public class FrmConsultaMantenimientoEquipos extends javax.swing.JInternalFrame 
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(bt_buscar)
                             .addComponent(bt_limpiar))
-                        .addGap(214, 214, 214))))
+                        .addGap(214, 214, 214))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lbl_total)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(bt_ver_detalles))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(53, 53, 53))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -127,9 +153,14 @@ public class FrmConsultaMantenimientoEquipos extends javax.swing.JInternalFrame 
                             .addComponent(jdc_fecha_desde, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jdc_fecha_hasta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(bt_limpiar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
-                .addComponent(lbl_total)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(lbl_total)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(bt_ver_detalles)
+                        .addGap(19, 19, 19)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
         );
@@ -140,6 +171,17 @@ public class FrmConsultaMantenimientoEquipos extends javax.swing.JInternalFrame 
      * Lee los valores de los filtros y ejecuta la consulta.
      * Conectar en NetBeans: clic derecho bt_buscar → Events → Action → actionPerformed.
      */
+    
+    
+    
+    private void configurarSeleccionTabla() {
+    tbl_historial.getSelectionModel().addListSelectionListener(e -> {
+        if (!e.getValueIsAdjusting()) {
+            boolean haySeleccion = tbl_historial.getSelectedRow() != -1;
+            bt_ver_detalles.setEnabled(haySeleccion);
+        }
+    });
+}
     private void bt_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_buscarActionPerformed
        // Número de serie (vacío = sin filtro)
         String numSerie = txt_num_serie.getText().trim();
@@ -185,6 +227,18 @@ public class FrmConsultaMantenimientoEquipos extends javax.swing.JInternalFrame 
         cargarDatos(null, "Todos", null, null);
         txt_num_serie.requestFocus();
     }//GEN-LAST:event_bt_limpiarActionPerformed
+
+    private void bt_ver_detallesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_ver_detallesActionPerformed
+      int filaVista = tbl_historial.getSelectedRow();
+    if (filaVista == -1) return;
+
+    // Convertir fila visible → fila del modelo (por si hay ordenamiento activo)
+    int filaModelo = tbl_historial.convertRowIndexToModel(filaVista);
+    DefaultTableModel modelo = (DefaultTableModel) tbl_historial.getModel();
+
+    int idMantenimiento = (int) modelo.getValueAt(filaModelo, 0); // columna ID oculta
+    mostrarDialogDetalles(idMantenimiento, modelo, filaModelo);
+    }//GEN-LAST:event_bt_ver_detallesActionPerformed
  
     private void configurarTabla() {
     String[] columnas = {
@@ -227,6 +281,143 @@ public class FrmConsultaMantenimientoEquipos extends javax.swing.JInternalFrame 
     tbl_historial.getColumnModel().getColumn(8).setPreferredWidth(70);  // Días Activos
     tbl_historial.getColumnModel().getColumn(9).setPreferredWidth(200); // Descripción
 }
+    
+    private void mostrarDialogDetalles(int idMantenimiento,
+                                   DefaultTableModel modelo,
+                                   int filaModelo) {
+
+    // ── Obtener datos del mantenimiento desde la tabla ────────
+    String numSerie    = String.valueOf(modelo.getValueAt(filaModelo, 1));
+    String marca       = String.valueOf(modelo.getValueAt(filaModelo, 2));
+    String tipoEquipo  = String.valueOf(modelo.getValueAt(filaModelo, 3));
+    String tipoMant    = String.valueOf(modelo.getValueAt(filaModelo, 4));
+    String estado      = String.valueOf(modelo.getValueAt(filaModelo, 5));
+    String fechaEntrada = String.valueOf(modelo.getValueAt(filaModelo, 6));
+    String fechaFin    = String.valueOf(modelo.getValueAt(filaModelo, 7));
+    Object diasObj     = modelo.getValueAt(filaModelo, 8);
+    String diasActivos = (diasObj != null) ? String.valueOf(diasObj) : "—";
+    String descripcion = String.valueOf(modelo.getValueAt(filaModelo, 9));
+
+    // ── Crear diálogo modal ───────────────────────────────────
+    JDialog dialog = new JDialog(
+        SwingUtilities.getWindowAncestor(this),
+        "Detalles del Mantenimiento — ID " + idMantenimiento,
+        Dialog.ModalityType.APPLICATION_MODAL
+    );
+    dialog.setSize(620, 500);
+    dialog.setLocationRelativeTo(this);
+    dialog.setLayout(new BorderLayout(0, 0));
+    dialog.setResizable(false);
+
+    // ── Panel superior: datos generales del mantenimiento ─────
+    JPanel pnlInfo = new JPanel(new GridBagLayout());
+    pnlInfo.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createTitledBorder(
+            BorderFactory.createEtchedBorder(),
+            "Información del Mantenimiento",
+            javax.swing.border.TitledBorder.LEFT,
+            javax.swing.border.TitledBorder.TOP,
+            new Font("SansSerif", Font.BOLD, 12)
+        ),
+        BorderFactory.createEmptyBorder(4, 8, 4, 8)
+    ));
+
+    GridBagConstraints gbc = new GridBagConstraints();
+    gbc.anchor = GridBagConstraints.WEST;
+    gbc.insets = new Insets(3, 6, 3, 6);
+
+    // Fila 0
+    agregarFilaInfo(pnlInfo, gbc, 0, "N° Serie:",      numSerie,
+                                     "Marca:",         marca);
+    // Fila 1
+    agregarFilaInfo(pnlInfo, gbc, 1, "Tipo Equipo:",   tipoEquipo,
+                                     "Tipo Mant.:",    tipoMant);
+    // Fila 2
+    agregarFilaInfo(pnlInfo, gbc, 2, "Estado:",        estado,
+                                     "Días Activos:",  diasActivos);
+    // Fila 3
+    agregarFilaInfo(pnlInfo, gbc, 3, "Fecha Entrada:", fechaEntrada,
+                                     "Fecha Fin:",     fechaFin);
+    // Fila 4 — descripción ocupa todo el ancho
+    gbc.gridx = 0; gbc.gridy = 4; gbc.weightx = 0;
+    pnlInfo.add(new JLabel("Descripción:"), gbc);
+    gbc.gridx = 1; gbc.gridwidth = 3; gbc.weightx = 1;
+    JLabel lblDesc = new JLabel(
+        descripcion.equals("null") || descripcion.isBlank() ? "—" : descripcion
+    );
+    pnlInfo.add(lblDesc, gbc);
+    gbc.gridwidth = 1;
+
+    // ── Panel central: tabla de piezas ────────────────────────
+    JPanel pnlPiezas = new JPanel(new BorderLayout());
+    pnlPiezas.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createTitledBorder(
+            BorderFactory.createEtchedBorder(),
+            "Piezas utilizadas en este mantenimiento",
+            javax.swing.border.TitledBorder.LEFT,
+            javax.swing.border.TitledBorder.TOP,
+            new Font("SansSerif", Font.BOLD, 12)
+        ),
+        BorderFactory.createEmptyBorder(4, 8, 4, 8)
+    ));
+
+    String[] columnasPiezas = {"#", "Nombre de la Pieza", "Cantidad"};
+    DefaultTableModel modeloPiezas = new DefaultTableModel(columnasPiezas, 0) {
+        @Override public boolean isCellEditable(int r, int c) { return false; }
+    };
+
+    JTable tblPiezas = new JTable(modeloPiezas);
+    tblPiezas.setFillsViewportHeight(true);
+    tblPiezas.setRowHeight(22);
+    tblPiezas.getTableHeader().setReorderingAllowed(false);
+    tblPiezas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+    tblPiezas.getColumnModel().getColumn(0).setPreferredWidth(40);
+    tblPiezas.getColumnModel().getColumn(1).setPreferredWidth(320);
+    tblPiezas.getColumnModel().getColumn(2).setPreferredWidth(80);
+
+    // Cargar piezas desde la BD
+    DAODetallePiezaMantenimiento daoDetalle = new DAODetallePiezaMantenimiento();
+    ArrayList<DetallePiezaMantenimiento> detalles =
+            daoDetalle.listarPorMantenimiento(idMantenimiento);
+
+    if (detalles.isEmpty()) {
+        modeloPiezas.addRow(new Object[]{"—", "Sin piezas registradas", "—"});
+    } else {
+        int n = 1;
+        for (DetallePiezaMantenimiento d : detalles) {
+            modeloPiezas.addRow(new Object[]{
+                n++,
+                d.getNombrePieza(),
+                d.getCantidad()
+            });
+        }
+    }
+
+    // Etiqueta de total de piezas
+    int totalPiezas = detalles.size();
+    JLabel lblTotalPiezas = new JLabel(
+        totalPiezas > 0
+            ? "Total piezas distintas: " + totalPiezas
+            : "No se registraron piezas para este mantenimiento."
+    );
+    lblTotalPiezas.setBorder(BorderFactory.createEmptyBorder(4, 2, 0, 0));
+
+    pnlPiezas.add(new JScrollPane(tblPiezas), BorderLayout.CENTER);
+    pnlPiezas.add(lblTotalPiezas, BorderLayout.SOUTH);
+
+    // ── Panel inferior: botón Cerrar ─────────────────────────
+    JPanel pnlBotones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+    JButton btnCerrar = new JButton("Cerrar");
+    btnCerrar.addActionListener(e -> dialog.dispose());
+    pnlBotones.add(btnCerrar);
+
+    // ── Ensamblar diálogo ─────────────────────────────────────
+    dialog.add(pnlInfo,    BorderLayout.NORTH);
+    dialog.add(pnlPiezas,  BorderLayout.CENTER);
+    dialog.add(pnlBotones, BorderLayout.SOUTH);
+
+    dialog.setVisible(true);
+}
 
 private void cargarDatos(String numeroSerie,
                           String tipoMantenimiento,
@@ -264,6 +455,29 @@ private void cargarDatos(String numeroSerie,
 
     lbl_total.setText("Total registros: " + lista.size());
 }
+
+private void agregarFilaInfo(JPanel panel, GridBagConstraints gbc, int fila,
+                              String lbl1, String val1,
+                              String lbl2, String val2) {
+    Font fuenteNegrita = new Font("SansSerif", Font.BOLD, 12);
+
+    gbc.gridx = 0; gbc.gridy = fila; gbc.weightx = 0;
+    JLabel label1 = new JLabel(lbl1);
+    label1.setFont(fuenteNegrita);
+    panel.add(label1, gbc);
+
+    gbc.gridx = 1; gbc.weightx = 0.4;
+    panel.add(new JLabel(val1.equals("null") || val1.isBlank() ? "—" : val1), gbc);
+
+    gbc.gridx = 2; gbc.weightx = 0;
+    JLabel label2 = new JLabel(lbl2);
+    label2.setFont(fuenteNegrita);
+    panel.add(label2, gbc);
+
+    gbc.gridx = 3; gbc.weightx = 0.4;
+    panel.add(new JLabel(val2.equals("null") || val2.isBlank() ? "—" : val2), gbc);
+}
+
     
     
     
@@ -275,6 +489,7 @@ private final DAOMantenimientoEquipo dao = new DAOMantenimientoEquipo();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_buscar;
     private javax.swing.JButton bt_limpiar;
+    private javax.swing.JButton bt_ver_detalles;
     private javax.swing.JComboBox<String> cmb_tipo_mant;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;

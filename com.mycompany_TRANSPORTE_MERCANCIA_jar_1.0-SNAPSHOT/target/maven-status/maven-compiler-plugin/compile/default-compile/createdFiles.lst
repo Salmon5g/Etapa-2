@@ -1,6 +1,7 @@
 com\mycompany\transporte_mercancia\GUI\FrmEquiposDeOficina$5.class
 com\mycompany\transporte_mercancia\Logica\EquipoOficina.class
 com\mycompany\transporte_mercancia\Logica\Personal.class
+com\mycompany\transporte_mercancia\GUI\FrmConsultaMantenimientoEquipos$4.class
 com\mycompany\transporte_mercancia\GUI\FrmMantenimientoEquipos$8.class
 com\mycompany\transporte_mercancia\Data\DAOPersonal.class
 com\mycompany\transporte_mercancia\GUI\FrmMantenimiento$4.class
@@ -38,6 +39,7 @@ com\mycompany\transporte_mercancia\GUI\FrmEquiposDeOficina$2.class
 com\mycompany\transporte_mercancia\GUI\Principal$1.class
 com\mycompany\transporte_mercancia\GUI\FrmKilometraje.class
 com\mycompany\transporte_mercancia\GUI\Principal$8.class
+com\mycompany\transporte_mercancia\GUI\FrmConsultaMantenimientoEquipos$5.class
 com\mycompany\transporte_mercancia\GUI\FmrSoftware.class
 com\mycompany\transporte_mercancia\GUI\FrmCamiones$5.class
 com\mycompany\transporte_mercancia\Logica\Mantenimiento.class
