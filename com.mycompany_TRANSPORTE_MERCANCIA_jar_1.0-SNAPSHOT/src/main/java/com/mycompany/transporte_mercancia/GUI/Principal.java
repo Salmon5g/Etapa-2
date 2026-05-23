@@ -7,36 +7,41 @@ package com.mycompany.transporte_mercancia.GUI;
 import javax.swing.JFrame;
 
 /**
- * Ventana principal de la aplicación de Transporte de Mercancía.
- * Actúa como contenedor MDI ({@code JDesktopPane}) para los distintos
- * formularios del sistema. Controla la visibilidad de los elementos del
- * menú según el rol del personal autenticado y gestiona el cierre de sesión.
+ * Ventana principal de la aplicación de Transporte de Mercancía. Actúa como
+ * contenedor MDI ({@code JDesktopPane}) para los distintos formularios del
+ * sistema. Controla la visibilidad de los elementos del menú según el rol del
+ * personal autenticado y gestiona el cierre de sesión.
  *
  * @author saave
  */
 public class Principal extends javax.swing.JFrame {
 
-    /** Personal que inició sesión en la aplicación. */
+    /**
+     * Personal que inició sesión en la aplicación.
+     */
     private com.mycompany.transporte_mercancia.Logica.Personal personalActivo;
 
-    /** Rol del personal autenticado, usado para aplicar permisos en el menú. */
+    /**
+     * Rol del personal autenticado, usado para aplicar permisos en el menú.
+     */
     private String rolActivo;
 
     /**
-     * Crea y configura la ventana principal del sistema.
-     * Maximiza la ventana, almacena el personal activo, aplica los permisos
-     * de menú según el rol y agrega la opción de cerrar sesión.
+     * Crea y configura la ventana principal del sistema. Maximiza la ventana,
+     * almacena el personal activo, aplica los permisos de menú según el rol y
+     * agrega la opción de cerrar sesión.
      *
-     * @param personal objeto {@link com.mycompany.transporte_mercancia.Logica.Personal}
-     *                 correspondiente al usuario autenticado
+     * @param personal objeto
+     * {@link com.mycompany.transporte_mercancia.Logica.Personal}
+     * correspondiente al usuario autenticado
      */
     public Principal(com.mycompany.transporte_mercancia.Logica.Personal personal) {
         initComponents();
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.personalActivo = personal;
         this.rolActivo = personal.getRol();
         aplicarPermisos();
-        agregarMenuCerrarSesion(); 
+        agregarMenuCerrarSesion();
     }
 
     /**
@@ -59,6 +64,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
+        jMenuItem10 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
@@ -130,6 +136,14 @@ public class Principal extends javax.swing.JFrame {
         });
         editMenu.add(jMenuItem9);
 
+        jMenuItem10.setText("Asignar Software");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
+        editMenu.add(jMenuItem10);
+
         menuBar.add(editMenu);
 
         jMenu1.setText("Mantenimientos");
@@ -180,9 +194,9 @@ public class Principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
  /**
-     * Agrega dinámicamente al menú principal un elemento "Sesión" con la
-     * opción "🔒 Cerrar Sesión". Al activarse, cierra la ventana actual y
-     * redirige al formulario de login ({@link FrmLogin}).
+     * Agrega dinámicamente al menú principal un elemento "Sesión" con la opción
+     * "🔒 Cerrar Sesión". Al activarse, cierra la ventana actual y redirige al
+     * formulario de login ({@link FrmLogin}).
      */
     private void agregarMenuCerrarSesion() {
         javax.swing.JMenu menuSesion = new javax.swing.JMenu("Sesión");
@@ -196,15 +210,16 @@ public class Principal extends javax.swing.JFrame {
         menuSesion.add(itemCerrar);
         menuBar.add(menuSesion);
     }
-/**
+
+    /**
      * Aplica los permisos de visibilidad del menú según el rol del usuario
-     * autenticado. Primero oculta todos los ítems y luego habilita solo los
-     * que corresponden al rol:
+     * autenticado. Primero oculta todos los ítems y luego habilita solo los que
+     * corresponden al rol:
      * <ul>
-     *   <li>{@code conductor} — Kilometraje</li>
-     *   <li>{@code jefe_flota} — Camiones, Conductores</li>
-     *   <li>{@code admin_mantenimiento} — Mantenimiento</li>
-     *   <li>{@code admin_jefe} — todos los módulos</li>
+     * <li>{@code conductor} — Kilometraje</li>
+     * <li>{@code jefe_flota} — Camiones, Conductores</li>
+     * <li>{@code admin_mantenimiento} — Mantenimiento</li>
+     * <li>{@code admin_jefe} — todos los módulos</li>
      * </ul>
      */
     private void aplicarPermisos() {
@@ -215,7 +230,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem3.setVisible(false);     // Personal
         jMenuItem4.setVisible(false);     //equiposOfcina
         jMenuItem5.setVisible(false);     //mantenimientoEquipos
-        
+
         switch (rolActivo) {
             case "conductor":
                 cutMenuItem.setVisible(true);
@@ -238,24 +253,25 @@ public class Principal extends javax.swing.JFrame {
                 jMenuItem5.setVisible(true);
                 break;
             case "tecnico_equipo":
-                
+
         }
     }
-/**
+
+    /**
      * Abre el formulario {@link FrmKilometraje} dentro del panel de escritorio,
      * pasando el personal activo para filtrar los registros según el rol.
      *
      * @param evt evento de acción generado por el ítem de menú "Kilometraje"
      */
     private void cutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cutMenuItemActionPerformed
-        FrmKilometraje r = new FrmKilometraje(personalActivo); 
+        FrmKilometraje r = new FrmKilometraje(personalActivo);
         this.desktopPane.add(r);
         r.setSize(800, 500);
         r.setVisible(true);
-        
+
 
     }//GEN-LAST:event_cutMenuItemActionPerformed
-/**
+    /**
      * Abre el formulario {@link FrmCamiones} dentro del panel de escritorio
      * para la gestión del inventario de camiones.
      *
@@ -267,9 +283,9 @@ public class Principal extends javax.swing.JFrame {
         this.desktopPane.add(r);
         r.setSize(911, 592);
         r.setVisible(true);
-        
+
     }//GEN-LAST:event_pasteMenuItemActionPerformed
-/**
+    /**
      * Abre el formulario {@link FrmConductores} dentro del panel de escritorio
      * para la gestión del personal de conducción.
      *
@@ -281,9 +297,9 @@ public class Principal extends javax.swing.JFrame {
         r.setSize(905, 623);
         r.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
-/**
-     * Abre el formulario {@link FrmMantenimiento} dentro del panel de escritorio
-     * para el registro y gestión de mantenimientos de camiones.
+    /**
+     * Abre el formulario {@link FrmMantenimiento} dentro del panel de
+     * escritorio para el registro y gestión de mantenimientos de camiones.
      *
      * @param evt evento de acción generado por el ítem de menú "Mantenimiento"
      */
@@ -294,7 +310,7 @@ public class Principal extends javax.swing.JFrame {
         r.setVisible(true);
 
     }//GEN-LAST:event_jMenuItem2ActionPerformed
-/**
+    /**
      * Abre el formulario {@link FrmPersonalCompañia} dentro del panel de
      * escritorio para la administración del personal de la compañía.
      *
@@ -308,44 +324,51 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        FrmEquiposDeOficina frm = new  FrmEquiposDeOficina();
+        FrmEquiposDeOficina frm = new FrmEquiposDeOficina();
         this.desktopPane.add(frm);
         frm.setSize(858, 595);
         frm.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        FrmMantenimientoEquipos frm = new  FrmMantenimientoEquipos();
+        FrmMantenimientoEquipos frm = new FrmMantenimientoEquipos();
         this.desktopPane.add(frm);
         frm.setSize(1470, 1050);
         frm.setVisible(true);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        FrmConsultaMantenimientoEquipos frm = new  FrmConsultaMantenimientoEquipos();
+        FrmConsultaMantenimientoEquipos frm = new FrmConsultaMantenimientoEquipos();
         this.desktopPane.add(frm);
         frm.setSize(865, 540);
         frm.setVisible(true);
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        FmrSoftware frm = new  FmrSoftware();
+        FmrSoftware frm = new FmrSoftware();
         this.desktopPane.add(frm);
         frm.setSize(850, 500);
         frm.setVisible(true);
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
-        FrmPiezaRepuestos frm = new  FrmPiezaRepuestos();
+        FrmPiezaRepuestos frm = new FrmPiezaRepuestos();
         this.desktopPane.add(frm);
         frm.setSize(850, 500);
-        frm.setVisible(true);  
+        frm.setVisible(true);
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
-   /**
-     * Punto de entrada de la aplicación. Configura el Look and Feel Nimbus
-     * (si está disponible) y lanza el formulario de login en el hilo de
-     * eventos de Swing ({@code EventQueue}).
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        FrmAsignarSoftware frm = new FrmAsignarSoftware();
+        this.desktopPane.add(frm);
+        frm.setSize(850, 500);
+        frm.setVisible(true);
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    /**
+     * Punto de entrada de la aplicación. Configura el Look and Feel Nimbus (si
+     * está disponible) y lanza el formulario de login en el hilo de eventos de
+     * Swing ({@code EventQueue}).
      *
      * @param args argumentos de línea de comandos (no utilizados)
      */
@@ -389,6 +412,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

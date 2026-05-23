@@ -57,5 +57,10 @@ public class Software {
     public void setFechaRegistro(Timestamp fecha_registro) {
         this.fecha_registro = fecha_registro;
     }
+    
+        @Override
+    public String toString() {
+        return nombre;
+    }
 
 }
