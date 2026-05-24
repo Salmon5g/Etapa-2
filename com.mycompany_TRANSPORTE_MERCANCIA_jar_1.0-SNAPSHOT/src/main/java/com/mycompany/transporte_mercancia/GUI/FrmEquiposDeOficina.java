@@ -20,8 +20,7 @@ public class FrmEquiposDeOficina extends javax.swing.JInternalFrame {
      */
     public FrmEquiposDeOficina() {
         initComponents();
-        bt_actualizar_pestaña.addActionListener(e -> cargarTabla());
-        bt_cerrar_pestaña.addActionListener(e -> dispose());
+
         // Auto-mayúsculas mientras escribe
         txt_numero_serie.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
@@ -54,7 +53,6 @@ public class FrmEquiposDeOficina extends javax.swing.JInternalFrame {
         txt_id_equipo = new javax.swing.JTextField();
         txt_marca = new javax.swing.JTextField();
         txt_numero_serie = new javax.swing.JTextField();
-        cmb_tipo = new javax.swing.JComboBox<>();
         cmb_estado = new javax.swing.JComboBox<>();
         bt_registrar_equipo = new javax.swing.JButton();
         bt_modificar_equipo = new javax.swing.JButton();
@@ -63,6 +61,7 @@ public class FrmEquiposDeOficina extends javax.swing.JInternalFrame {
         jLabel6 = new javax.swing.JLabel();
         bt_cerrar_pestaña = new javax.swing.JButton();
         bt_actualizar_pestaña = new javax.swing.JButton();
+        txt_tipo = new javax.swing.JTextField();
 
         tbl_equipos_oficina.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -93,8 +92,6 @@ public class FrmEquiposDeOficina extends javax.swing.JInternalFrame {
         jLabel5.setText("Estado");
 
         txt_id_equipo.setEditable(false);
-
-        cmb_tipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PC", "Impresora ", "Scanner" }));
 
         cmb_estado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Operativo", "En mantención", "Dado de baja" }));
 
@@ -130,6 +127,11 @@ public class FrmEquiposDeOficina extends javax.swing.JInternalFrame {
 
         bt_cerrar_pestaña.setBackground(new java.awt.Color(255, 0, 51));
         bt_cerrar_pestaña.setText("X");
+        bt_cerrar_pestaña.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bt_cerrar_pestañaActionPerformed(evt);
+            }
+        });
 
         bt_actualizar_pestaña.setBackground(new java.awt.Color(0, 153, 255));
         bt_actualizar_pestaña.setForeground(new java.awt.Color(255, 255, 255));
@@ -137,6 +139,12 @@ public class FrmEquiposDeOficina extends javax.swing.JInternalFrame {
         bt_actualizar_pestaña.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bt_actualizar_pestañaActionPerformed(evt);
+            }
+        });
+
+        txt_tipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_tipoActionPerformed(evt);
             }
         });
 
@@ -166,11 +174,11 @@ public class FrmEquiposDeOficina extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(bt_modificar_equipo)
                             .addComponent(bt_cancelar)
-                            .addComponent(txt_id_equipo, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmb_tipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txt_marca)
                             .addComponent(txt_numero_serie)
-                            .addComponent(cmb_estado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(cmb_estado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txt_id_equipo, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_tipo))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
@@ -195,7 +203,7 @@ public class FrmEquiposDeOficina extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(cmb_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txt_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
@@ -254,7 +262,7 @@ public class FrmEquiposDeOficina extends javax.swing.JInternalFrame {
         this.txt_id_equipo.setText("");
         this.txt_marca.setText("");
         this.txt_numero_serie.setText("");
-        this.cmb_tipo.setSelectedIndex(0);
+        this.txt_tipo.setText("");
         this.cmb_estado.setSelectedIndex(0);
     }
 
@@ -274,7 +282,7 @@ public class FrmEquiposDeOficina extends javax.swing.JInternalFrame {
 
             EquipoOficina eq = daoEquipo.buscarPorId(idSeleccionado);
             if (eq != null) {
-                this.cmb_tipo.setSelectedItem(eq.getTipo());
+                this.txt_tipo.setText(eq.getTipo());
                 this.txt_marca.setText(eq.getMarca());
                 this.txt_numero_serie.setText(eq.getNumeroSerie());
                 this.cmb_estado.setSelectedItem(eq.getEstado());
@@ -307,7 +315,7 @@ public class FrmEquiposDeOficina extends javax.swing.JInternalFrame {
     private void bt_registrar_equipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_registrar_equipoActionPerformed
         String marca = txt_marca.getText().trim();
         String numeroSerie = txt_numero_serie.getText().trim().toUpperCase();
-        String tipo = (String) cmb_tipo.getSelectedItem();
+        String tipo = (String) txt_tipo.getText();
         String estado = (String) cmb_estado.getSelectedItem();
 
 // ── Validación campos vacíos ────────────────────────────────────────
@@ -383,7 +391,7 @@ public class FrmEquiposDeOficina extends javax.swing.JInternalFrame {
 
         String marca = txt_marca.getText().trim();
         String numeroSerie = txt_numero_serie.getText().trim().toUpperCase();
-        String tipo = (String) cmb_tipo.getSelectedItem();
+        String tipo = (String) txt_tipo.getText();
         String estado = (String) cmb_estado.getSelectedItem();
 
 // ── Validación campos vacíos ────────────────────────────────────────
@@ -450,8 +458,16 @@ public class FrmEquiposDeOficina extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_bt_eliminar_equipoActionPerformed
 
     private void bt_actualizar_pestañaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_actualizar_pestañaActionPerformed
-       
+        cargarTabla();
     }//GEN-LAST:event_bt_actualizar_pestañaActionPerformed
+
+    private void bt_cerrar_pestañaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_cerrar_pestañaActionPerformed
+        dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_bt_cerrar_pestañaActionPerformed
+
+    private void txt_tipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_tipoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_tipoActionPerformed
 
     /**
      * Activa el modo edición en el formulario, habilitando los botones de
@@ -483,7 +499,6 @@ public class FrmEquiposDeOficina extends javax.swing.JInternalFrame {
     private javax.swing.JButton bt_modificar_equipo;
     private javax.swing.JButton bt_registrar_equipo;
     private javax.swing.JComboBox<String> cmb_estado;
-    private javax.swing.JComboBox<String> cmb_tipo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -495,5 +510,6 @@ public class FrmEquiposDeOficina extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txt_id_equipo;
     private javax.swing.JTextField txt_marca;
     private javax.swing.JTextField txt_numero_serie;
+    private javax.swing.JTextField txt_tipo;
     // End of variables declaration//GEN-END:variables
 }

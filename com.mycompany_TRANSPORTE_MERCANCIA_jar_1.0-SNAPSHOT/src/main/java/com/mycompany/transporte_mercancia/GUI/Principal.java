@@ -230,6 +230,10 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem3.setVisible(false);     // Personal
         jMenuItem4.setVisible(false);     //equiposOfcina
         jMenuItem5.setVisible(false);     //mantenimientoEquipos
+        jMenuItem7.setVisible(false);     //ConsultaMantenimientoEquipos
+        jMenuItem8.setVisible(false);     //software
+        jMenuItem9.setVisible(false);     //Repuestos
+        jMenuItem10.setVisible(false);    //AsignarSoftware
 
         switch (rolActivo) {
             case "conductor":
@@ -251,8 +255,29 @@ public class Principal extends javax.swing.JFrame {
                 jMenuItem3.setVisible(true);
                 jMenuItem4.setVisible(true);
                 jMenuItem5.setVisible(true);
+                jMenuItem7.setVisible(true);     
+                jMenuItem8.setVisible(true); 
+                jMenuItem9.setVisible(true);    
+                jMenuItem10.setVisible(true);   
                 break;
-            case "tecnico_equipo":
+            case "admin_equipos":
+                jMenuItem4.setVisible(true);
+                break;
+                
+            case "tecnico_mantenimiento_equipos":
+                jMenuItem5.setVisible(true);
+                break;
+            case "tecnico_it":
+                jMenuItem8.setVisible(true); 
+                jMenuItem10.setVisible(true);  
+                break;
+                
+            case "admin_mantenimiento_equipos":
+                jMenuItem7.setVisible(true);  
+                break;
+            case "admin_inventario":
+                jMenuItem9.setVisible(true);  
+                break;
 
         }
     }
@@ -347,21 +372,21 @@ public class Principal extends javax.swing.JFrame {
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
         FmrSoftware frm = new FmrSoftware();
         this.desktopPane.add(frm);
-        frm.setSize(850, 500);
+        frm.setSize(870, 590);
         frm.setVisible(true);
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
         FrmPiezaRepuestos frm = new FrmPiezaRepuestos();
         this.desktopPane.add(frm);
-        frm.setSize(850, 500);
+        frm.setSize(900, 520);
         frm.setVisible(true);
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
         FrmAsignarSoftware frm = new FrmAsignarSoftware();
         this.desktopPane.add(frm);
-        frm.setSize(850, 500);
+        frm.setSize(920, 600);
         frm.setVisible(true);
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 

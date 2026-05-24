@@ -16,7 +16,6 @@ import javax.swing.event.ListSelectionListener;
  *
  * @author Vicente Morales
  */
-
 /**
  * Formulario CRUD de Piezas / Repuestos (RF-09).
  *
@@ -132,6 +131,8 @@ public class FrmPiezaRepuestos extends javax.swing.JInternalFrame {
         bt_limpiar = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         cod_txt = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         tbl_piezas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -181,83 +182,93 @@ public class FrmPiezaRepuestos extends javax.swing.JInternalFrame {
 
         jLabel5.setText("Codigo:");
 
+        jButton1.setBackground(new java.awt.Color(255, 0, 0));
+        jButton1.setText("X");
+        jButton1.addActionListener(this::jButton1ActionPerformed);
+
+        jButton2.setBackground(new java.awt.Color(0, 153, 255));
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setText("🔄");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addComponent(bt_agregar))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(13, 13, 13)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(sto_txt, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
-                                    .addComponent(desc_txt)
-                                    .addComponent(nom_txt)
-                                    .addComponent(id_txt, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cod_txt)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addComponent(bt_eliminar)))
-                        .addGap(0, 44, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(bt_limpiar, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(bt_editar, javax.swing.GroupLayout.Alignment.TRAILING))))
-                .addGap(41, 41, 41)
+                .addGap(28, 28, 28)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel4)
+                                .addComponent(jLabel3)
+                                .addComponent(jLabel5)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(79, 79, 79)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(desc_txt, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                                .addComponent(sto_txt, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                                .addComponent(cod_txt, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                                .addComponent(nom_txt, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                                .addComponent(id_txt)))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(bt_agregar, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)
+                                .addComponent(bt_limpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGap(73, 73, 73)
+                            .addComponent(bt_editar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(bt_eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 81, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 494, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50))
+                .addGap(32, 32, 32))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(31, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(id_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(nom_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(14, 14, 14)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(cod_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(desc_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(sto_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(bt_editar)
-                            .addComponent(bt_agregar))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(bt_limpiar)
-                            .addComponent(bt_eliminar))
-                        .addGap(45, 45, 45))))
+                .addGap(79, 79, 79)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(id_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(nom_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(cod_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(desc_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(sto_txt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(59, 59, 59)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bt_editar)
+                    .addComponent(bt_agregar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bt_limpiar)
+                    .addComponent(bt_eliminar))
+                .addGap(45, 45, 45))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33))
         );
 
         pack();
@@ -273,160 +284,174 @@ public class FrmPiezaRepuestos extends javax.swing.JInternalFrame {
 
     private void bt_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_agregarActionPerformed
         String codigo = cod_txt.getText().trim();
-          String nombre = nom_txt.getText().trim();
-          String descripcion = desc_txt.getText().trim();
-          String stockTxt = sto_txt.getText().trim();
-  
-          // Validar obligatorios
-          if (codigo.isEmpty() || nombre.isEmpty() || stockTxt.isEmpty()) {
-              JOptionPane.showMessageDialog(this,
-                  "Código, Nombre y Stock son obligatorios.",
-                  "Advertencia", JOptionPane.WARNING_MESSAGE);
-              return;
-          }
-  
-          // Flujo alterno: código duplicado
-          if (dao.buscarPorCodigo(codigo) != null) {
-              JOptionPane.showMessageDialog(this,
-                  "ADVERTENCIA: Ya existe una pieza con el código \"" + codigo + "\".",
-                  "Duplicado", JOptionPane.WARNING_MESSAGE);
-              return;
-          }
-  
-          // Flujo alterno: nombre duplicado
-          if (dao.buscarPorNombre(nombre) != null) {
-              JOptionPane.showMessageDialog(this,
-                  "ADVERTENCIA: Ya existe una pieza con el nombre \"" + nombre + "\".",
-                  "Duplicado", JOptionPane.WARNING_MESSAGE);
-              return;
-          }
-  
-          int stock;
-          try {
-              stock = Integer.parseInt(stockTxt);
-              if (stock < 0) throw new NumberFormatException();
-          } catch (NumberFormatException ex) {
-              JOptionPane.showMessageDialog(this,
-                  "El stock debe ser un número entero mayor o igual a 0.",
-                  "Advertencia", JOptionPane.WARNING_MESSAGE);
-              return;
-          }
-  
-          Pieza nueva = new Pieza();
-          nueva.setCodigo(codigo);
-          nueva.setNombre(nombre);
-          nueva.setDescripcion(descripcion);
-          nueva.setStock(stock);
-  
-          if (dao.create(nueva)) {
-              JOptionPane.showMessageDialog(this,
-                  "Pieza agregada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-              cargarTabla();
-              limpiar();
-          } else {
-              JOptionPane.showMessageDialog(this,
-                  "ERROR: El sistema falló al guardar los datos.", "Error", JOptionPane.ERROR_MESSAGE);
-          }
+        String nombre = nom_txt.getText().trim();
+        String descripcion = desc_txt.getText().trim();
+        String stockTxt = sto_txt.getText().trim();
+
+        // Validar obligatorios
+        if (codigo.isEmpty() || nombre.isEmpty() || stockTxt.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Código, Nombre y Stock son obligatorios.",
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Flujo alterno: código duplicado
+        if (dao.buscarPorCodigo(codigo) != null) {
+            JOptionPane.showMessageDialog(this,
+                    "ADVERTENCIA: Ya existe una pieza con el código \"" + codigo + "\".",
+                    "Duplicado", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Flujo alterno: nombre duplicado
+        if (dao.buscarPorNombre(nombre) != null) {
+            JOptionPane.showMessageDialog(this,
+                    "ADVERTENCIA: Ya existe una pieza con el nombre \"" + nombre + "\".",
+                    "Duplicado", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int stock;
+        try {
+            stock = Integer.parseInt(stockTxt);
+            if (stock < 0) {
+                throw new NumberFormatException();
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this,
+                    "El stock debe ser un número entero mayor o igual a 0.",
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Pieza nueva = new Pieza();
+        nueva.setCodigo(codigo);
+        nueva.setNombre(nombre);
+        nueva.setDescripcion(descripcion);
+        nueva.setStock(stock);
+
+        if (dao.create(nueva)) {
+            JOptionPane.showMessageDialog(this,
+                    "Pieza agregada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            cargarTabla();
+            limpiar();
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "ERROR: El sistema falló al guardar los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_bt_agregarActionPerformed
 
     private void bt_limpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_limpiarActionPerformed
-    limpiar();
+        limpiar();
     }//GEN-LAST:event_bt_limpiarActionPerformed
 
-    /** Limpia el formulario y deselecciona la tabla. */
-      private void limpiar() {
-          id_txt.setText("");
-          cod_txt.setText("");
-          nom_txt.setText("");
-          desc_txt.setText("");
-          sto_txt.setText("");
-          idSeleccionado = -1;
-          tbl_piezas.clearSelection();
-      }
+    /**
+     * Limpia el formulario y deselecciona la tabla.
+     */
+    private void limpiar() {
+        id_txt.setText("");
+        cod_txt.setText("");
+        nom_txt.setText("");
+        desc_txt.setText("");
+        sto_txt.setText("");
+        idSeleccionado = -1;
+        tbl_piezas.clearSelection();
+    }
     private void bt_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_eliminarActionPerformed
         if (idSeleccionado == -1) {
-              JOptionPane.showMessageDialog(this,
-                  "Seleccione una pieza de la tabla.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-              return;
-          }
-  
-          int confirm = JOptionPane.showConfirmDialog(this,
-              "¿Está seguro de eliminar esta pieza?", "Confirmar", JOptionPane.YES_NO_OPTION);
-  
-          if (confirm == JOptionPane.YES_OPTION) {
-              if (dao.delete(idSeleccionado)) {
-                  JOptionPane.showMessageDialog(this,
-                      "Pieza eliminada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                  cargarTabla();
-                  limpiar();
-              } else {
-                  JOptionPane.showMessageDialog(this,
-                      "ERROR: No se pudo eliminar. La pieza puede estar en uso.",
-                      "Error", JOptionPane.ERROR_MESSAGE);
-              }
-          }
+            JOptionPane.showMessageDialog(this,
+                    "Seleccione una pieza de la tabla.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(this,
+                "¿Está seguro de eliminar esta pieza?", "Confirmar", JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            if (dao.delete(idSeleccionado)) {
+                JOptionPane.showMessageDialog(this,
+                        "Pieza eliminada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                cargarTabla();
+                limpiar();
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "ERROR: No se pudo eliminar. La pieza puede estar en uso.",
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_bt_eliminarActionPerformed
 
     private void bt_editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_editarActionPerformed
         if (idSeleccionado == -1) {
-              JOptionPane.showMessageDialog(this,
-                  "Seleccione una pieza de la tabla.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-              return;
-          }
-  
-          String codigo = cod_txt.getText().trim();
-          String nombre = nom_txt.getText().trim();
-          String stockTxt = sto_txt.getText().trim();
-  
-          if (codigo.isEmpty() || nombre.isEmpty() || stockTxt.isEmpty()) {
-              JOptionPane.showMessageDialog(this,
-                  "Código, Nombre y Stock son obligatorios.",
-                  "Advertencia", JOptionPane.WARNING_MESSAGE);
-              return;
-          }
-  
-          // Validar que el código no lo use OTRA pieza
-          Pieza porCodigo = dao.buscarPorCodigo(codigo);
-          if (porCodigo != null && porCodigo.getIdPieza() != idSeleccionado) {
-              JOptionPane.showMessageDialog(this,
-                  "Ya existe otra pieza con el código \"" + codigo + "\".",
-                  "Duplicado", JOptionPane.WARNING_MESSAGE);
-              return;
-          }
-  
-          // Validar que el nombre no lo use OTRA pieza
-          Pieza porNombre = dao.buscarPorNombre(nombre);
-          if (porNombre != null && porNombre.getIdPieza() != idSeleccionado) {
-              JOptionPane.showMessageDialog(this,
-                  "Ya existe otra pieza con el nombre \"" + nombre + "\".",
-                  "Duplicado", JOptionPane.WARNING_MESSAGE);
-              return;
-          }
-  
-          int stock;
-          try {
-              stock = Integer.parseInt(stockTxt);
-              if (stock < 0) throw new NumberFormatException();
-          } catch (NumberFormatException ex) {
-              JOptionPane.showMessageDialog(this,
-                  "El stock debe ser un número entero mayor o igual a 0.",
-                  "Advertencia", JOptionPane.WARNING_MESSAGE);
-              return;
-          }
-  
-          Pieza p = new Pieza();
-          p.setIdPieza(idSeleccionado);
-          p.setCodigo(codigo);
-          p.setNombre(nombre);
-          p.setDescripcion(desc_txt.getText().trim());
-          p.setStock(stock);
-  
-          dao.update(p);
-          JOptionPane.showMessageDialog(this,
-              "Pieza actualizada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-          cargarTabla();
-          limpiar();
+            JOptionPane.showMessageDialog(this,
+                    "Seleccione una pieza de la tabla.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String codigo = cod_txt.getText().trim();
+        String nombre = nom_txt.getText().trim();
+        String stockTxt = sto_txt.getText().trim();
+
+        if (codigo.isEmpty() || nombre.isEmpty() || stockTxt.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Código, Nombre y Stock son obligatorios.",
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Validar que el código no lo use OTRA pieza
+        Pieza porCodigo = dao.buscarPorCodigo(codigo);
+        if (porCodigo != null && porCodigo.getIdPieza() != idSeleccionado) {
+            JOptionPane.showMessageDialog(this,
+                    "Ya existe otra pieza con el código \"" + codigo + "\".",
+                    "Duplicado", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Validar que el nombre no lo use OTRA pieza
+        Pieza porNombre = dao.buscarPorNombre(nombre);
+        if (porNombre != null && porNombre.getIdPieza() != idSeleccionado) {
+            JOptionPane.showMessageDialog(this,
+                    "Ya existe otra pieza con el nombre \"" + nombre + "\".",
+                    "Duplicado", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int stock;
+        try {
+            stock = Integer.parseInt(stockTxt);
+            if (stock < 0) {
+                throw new NumberFormatException();
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this,
+                    "El stock debe ser un número entero mayor o igual a 0.",
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        Pieza p = new Pieza();
+        p.setIdPieza(idSeleccionado);
+        p.setCodigo(codigo);
+        p.setNombre(nombre);
+        p.setDescripcion(desc_txt.getText().trim());
+        p.setStock(stock);
+
+        dao.update(p);
+        JOptionPane.showMessageDialog(this,
+                "Pieza actualizada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        cargarTabla();
+        limpiar();
     }//GEN-LAST:event_bt_editarActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        cargarTabla();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        dispose();        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -437,6 +462,8 @@ public class FrmPiezaRepuestos extends javax.swing.JInternalFrame {
     private javax.swing.JTextField cod_txt;
     private javax.swing.JTextField desc_txt;
     private javax.swing.JTextField id_txt;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

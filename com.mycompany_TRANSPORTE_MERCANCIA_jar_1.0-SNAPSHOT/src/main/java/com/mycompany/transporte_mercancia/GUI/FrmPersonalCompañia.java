@@ -464,7 +464,11 @@ public class FrmPersonalCompañia extends javax.swing.JInternalFrame {
         cmb_rol.addItem("jefe_flota");
         cmb_rol.addItem("admin_mantenimiento");
         cmb_rol.addItem("admin_jefe");
-        cmb_rol.addItem("tecnico_equipo");
+        cmb_rol.addItem("admin_equipos");
+        cmb_rol.addItem("tecnico_mantenimiento_equipos");
+        cmb_rol.addItem("tecnico_it");
+        cmb_rol.addItem("admin_mantenimiento_equipos");
+        cmb_rol.addItem("admin_inventario");
     }
 
     /**

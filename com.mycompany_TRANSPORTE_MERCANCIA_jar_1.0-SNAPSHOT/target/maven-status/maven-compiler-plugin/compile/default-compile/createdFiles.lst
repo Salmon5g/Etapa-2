@@ -6,6 +6,7 @@ com\mycompany\transporte_mercancia\GUI\FrmMantenimientoEquipos$8.class
 com\mycompany\transporte_mercancia\Data\DAOPersonal.class
 com\mycompany\transporte_mercancia\GUI\FrmMantenimiento$4.class
 com\mycompany\transporte_mercancia\GUI\Principal$2.class
+com\mycompany\transporte_mercancia\GUI\FrmAsignarSoftware$6.class
 com\mycompany\transporte_mercancia\GUI\FrmCamiones.class
 com\mycompany\transporte_mercancia\GUI\FrmConsultaMantenimientoEquipos$1.class
 com\mycompany\transporte_mercancia\GUI\FrmMantenimiento$1.class
@@ -16,10 +17,12 @@ com\mycompany\transporte_mercancia\GUI\FrmPiezaRepuestos$1.class
 com\mycompany\transporte_mercancia\GUI\FrmPersonalCompañia$3.class
 com\mycompany\transporte_mercancia\GUI\FrmMantenimientoEquipos$11.class
 com\mycompany\transporte_mercancia\GUI\FrmMantenimientoEquipos$5.class
+com\mycompany\transporte_mercancia\GUI\FmrSoftware$2.class
 com\mycompany\transporte_mercancia\GUI\FrmCamiones$1.class
 com\mycompany\transporte_mercancia\GUI\FrmMantenimientoEquipos$2.class
 com\mycompany\transporte_mercancia\GUI\FrmKilometraje$2.class
 com\mycompany\transporte_mercancia\GUI\Principal$10.class
+com\mycompany\transporte_mercancia\GUI\FrmAsignarSoftware$7.class
 com\mycompany\transporte_mercancia\GUI\FrmPersonalCompañia$4.class
 com\mycompany\transporte_mercancia\GUI\FrmMantenimientoEquipos$3.class
 com\mycompany\transporte_mercancia\GUI\FrmConductores.class
@@ -31,10 +34,12 @@ com\mycompany\transporte_mercancia\GUI\FrmConductores$5.class
 com\mycompany\transporte_mercancia\GUI\Principal$7.class
 com\mycompany\transporte_mercancia\GUI\FrmMantenimientoEquipos$12.class
 com\mycompany\transporte_mercancia\Data\DAOMantenimientoEquipo.class
+com\mycompany\transporte_mercancia\GUI\FrmConsultaMantenimientoEquipos$6.class
 com\mycompany\transporte_mercancia\GUI\FrmAsignarSoftware$1.class
 com\mycompany\transporte_mercancia\GUI\FrmConsultaMantenimientoEquipos.class
 com\mycompany\transporte_mercancia\GUI\FrmKilometraje$3.class
 com\mycompany\transporte_mercancia\GUI\FrmConductores$4.class
+com\mycompany\transporte_mercancia\GUI\FrmEquiposDeOficina$8.class
 com\mycompany\transporte_mercancia\GUI\FrmMantenimientoEquipos$4.class
 com\mycompany\transporte_mercancia\GUI\FrmEquiposDeOficina$2.class
 com\mycompany\transporte_mercancia\GUI\Principal$1.class
@@ -54,6 +59,7 @@ com\mycompany\transporte_mercancia\GUI\FrmPiezaRepuestos.class
 com\mycompany\transporte_mercancia\Data\DAOSoftware.class
 com\mycompany\transporte_mercancia\GUI\FrmPersonalCompañia$2.class
 com\mycompany\transporte_mercancia\GUI\FrmCamiones$2.class
+com\mycompany\transporte_mercancia\GUI\FrmEquiposDeOficina$9.class
 com\mycompany\transporte_mercancia\GUI\FrmPiezaRepuestos$2.class
 com\mycompany\transporte_mercancia\GUI\FrmMantenimientoEquipos$1.class
 com\mycompany\transporte_mercancia\GUI\FrmEquiposDeOficina$1.class

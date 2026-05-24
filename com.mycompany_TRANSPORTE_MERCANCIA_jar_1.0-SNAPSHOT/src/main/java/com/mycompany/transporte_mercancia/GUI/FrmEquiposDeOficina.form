@@ -43,11 +43,11 @@
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
                           <Component id="bt_modificar_equipo" min="-2" max="-2" attributes="0"/>
                           <Component id="bt_cancelar" min="-2" max="-2" attributes="0"/>
-                          <Component id="txt_id_equipo" alignment="1" min="-2" pref="72" max="-2" attributes="0"/>
-                          <Component id="cmb_tipo" max="32767" attributes="0"/>
                           <Component id="txt_marca" alignment="1" max="32767" attributes="0"/>
                           <Component id="txt_numero_serie" alignment="1" max="32767" attributes="0"/>
                           <Component id="cmb_estado" alignment="1" max="32767" attributes="0"/>
+                          <Component id="txt_id_equipo" alignment="1" min="-2" pref="72" max="-2" attributes="0"/>
+                          <Component id="txt_tipo" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
@@ -80,7 +80,7 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cmb_tipo" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txt_tipo" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -174,20 +174,6 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txt_numero_serie">
     </Component>
-    <Component class="javax.swing.JComboBox" name="cmb_tipo">
-      <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="3">
-            <StringItem index="0" value="PC"/>
-            <StringItem index="1" value="Impresora "/>
-            <StringItem index="2" value="Scanner"/>
-          </StringArray>
-        </Property>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-      </AuxValues>
-    </Component>
     <Component class="javax.swing.JComboBox" name="cmb_estado">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
@@ -246,6 +232,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="X"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_cerrar_pesta&#xf1;aActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="bt_actualizar_pesta&#xf1;a">
       <Properties>
@@ -259,6 +248,11 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bt_actualizar_pesta&#xf1;aActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="txt_tipo">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txt_tipoActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
