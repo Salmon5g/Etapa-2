@@ -12,9 +12,11 @@ CREATE TABLE personal (
     nombre         VARCHAR(100) NOT NULL,
     rut            VARCHAR(12)  UNIQUE NOT NULL,
     contrasena     VARCHAR(255) NOT NULL,
-    rol            ENUM('jefe_flota', 'admin_mantenimiento', 'admin_jefe', 'conductor', 'tecnico_equipo') NOT NULL,
+    rol            ENUM('jefe_flota', 'admin_mantenimiento', 'admin_jefe', 'conductor', 'admin_equipos', 'tecnico_mantenimiento_equipos', 'tecnico_it','admin_mantenimiento_equipos','admin_inventario') NOT NULL,
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
 
 
 CREATE TABLE camion (
@@ -122,6 +124,7 @@ CREATE TABLE pieza (
 
 ALTER TABLE pieza ADD COLUMN codigo VARCHAR(50) NOT NULL UNIQUE AFTER id_pieza;
 
+select * from detalle_pieza_mantenimiento;
 CREATE TABLE detalle_pieza_mantenimiento (
     id_detalle        INT PRIMARY KEY AUTO_INCREMENT,
     id_mantenimiento  INT NOT NULL,
