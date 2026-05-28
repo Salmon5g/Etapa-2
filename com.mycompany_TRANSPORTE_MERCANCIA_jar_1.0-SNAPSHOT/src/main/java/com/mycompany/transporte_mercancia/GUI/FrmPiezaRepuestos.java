@@ -36,6 +36,7 @@ public class FrmPiezaRepuestos extends javax.swing.JInternalFrame {
     // -------------------------------------------------------
     public FrmPiezaRepuestos() {
         initComponents();
+        aplicarEstilos();
         configurarTabla();
         cargarTabla();
         activarModoNuevo();
@@ -479,6 +480,167 @@ public class FrmPiezaRepuestos extends javax.swing.JInternalFrame {
         this.bt_eliminar.setEnabled(false);
         this.bt_agregar.setEnabled(true);
     }
+    
+    private void aplicarEstilos() {
+
+        // ── Colores base ─────────────────────────────────────────────────────
+        java.awt.Color BG_DARK   = new java.awt.Color(0x0A192F);
+        java.awt.Color BG_MID    = new java.awt.Color(0x172A45);
+        java.awt.Color BG_FIELD  = new java.awt.Color(0x1F3460);
+        java.awt.Color MINT      = new java.awt.Color(0x64FFDA);
+        java.awt.Color CYAN      = new java.awt.Color(0x57CBF2);
+        java.awt.Color CORAL     = new java.awt.Color(0xFF6B6B);
+        java.awt.Color GRAY_BTN  = new java.awt.Color(0x8892B0);
+        java.awt.Color TEXT_MAIN = new java.awt.Color(0xCCD6F6);
+        java.awt.Color ROW_ALT   = new java.awt.Color(0x112240);
+
+        // ── Fuentes ──────────────────────────────────────────────────────────
+        java.awt.Font FONT_LABEL  = new java.awt.Font("Segoe UI", java.awt.Font.BOLD,  12);
+        java.awt.Font FONT_FIELD  = new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 13);
+        java.awt.Font FONT_BTN    = new java.awt.Font("Segoe UI", java.awt.Font.BOLD,  12);
+        java.awt.Font FONT_TITLE  = new java.awt.Font("Segoe UI", java.awt.Font.BOLD,  14);
+
+        // ── Panel principal ──────────────────────────────────────────────────
+        getContentPane().setBackground(BG_DARK);
+
+        // ── Título del InternalFrame ─────────────────────────────────────────
+        setTitle("🔩  Piezas / Repuestos");
+        setBackground(BG_MID);
+
+        // ── Labels ───────────────────────────────────────────────────────────
+        javax.swing.JLabel[] labels = { jLabel1, jLabel2, jLabel3, jLabel4, jLabel5 };
+        for (javax.swing.JLabel lbl : labels) {
+            if (lbl != null) {
+                lbl.setForeground(TEXT_MAIN);
+                lbl.setFont(FONT_LABEL);
+            }
+        }
+
+        // ── TextFields ───────────────────────────────────────────────────────
+        javax.swing.JTextField[] fields = { cod_txt, nom_txt, desc_txt, sto_txt };
+        for (javax.swing.JTextField tf : fields) {
+            if (tf != null) {
+                tf.setBackground(BG_FIELD);
+                tf.setForeground(TEXT_MAIN);
+                tf.setCaretColor(MINT);
+                tf.setFont(FONT_FIELD);
+                tf.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+                    javax.swing.BorderFactory.createLineBorder(MINT, 1, true),
+                    javax.swing.BorderFactory.createEmptyBorder(4, 8, 4, 8)
+                ));
+            }
+        }
+
+        // ── Campo ID (solo lectura / oculto visualmente) ─────────────────────
+        if (id_txt != null) {
+            id_txt.setBackground(BG_MID);
+            id_txt.setForeground(GRAY_BTN);
+            id_txt.setFont(FONT_FIELD);
+            id_txt.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+                javax.swing.BorderFactory.createLineBorder(BG_MID, 1),
+                javax.swing.BorderFactory.createEmptyBorder(4, 8, 4, 8)
+            ));
+        }
+
+        // ── Botones con código de color ───────────────────────────────────────
+        //   bt_agregar  → menta (acción principal)
+        //   bt_editar   → celeste (modificar)
+        //   bt_eliminar → coral  (peligro)
+        //   bt_limpiar  → gris   (neutral)
+        //   jButton2    → celeste (actualizar)
+        //   jButton1    → coral  (cerrar)
+        estilizarBoton(bt_agregar,  MINT,     BG_DARK,  "＋ Agregar",    FONT_BTN);
+        estilizarBoton(bt_editar,   CYAN,     BG_DARK,  "✎ Editar",      FONT_BTN);
+        estilizarBoton(bt_eliminar, CORAL,    BG_DARK,  "✕ Eliminar",    FONT_BTN);
+        estilizarBoton(bt_limpiar,  GRAY_BTN, BG_DARK,  "↺ Limpiar",     FONT_BTN);
+        estilizarBoton(jButton2,    CYAN,     BG_DARK,  "⟳ Actualizar",  FONT_BTN);
+        estilizarBoton(jButton1,    CORAL,    BG_DARK,  "✕ Cerrar",      FONT_BTN);
+
+        // ── Tabla ────────────────────────────────────────────────────────────
+        tbl_piezas.setBackground(BG_MID);
+        tbl_piezas.setForeground(TEXT_MAIN);
+        tbl_piezas.setFont(FONT_FIELD);
+        tbl_piezas.setRowHeight(26);
+        tbl_piezas.setGridColor(new java.awt.Color(0x1F3460));
+        tbl_piezas.setSelectionBackground(MINT);
+        tbl_piezas.setSelectionForeground(BG_DARK);
+        tbl_piezas.setShowHorizontalLines(true);
+        tbl_piezas.setShowVerticalLines(false);
+
+        // Cabecera de tabla
+        javax.swing.table.JTableHeader header = tbl_piezas.getTableHeader();
+        header.setBackground(BG_MID);
+        header.setForeground(MINT);
+        header.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
+        ((javax.swing.table.DefaultTableCellRenderer) header.getDefaultRenderer())
+            .setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        // Renderer con filas alternas
+        tbl_piezas.setDefaultRenderer(Object.class,
+            new javax.swing.table.DefaultTableCellRenderer() {
+                @Override
+                public java.awt.Component getTableCellRendererComponent(
+                        javax.swing.JTable table, Object value, boolean isSelected,
+                        boolean hasFocus, int row, int column) {
+                    super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                    if (isSelected) {
+                        setBackground(MINT);
+                        setForeground(BG_DARK);
+                    } else {
+                        setBackground(row % 2 == 0 ? BG_MID : ROW_ALT);
+                        setForeground(TEXT_MAIN);
+                    }
+                    setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
+                    return this;
+                }
+            }
+        );
+
+        // ── ScrollPane ───────────────────────────────────────────────────────
+        jScrollPane1.setBackground(BG_DARK);
+        jScrollPane1.getViewport().setBackground(BG_MID);
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(
+            new java.awt.Color(0x1F3460), 1));
+    }
+
+    /**
+     * Aplica estilo visual uniforme a un JButton.
+     * @param btn     Botón a estilizar
+     * @param bg      Color de fondo
+     * @param fg      Color de texto
+     * @param texto   Texto/icono del botón
+     * @param fuente  Fuente a usar
+     */
+    private void estilizarBoton(javax.swing.JButton btn,
+                                java.awt.Color bg,
+                                java.awt.Color fg,
+                                String texto,
+                                java.awt.Font fuente) {
+        if (btn == null) return;
+        btn.setText(texto);
+        btn.setBackground(bg);
+        btn.setForeground(fg);
+        btn.setFont(fuente);
+        btn.setFocusPainted(false);
+        btn.setBorderPainted(false);
+        btn.setOpaque(true);
+        btn.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.HAND_CURSOR));
+        btn.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+            javax.swing.BorderFactory.createLineBorder(bg.darker(), 1, true),
+            javax.swing.BorderFactory.createEmptyBorder(6, 14, 6, 14)
+        ));
+        // Efecto hover
+        btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override public void mouseEntered(java.awt.event.MouseEvent e) {
+                btn.setBackground(bg.brighter());
+            }
+            @Override public void mouseExited(java.awt.event.MouseEvent e) {
+                btn.setBackground(bg);
+            }
+        });
+    }
+
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_agregar;

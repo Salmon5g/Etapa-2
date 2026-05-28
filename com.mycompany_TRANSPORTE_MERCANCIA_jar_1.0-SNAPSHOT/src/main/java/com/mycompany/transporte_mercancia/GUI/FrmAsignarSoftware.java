@@ -33,6 +33,7 @@ public class FrmAsignarSoftware extends javax.swing.JInternalFrame {
      */
     public FrmAsignarSoftware() {
         initComponents();
+        aplicarEstilos();
         cargarSoftware();
         cargarEquipos();
         cargarTabla();
@@ -455,6 +456,194 @@ public class FrmAsignarSoftware extends javax.swing.JInternalFrame {
         this.bt_eliminar.setEnabled(false);
         this.bt_agregar.setEnabled(true);
     }
+    
+     private void aplicarEstilos() {
+
+        // ── Paleta Deep Ocean ────────────────────────────────────────────────
+        java.awt.Color BG_DARK   = new java.awt.Color(0x0A192F);
+        java.awt.Color BG_MID    = new java.awt.Color(0x172A45);
+        java.awt.Color BG_FIELD  = new java.awt.Color(0x1F3460);
+        java.awt.Color MINT      = new java.awt.Color(0x64FFDA);
+        java.awt.Color CYAN      = new java.awt.Color(0x57CBF2);
+        java.awt.Color CORAL     = new java.awt.Color(0xFF6B6B);
+        java.awt.Color GRAY_BTN  = new java.awt.Color(0x8892B0);
+        java.awt.Color TEXT_MAIN = new java.awt.Color(0xCCD6F6);
+        java.awt.Color ROW_ALT   = new java.awt.Color(0x112240);
+
+        // ── Fuentes ──────────────────────────────────────────────────────────
+        java.awt.Font FONT_LABEL = new java.awt.Font("Segoe UI", java.awt.Font.BOLD,  12);
+        java.awt.Font FONT_FIELD = new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 13);
+        java.awt.Font FONT_BTN   = new java.awt.Font("Segoe UI", java.awt.Font.BOLD,  12);
+
+        // ── Panel principal ──────────────────────────────────────────────────
+        getContentPane().setBackground(BG_DARK);
+        setTitle("🖥️  Asignar Software a Equipo");
+        setBackground(BG_MID);
+
+        // ── Labels ───────────────────────────────────────────────────────────
+        javax.swing.JLabel[] labels = { jLabel1, jLabel2, jLabel3, jLabel4 };
+        for (javax.swing.JLabel lbl : labels) {
+            if (lbl != null) {
+                lbl.setForeground(TEXT_MAIN);
+                lbl.setFont(FONT_LABEL);
+            }
+        }
+
+        // ── ComboBoxes ───────────────────────────────────────────────────────
+        javax.swing.JComboBox<?>[] combos = { cb_software, cb_equipo, cb_estado };
+        for (javax.swing.JComboBox<?> cb : combos) {
+            if (cb != null) {
+                cb.setBackground(BG_FIELD);
+                cb.setForeground(TEXT_MAIN);
+                cb.setFont(FONT_FIELD);
+                cb.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+                    javax.swing.BorderFactory.createLineBorder(MINT, 1, true),
+                    javax.swing.BorderFactory.createEmptyBorder(2, 6, 2, 6)
+                ));
+                // Renderer del combo
+                cb.setRenderer(new javax.swing.DefaultListCellRenderer() {
+                    @Override
+                    public java.awt.Component getListCellRendererComponent(
+                            javax.swing.JList<?> list, Object value,
+                            int index, boolean isSelected, boolean cellHasFocus) {
+                        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                        setBackground(isSelected ? MINT : BG_FIELD);
+                        setForeground(isSelected ? BG_DARK : TEXT_MAIN);
+                        setFont(FONT_FIELD);
+                        setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 8, 4, 8));
+                        return this;
+                    }
+                });
+            }
+        }
+
+        // ── JDateChooser — estilo Deep Ocean ─────────────────────────────────
+        // dc_fecha es com.toedter.calendar.JDateChooser
+        if (dc_fecha != null) {
+            dc_fecha.setBackground(BG_FIELD);
+            dc_fecha.setForeground(TEXT_MAIN);
+            dc_fecha.setFont(FONT_FIELD);
+            dc_fecha.setBorder(javax.swing.BorderFactory.createLineBorder(MINT, 1, true));
+
+            // El campo de texto interno del DateChooser
+            if (dc_fecha.getDateEditor() != null &&
+                dc_fecha.getDateEditor().getUiComponent() instanceof javax.swing.JTextField) {
+                javax.swing.JTextField dtf =
+                    (javax.swing.JTextField) dc_fecha.getDateEditor().getUiComponent();
+                dtf.setBackground(BG_FIELD);
+                dtf.setForeground(TEXT_MAIN);
+                dtf.setCaretColor(MINT);
+                dtf.setFont(FONT_FIELD);
+                dtf.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 8, 4, 8));
+            }
+
+            // Botón del calendario
+            java.awt.Component[] comps = dc_fecha.getComponents();
+            for (java.awt.Component comp : comps) {
+                if (comp instanceof javax.swing.JButton) {
+                    javax.swing.JButton calBtn = (javax.swing.JButton) comp;
+                    calBtn.setBackground(CYAN);
+                    calBtn.setForeground(BG_DARK);
+                    calBtn.setFocusPainted(false);
+                    calBtn.setBorderPainted(false);
+                    calBtn.setOpaque(true);
+                }
+            }
+        }
+
+        // ── ToolBar ──────────────────────────────────────────────────────────
+        if (jToolBar1 != null) {
+            jToolBar1.setBackground(BG_MID);
+            jToolBar1.setBorder(javax.swing.BorderFactory.createMatteBorder(
+                0, 0, 1, 0, new java.awt.Color(0x1F3460)));
+        }
+
+        // ── Botones con código de color ───────────────────────────────────────
+        estilizarBoton(bt_agregar,   MINT,     BG_DARK,  "＋ Asignar",    FONT_BTN);
+        estilizarBoton(bt_modificar, CYAN,     BG_DARK,  "✎ Modificar",   FONT_BTN);
+        estilizarBoton(bt_eliminar,  CORAL,    BG_DARK,  "✕ Eliminar",    FONT_BTN);
+        estilizarBoton(bt_cancelar,  GRAY_BTN, BG_DARK,  "↩ Cancelar",    FONT_BTN);
+        estilizarBoton(jButton2,     CYAN,     BG_DARK,  "⟳ Actualizar",  FONT_BTN);
+        estilizarBoton(jButton1,     CORAL,    BG_DARK,  "✕ Cerrar",      FONT_BTN);
+
+        // ── Tabla ────────────────────────────────────────────────────────────
+        tbl_asignaciones.setBackground(BG_MID);
+        tbl_asignaciones.setForeground(TEXT_MAIN);
+        tbl_asignaciones.setFont(FONT_FIELD);
+        tbl_asignaciones.setRowHeight(26);
+        tbl_asignaciones.setGridColor(new java.awt.Color(0x1F3460));
+        tbl_asignaciones.setSelectionBackground(MINT);
+        tbl_asignaciones.setSelectionForeground(BG_DARK);
+        tbl_asignaciones.setShowHorizontalLines(true);
+        tbl_asignaciones.setShowVerticalLines(false);
+
+        // Cabecera de tabla
+        javax.swing.table.JTableHeader header = tbl_asignaciones.getTableHeader();
+        header.setBackground(BG_MID);
+        header.setForeground(MINT);
+        header.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
+        ((javax.swing.table.DefaultTableCellRenderer) header.getDefaultRenderer())
+            .setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        // Renderer con filas alternas
+        tbl_asignaciones.setDefaultRenderer(Object.class,
+            new javax.swing.table.DefaultTableCellRenderer() {
+                @Override
+                public java.awt.Component getTableCellRendererComponent(
+                        javax.swing.JTable table, Object value, boolean isSelected,
+                        boolean hasFocus, int row, int column) {
+                    super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                    if (isSelected) {
+                        setBackground(MINT);
+                        setForeground(BG_DARK);
+                    } else {
+                        setBackground(row % 2 == 0 ? BG_MID : ROW_ALT);
+                        setForeground(TEXT_MAIN);
+                    }
+                    setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
+                    return this;
+                }
+            }
+        );
+
+        // ── ScrollPane ───────────────────────────────────────────────────────
+        jScrollPane1.setBackground(BG_DARK);
+        jScrollPane1.getViewport().setBackground(BG_MID);
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(
+            new java.awt.Color(0x1F3460), 1));
+    }
+
+    /**
+     * Aplica estilo visual uniforme a un JButton.
+     */
+    private void estilizarBoton(javax.swing.JButton btn,
+                                java.awt.Color bg,
+                                java.awt.Color fg,
+                                String texto,
+                                java.awt.Font fuente) {
+        if (btn == null) return;
+        btn.setText(texto);
+        btn.setBackground(bg);
+        btn.setForeground(fg);
+        btn.setFont(fuente);
+        btn.setFocusPainted(false);
+        btn.setBorderPainted(false);
+        btn.setOpaque(true);
+        btn.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.HAND_CURSOR));
+        btn.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+            javax.swing.BorderFactory.createLineBorder(bg.darker(), 1, true),
+            javax.swing.BorderFactory.createEmptyBorder(6, 14, 6, 14)
+        ));
+        btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override public void mouseEntered(java.awt.event.MouseEvent e) {
+                btn.setBackground(bg.brighter());
+            }
+            @Override public void mouseExited(java.awt.event.MouseEvent e) {
+                btn.setBackground(bg);
+            }
+        });
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_agregar;

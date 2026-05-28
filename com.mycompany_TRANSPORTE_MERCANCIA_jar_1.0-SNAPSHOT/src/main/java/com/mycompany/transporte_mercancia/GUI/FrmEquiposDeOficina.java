@@ -20,6 +20,7 @@ public class FrmEquiposDeOficina extends javax.swing.JInternalFrame {
      */
     public FrmEquiposDeOficina() {
         initComponents();
+        aplicarEstilos();
         cargarTabla();
         // Auto-mayúsculas mientras escribe
         txt_numero_serie.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -156,9 +157,9 @@ public class FrmEquiposDeOficina extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(bt_actualizar_pestaña)
-                        .addGap(26, 26, 26)
-                        .addComponent(bt_cerrar_pestaña)
+                        .addComponent(bt_actualizar_pestaña, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(bt_cerrar_pestaña, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(25, 25, 25))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(42, 42, 42)
@@ -503,6 +504,153 @@ public class FrmEquiposDeOficina extends javax.swing.JInternalFrame {
     }
 
     DAOEquipoOficina daoEquipo = new DAOEquipoOficina();
+    
+    
+    private void aplicarEstilos() {
+
+    // Paleta "Deep Ocean" ─────────────────────────────────────────────────
+    final java.awt.Color BG_PRIMARY   = new java.awt.Color( 10,  25,  47); // #0A192F  marino profundo
+    final java.awt.Color BG_SECONDARY = new java.awt.Color( 23,  42,  69); // #172A45  azul oscuro
+    final java.awt.Color BG_FIELD     = new java.awt.Color( 31,  52,  96); // #1F3460  azul medio
+    final java.awt.Color ACCENT_MINT  = new java.awt.Color(100, 255, 218); // #64FFDA  menta brillante
+    final java.awt.Color ACCENT_BLUE  = new java.awt.Color( 87, 203, 242); // #57CBF2  celeste
+    final java.awt.Color TEXT_LIGHT   = new java.awt.Color(204, 214, 246); // #CCD6F6  blanco lavanda
+    final java.awt.Color BTN_DELETE   = new java.awt.Color(255, 107, 107); // #FF6B6B  rojo coral
+    final java.awt.Color BTN_NEUTRAL  = new java.awt.Color(136, 146, 176); // #8892B0  gris azulado
+    final java.awt.Color ROW_ODD      = new java.awt.Color( 17,  34,  64); // #112240
+    final java.awt.Color ROW_EVEN     = new java.awt.Color( 10,  25,  47); // #0A192F
+    final java.awt.Color ROW_SEL      = new java.awt.Color( 31,  52,  96); // #1F3460
+
+    // Fuentes ─────────────────────────────────────────────────────────────
+    java.awt.Font fLabel  = new java.awt.Font("Segoe UI", java.awt.Font.BOLD,  12);
+    java.awt.Font fField  = new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 12);
+    java.awt.Font fBtn    = new java.awt.Font("Segoe UI", java.awt.Font.BOLD,  12);
+    java.awt.Font fTable  = new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 12);
+    java.awt.Font fHeader = new java.awt.Font("Segoe UI", java.awt.Font.BOLD,  12);
+
+    // Content pane ────────────────────────────────────────────────────────
+    getContentPane().setBackground(BG_PRIMARY);
+
+    // Labels ──────────────────────────────────────────────────────────────
+    for (javax.swing.JLabel lbl : new javax.swing.JLabel[]{
+            jLabel1, jLabel2, jLabel3, jLabel4, jLabel5, jLabel6}) {
+        lbl.setForeground(TEXT_LIGHT);
+        lbl.setFont(fLabel);
+    }
+
+    // Campos de texto ─────────────────────────────────────────────────────
+    javax.swing.border.Border fieldBorder = javax.swing.BorderFactory.createCompoundBorder(
+        javax.swing.BorderFactory.createLineBorder(ACCENT_MINT, 1, true),
+        javax.swing.BorderFactory.createEmptyBorder(3, 6, 3, 6));
+
+    for (javax.swing.JTextField tf : new javax.swing.JTextField[]{
+            txt_id_equipo, txt_tipo, txt_marca, txt_numero_serie}) {
+        tf.setBackground(BG_FIELD);
+        tf.setForeground(TEXT_LIGHT);
+        tf.setCaretColor(ACCENT_MINT);
+        tf.setFont(fField);
+        tf.setBorder(fieldBorder);
+    }
+    // ID: fondo más apagado (campo de solo lectura visual)
+    txt_id_equipo.setBackground(BG_SECONDARY);
+
+    // ComboBox ────────────────────────────────────────────────────────────
+    cmb_estado.setBackground(BG_FIELD);
+    cmb_estado.setForeground(TEXT_LIGHT);
+    cmb_estado.setFont(fField);
+
+    // Botones (código de colores por función) ─────────────────────────────
+    // Verde menta  → registrar / acción principal
+    estilizarBoton(bt_registrar_equipo, ACCENT_MINT,
+                   new java.awt.Color(10, 25, 47), fBtn);
+
+    // Celeste      → modificar
+    estilizarBoton(bt_modificar_equipo, ACCENT_BLUE,
+                   new java.awt.Color(10, 25, 47), fBtn);
+
+    // Rojo coral   → eliminar
+    estilizarBoton(bt_eliminar_equipo, BTN_DELETE,
+                   java.awt.Color.WHITE, fBtn);
+
+    // Gris azulado → cancelar
+    estilizarBoton(bt_cancelar, BTN_NEUTRAL,
+                   java.awt.Color.WHITE, fBtn);
+
+    // Oscuro con borde menta → actualizar pestaña
+    estilizarBoton(bt_actualizar_pestaña, BG_SECONDARY, ACCENT_MINT, fBtn);
+    bt_actualizar_pestaña.setBorderPainted(true);
+    bt_actualizar_pestaña.setBorder(
+        javax.swing.BorderFactory.createLineBorder(ACCENT_MINT, 1, true));
+
+    // Oscuro con borde rojo  → cerrar pestaña
+    estilizarBoton(bt_cerrar_pestaña,
+                   new java.awt.Color(60, 15, 15), BTN_DELETE, fBtn);
+    bt_cerrar_pestaña.setBorderPainted(true);
+    bt_cerrar_pestaña.setBorder(
+        javax.swing.BorderFactory.createLineBorder(BTN_DELETE, 1, true));
+
+    // Tabla ───────────────────────────────────────────────────────────────
+    tbl_equipos_oficina.setBackground(ROW_ODD);
+    tbl_equipos_oficina.setForeground(TEXT_LIGHT);
+    tbl_equipos_oficina.setFont(fTable);
+    tbl_equipos_oficina.setGridColor(BG_SECONDARY);
+    tbl_equipos_oficina.setRowHeight(26);
+    tbl_equipos_oficina.setSelectionBackground(ROW_SEL);
+    tbl_equipos_oficina.setSelectionForeground(ACCENT_MINT);
+    tbl_equipos_oficina.setShowHorizontalLines(true);
+    tbl_equipos_oficina.setShowVerticalLines(false);
+    tbl_equipos_oficina.setIntercellSpacing(new java.awt.Dimension(0, 1));
+
+    // Encabezado de tabla
+    javax.swing.table.JTableHeader tableHeader = tbl_equipos_oficina.getTableHeader();
+    tableHeader.setBackground(new java.awt.Color(17, 34, 64));
+    tableHeader.setForeground(ACCENT_MINT);
+    tableHeader.setFont(fHeader);
+    tableHeader.setReorderingAllowed(false);
+    ((javax.swing.table.DefaultTableCellRenderer) tableHeader.getDefaultRenderer())
+        .setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+    // Renderer con filas alternas
+    tbl_equipos_oficina.setDefaultRenderer(Object.class,
+        new javax.swing.table.DefaultTableCellRenderer() {
+            @Override
+            public java.awt.Component getTableCellRendererComponent(
+                    javax.swing.JTable t, Object val, boolean sel,
+                    boolean focus, int row, int col) {
+                super.getTableCellRendererComponent(t, val, sel, focus, row, col);
+                if (sel) {
+                    setBackground(ROW_SEL);
+                    setForeground(ACCENT_MINT);
+                } else {
+                    setBackground(row % 2 == 0 ? ROW_EVEN : ROW_ODD);
+                    setForeground(TEXT_LIGHT);
+                }
+                setFont(fTable);
+                setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
+                return this;
+            }
+        });
+
+    // ScrollPane ──────────────────────────────────────────────────────────
+    jScrollPane1.getViewport().setBackground(ROW_EVEN);
+    jScrollPane1.setBorder(
+        javax.swing.BorderFactory.createLineBorder(ACCENT_MINT, 1, true));
+}
+
+// ── Método auxiliar reutilizable ─────────────────────────────────────────
+private void estilizarBoton(javax.swing.JButton btn,
+                             java.awt.Color bg,
+                             java.awt.Color fg,
+                             java.awt.Font font) {
+    btn.setBackground(bg);
+    btn.setForeground(fg);
+    btn.setFont(font);
+    btn.setFocusPainted(false);
+    btn.setBorderPainted(false);
+    btn.setOpaque(true);
+    btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+}
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_actualizar_pestaña;
     private javax.swing.JButton bt_cancelar;

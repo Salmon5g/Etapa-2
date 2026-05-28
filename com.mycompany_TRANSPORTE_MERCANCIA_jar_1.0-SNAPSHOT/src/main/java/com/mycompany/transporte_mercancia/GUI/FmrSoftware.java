@@ -23,10 +23,11 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
      */
     public FmrSoftware() {
         initComponents();
+        aplicarEstilos();
         limpiarFormulario();
         activarModoEditar();
         cargarTabla();
-        
+
         txt_version.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -341,11 +342,11 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tbl_softwareMouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-    cargarTabla();
+        cargarTabla();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    dispose();
+        dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void activarModoEditar() {
@@ -407,6 +408,146 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
         }
 
         return true;
+    }
+
+    // ── Método principal de estilos ──────────────────────────────────────────
+    private void aplicarEstilos() {
+
+        // Paleta "Deep Ocean" (idéntica al resto de formularios) ──────────────
+        final java.awt.Color BG_PRIMARY = new java.awt.Color(10, 25, 47); // #0A192F  marino profundo
+        final java.awt.Color BG_SECONDARY = new java.awt.Color(23, 42, 69); // #172A45  azul oscuro
+        final java.awt.Color BG_FIELD = new java.awt.Color(31, 52, 96); // #1F3460  azul medio
+        final java.awt.Color ACCENT_MINT = new java.awt.Color(100, 255, 218); // #64FFDA  menta brillante
+        final java.awt.Color ACCENT_BLUE = new java.awt.Color(87, 203, 242); // #57CBF2  celeste
+        final java.awt.Color TEXT_LIGHT = new java.awt.Color(204, 214, 246); // #CCD6F6  blanco lavanda
+        final java.awt.Color BTN_DELETE = new java.awt.Color(255, 107, 107); // #FF6B6B  rojo coral
+        final java.awt.Color BTN_NEUTRAL = new java.awt.Color(136, 146, 176); // #8892B0  gris azulado
+        final java.awt.Color ROW_ODD = new java.awt.Color(17, 34, 64); // #112240
+        final java.awt.Color ROW_EVEN = new java.awt.Color(10, 25, 47); // #0A192F
+        final java.awt.Color ROW_SEL = new java.awt.Color(31, 52, 96); // #1F3460
+
+        // Fuentes ─────────────────────────────────────────────────────────────
+        java.awt.Font fLabel = new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12);
+        java.awt.Font fField = new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 12);
+        java.awt.Font fBtn = new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12);
+        java.awt.Font fTable = new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 12);
+        java.awt.Font fHeader = new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12);
+
+        // Content pane ────────────────────────────────────────────────────────
+        getContentPane().setBackground(BG_PRIMARY);
+
+        // Labels ──────────────────────────────────────────────────────────────
+        for (javax.swing.JLabel lbl : new javax.swing.JLabel[]{
+            jLabel1, jLabel2, jLabel3, jLabel4}) {
+            lbl.setForeground(TEXT_LIGHT);
+            lbl.setFont(fLabel);
+        }
+
+        // Campos de texto ─────────────────────────────────────────────────────
+        javax.swing.border.Border fieldBorder = javax.swing.BorderFactory.createCompoundBorder(
+                javax.swing.BorderFactory.createLineBorder(ACCENT_MINT, 1, true),
+                javax.swing.BorderFactory.createEmptyBorder(3, 6, 3, 6));
+
+        for (javax.swing.JTextField tf : new javax.swing.JTextField[]{
+            txt_id, txt_nombre, txt_version, txt_fabricante}) {
+            tf.setBackground(BG_FIELD);
+            tf.setForeground(TEXT_LIGHT);
+            tf.setCaretColor(ACCENT_MINT);
+            tf.setFont(fField);
+            tf.setBorder(fieldBorder);
+        }
+        // ID: fondo más apagado (campo de solo lectura visual)
+        txt_id.setBackground(BG_SECONDARY);
+
+        // Botones (código de colores por función) ─────────────────────────────
+        // Verde menta  → agregar / acción principal
+        estilizarBoton(bt_agregar, ACCENT_MINT,
+                new java.awt.Color(10, 25, 47), fBtn);
+
+        // Celeste      → modificar
+        estilizarBoton(bt_modificar, ACCENT_BLUE,
+                new java.awt.Color(10, 25, 47), fBtn);
+
+        // Rojo coral   → eliminar
+        estilizarBoton(bt_eliminar, BTN_DELETE,
+                java.awt.Color.WHITE, fBtn);
+
+        // Gris azulado → cancelar
+        estilizarBoton(bt_cancelar, BTN_NEUTRAL,
+                java.awt.Color.WHITE, fBtn);
+
+        // jButton2 = Actualizar: oscuro con borde menta
+        estilizarBoton(jButton2, BG_SECONDARY, ACCENT_MINT, fBtn);
+        jButton2.setBorderPainted(true);
+        jButton2.setBorder(
+                javax.swing.BorderFactory.createLineBorder(ACCENT_MINT, 1, true));
+
+        // jButton1 = Cerrar: oscuro con borde rojo
+        estilizarBoton(jButton1, new java.awt.Color(60, 15, 15), BTN_DELETE, fBtn);
+        jButton1.setBorderPainted(true);
+        jButton1.setBorder(
+                javax.swing.BorderFactory.createLineBorder(BTN_DELETE, 1, true));
+
+        // Tabla ───────────────────────────────────────────────────────────────
+        tbl_software.setBackground(ROW_ODD);
+        tbl_software.setForeground(TEXT_LIGHT);
+        tbl_software.setFont(fTable);
+        tbl_software.setGridColor(BG_SECONDARY);
+        tbl_software.setRowHeight(26);
+        tbl_software.setSelectionBackground(ROW_SEL);
+        tbl_software.setSelectionForeground(ACCENT_MINT);
+        tbl_software.setShowHorizontalLines(true);
+        tbl_software.setShowVerticalLines(false);
+        tbl_software.setIntercellSpacing(new java.awt.Dimension(0, 1));
+
+        // Encabezado de tabla
+        javax.swing.table.JTableHeader tableHeader = tbl_software.getTableHeader();
+        tableHeader.setBackground(new java.awt.Color(17, 34, 64));
+        tableHeader.setForeground(ACCENT_MINT);
+        tableHeader.setFont(fHeader);
+        tableHeader.setReorderingAllowed(false);
+        ((javax.swing.table.DefaultTableCellRenderer) tableHeader.getDefaultRenderer())
+                .setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        // Renderer con filas alternas
+        tbl_software.setDefaultRenderer(Object.class,
+                new javax.swing.table.DefaultTableCellRenderer() {
+            @Override
+            public java.awt.Component getTableCellRendererComponent(
+                    javax.swing.JTable t, Object val, boolean sel,
+                    boolean focus, int row, int col) {
+                super.getTableCellRendererComponent(t, val, sel, focus, row, col);
+                if (sel) {
+                    setBackground(ROW_SEL);
+                    setForeground(ACCENT_MINT);
+                } else {
+                    setBackground(row % 2 == 0 ? ROW_EVEN : ROW_ODD);
+                    setForeground(TEXT_LIGHT);
+                }
+                setFont(fTable);
+                setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
+                return this;
+            }
+        });
+
+        // ScrollPane ──────────────────────────────────────────────────────────
+        jScrollPane1.getViewport().setBackground(ROW_EVEN);
+        jScrollPane1.setBorder(
+                javax.swing.BorderFactory.createLineBorder(ACCENT_MINT, 1, true));
+    }
+
+// ── Método auxiliar reutilizable ─────────────────────────────────────────
+    private void estilizarBoton(javax.swing.JButton btn,
+            java.awt.Color bg,
+            java.awt.Color fg,
+            java.awt.Font font) {
+        btn.setBackground(bg);
+        btn.setForeground(fg);
+        btn.setFont(font);
+        btn.setFocusPainted(false);
+        btn.setBorderPainted(false);
+        btn.setOpaque(true);
+        btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     }
 
 
