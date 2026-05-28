@@ -50,10 +50,12 @@ CREATE TABLE mantenimiento (
 
 select * from mantenimiento;
 
+ALTER TABLE equipo_oficina
+  MODIFY COLUMN tipo VARCHAR(50) NOT NULL;
 
 CREATE TABLE equipo_oficina (
     id_equipo      INT          PRIMARY KEY AUTO_INCREMENT,
-    tipo           ENUM('PC', 'Impresora', 'Scanner', 'Otro') NOT NULL,
+    tipo           VARCHAR(50) NOT NULL,
     marca          VARCHAR(50)  NOT NULL,
     numero_serie   VARCHAR(50)  NOT NULL UNIQUE,
     estado         ENUM('Operativo', 'En mantención', 'Dado de baja') NOT NULL DEFAULT 'Operativo',
@@ -106,7 +108,8 @@ CREATE TABLE software_equipo (
     CONSTRAINT fk_se_equipo   FOREIGN KEY (id_equipo)   REFERENCES equipo_oficina(id_equipo) ON DELETE CASCADE,
     CONSTRAINT uq_software_equipo UNIQUE (id_software, id_equipo)
 );
-
+ALTER TABLE software_equipo
+  MODIFY COLUMN estado ENUM('Activo', 'Inactivo') NOT NULL DEFAULT 'Activo';
 
 -- ============================================================
 -- RF-09: Control de inventario de piezas

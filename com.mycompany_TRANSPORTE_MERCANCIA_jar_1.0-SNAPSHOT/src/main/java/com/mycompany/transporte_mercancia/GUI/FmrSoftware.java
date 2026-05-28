@@ -24,8 +24,9 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
     public FmrSoftware() {
         initComponents();
         limpiarFormulario();
+        activarModoEditar();
         cargarTabla();
-        activarModoNuevo();
+        
         txt_version.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyTyped(java.awt.event.KeyEvent evt) {

@@ -20,7 +20,7 @@ public class FrmEquiposDeOficina extends javax.swing.JInternalFrame {
      */
     public FrmEquiposDeOficina() {
         initComponents();
-
+        cargarTabla();
         // Auto-mayúsculas mientras escribe
         txt_numero_serie.addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
@@ -31,7 +31,7 @@ public class FrmEquiposDeOficina extends javax.swing.JInternalFrame {
                 txt_numero_serie.setCaretPosition(Math.min(pos, upper.length()));
             }
         });
-        cargarTabla();
+
     }
 
     /**
@@ -315,19 +315,21 @@ public class FrmEquiposDeOficina extends javax.swing.JInternalFrame {
     private void bt_registrar_equipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_registrar_equipoActionPerformed
         String marca = txt_marca.getText().trim();
         String numeroSerie = txt_numero_serie.getText().trim().toUpperCase();
-        String tipo = (String) txt_tipo.getText();
+        String tipo = txt_tipo.getText().trim();  // ← también se agrega .trim()
         String estado = (String) cmb_estado.getSelectedItem();
 
-// ── Validación campos vacíos ────────────────────────────────────────
-        if (marca.isEmpty() || numeroSerie.isEmpty()) {
+        // ── Validación campos vacíos ────────────────────────────────────────
+        if (marca.isEmpty() || numeroSerie.isEmpty() || tipo.isEmpty()) {
             JOptionPane.showMessageDialog(this,
-                    "Debe completar todos los campos obligatorios (Marca y N° Serie).",
+                    "Debe completar todos los campos obligatorios (Tipo, Marca y N° Serie).",
                     "Campos vacíos", JOptionPane.WARNING_MESSAGE);
+            if (tipo.isEmpty()) {
+                txt_tipo.requestFocus();  // enfoca el campo vacío
+            }
             return;
         }
 
-// ── Validación formato número de serie ──────────────────────────────
-// Acepta: letras, números y guiones. Mínimo 4, máximo 30 caracteres.
+        // ── Validación formato número de serie ──────────────────────────────
         if (!numeroSerie.matches("[A-Z0-9\\-]{4,30}")) {
             JOptionPane.showMessageDialog(this,
                     "El N° de serie solo puede contener letras, números y guiones (-).\n"
@@ -337,7 +339,7 @@ public class FrmEquiposDeOficina extends javax.swing.JInternalFrame {
             return;
         }
 
-// ── Validación número de serie duplicado ────────────────────────────
+        // ── Validación número de serie duplicado ────────────────────────────
         if (daoEquipo.existeNumeroSerie(numeroSerie)) {
             JOptionPane.showMessageDialog(this,
                     "El número de serie \"" + numeroSerie + "\" ya existe en el sistema.",
@@ -346,10 +348,10 @@ public class FrmEquiposDeOficina extends javax.swing.JInternalFrame {
             return;
         }
 
-// ── Crear equipo ────────────────────────────────────────────────────
+        // ── Crear equipo ────────────────────────────────────────────────────
         EquipoOficina eq = new EquipoOficina();
         eq.setTipo(tipo);
-        eq.setMarca(marca.toUpperCase()); // opcional: marca también en mayúsculas
+        eq.setMarca(marca.toUpperCase());
         eq.setNumeroSerie(numeroSerie);
         eq.setEstado(estado);
 
@@ -418,6 +420,16 @@ public class FrmEquiposDeOficina extends javax.swing.JInternalFrame {
                     "El número de serie \"" + numeroSerie + "\" ya pertenece a otro equipo.",
                     "N° Serie duplicado", JOptionPane.WARNING_MESSAGE);
             txt_numero_serie.requestFocus();
+            return;
+        }
+        // ── Validación campos vacíos ────────────────────────────────────────
+        if (marca.isEmpty() || numeroSerie.isEmpty() || tipo.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Debe completar todos los campos obligatorios (Tipo, Marca y N° Serie).",
+                    "Campos vacíos", JOptionPane.WARNING_MESSAGE);
+            if (tipo.isEmpty()) {
+                txt_tipo.requestFocus();  // enfoca el campo vacío
+            }
             return;
         }
 

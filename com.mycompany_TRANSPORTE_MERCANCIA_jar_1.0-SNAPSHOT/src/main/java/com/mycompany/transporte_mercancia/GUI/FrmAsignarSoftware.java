@@ -36,6 +36,7 @@ public class FrmAsignarSoftware extends javax.swing.JInternalFrame {
         cargarSoftware();
         cargarEquipos();
         cargarTabla();
+        
     }
 
     /**
@@ -296,7 +297,7 @@ public class FrmAsignarSoftware extends javax.swing.JInternalFrame {
                 "Asignación modificada");
 
         cargarTabla();
-
+        activarModoNuevo();
         limpiarFormulario();        // TODO add your handling code here:
     }//GEN-LAST:event_bt_modificarActionPerformed
     private void cargarEquipos() {
@@ -377,33 +378,58 @@ public class FrmAsignarSoftware extends javax.swing.JInternalFrame {
 
         JOptionPane.showMessageDialog(this,
                 "Asignación eliminada");
-
+        
         cargarTabla();        // TODO add your handling code here:
+       activarModoNuevo();
     }//GEN-LAST:event_bt_eliminarActionPerformed
 
     private void bt_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_cancelarActionPerformed
         limpiarFormulario();        // TODO add your handling code here:
+        activarModoNuevo();
     }//GEN-LAST:event_bt_cancelarActionPerformed
 
     private void tbl_asignacionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_asignacionesMouseClicked
-        int fila = tbl_asignaciones.getSelectedRow();
+         int fila = tbl_asignaciones.getSelectedRow();
+    if (fila == -1) return;  // ← guarda extra por si acaso
 
-        idSeleccionado = Integer.parseInt(
-                tbl_asignaciones.getValueAt(fila, 0).toString());
+    idSeleccionado = Integer.parseInt(
+            tbl_asignaciones.getValueAt(fila, 0).toString());
 
-        String fecha = tbl_asignaciones.getValueAt(fila, 3).toString();
-        String estado = tbl_asignaciones.getValueAt(fila, 4).toString();
-
-        Object fechaObj = tbl_asignaciones.getValueAt(fila, 3);
-        if (fechaObj != null) {
-            try {
-                dc_fecha.setDate(java.sql.Date.valueOf(fechaObj.toString()));
-            } catch (Exception e) {
-                dc_fecha.setDate(null);
-            }
+    // ── Cargar fecha ────────────────────────────────────────────────────
+    Object fechaObj = tbl_asignaciones.getValueAt(fila, 3);
+    if (fechaObj != null) {
+        try {
+            dc_fecha.setDate(java.sql.Date.valueOf(fechaObj.toString()));
+        } catch (Exception e) {
+            dc_fecha.setDate(null);
         }
+    }
 
-        cb_estado.setSelectedItem(estado);            // TODO add your handling code here:
+    // ── Cargar estado ───────────────────────────────────────────────────
+    String estado = tbl_asignaciones.getValueAt(fila, 4).toString();
+    cb_estado.setSelectedItem(estado);
+
+    // ── Cargar Software (buscar objeto por nombre) ──────────────────────
+    String nombreSoftware = tbl_asignaciones.getValueAt(fila, 1).toString();
+    for (int i = 0; i < cb_software.getItemCount(); i++) {
+        Software s = cb_software.getItemAt(i);
+        if (s.getNombre().equals(nombreSoftware)) {
+            cb_software.setSelectedIndex(i);
+            break;
+        }
+    }
+
+    // ── Cargar Equipo (buscar objeto por número de serie) ───────────────
+    String serieEquipo = tbl_asignaciones.getValueAt(fila, 2).toString();
+    for (int i = 0; i < cb_equipo.getItemCount(); i++) {
+        EquipoOficina e = cb_equipo.getItemAt(i);
+        if (e.getNumeroSerie().equals(serieEquipo)) {
+            cb_equipo.setSelectedIndex(i);
+            break;
+        }
+    }
+
+    activarModoEditar();          // TODO add your handling code here:
     }//GEN-LAST:event_tbl_asignacionesMouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -413,7 +439,22 @@ public class FrmAsignarSoftware extends javax.swing.JInternalFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+ private void activarModoEditar() {
+        this.bt_cancelar.setEnabled(true);
+        this.bt_modificar.setEnabled(true);
+        this.bt_eliminar.setEnabled(true);
+        this.bt_agregar.setEnabled(false);
+    }
 
+    /**
+     * Activa el modo nuevo para ingresar un equipo.
+     */
+    private void activarModoNuevo() {
+        this.bt_cancelar.setEnabled(false);
+        this.bt_modificar.setEnabled(false);
+        this.bt_eliminar.setEnabled(false);
+        this.bt_agregar.setEnabled(true);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_agregar;

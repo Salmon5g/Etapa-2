@@ -65,7 +65,6 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem10 = new javax.swing.JMenuItem();
-        jMenuItem11 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
@@ -76,10 +75,8 @@ public class Principal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        editMenu.setMnemonic('e');
         editMenu.setText("Registros");
 
-        cutMenuItem.setMnemonic('t');
         cutMenuItem.setText("Kilometraje");
         cutMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -88,7 +85,6 @@ public class Principal extends javax.swing.JFrame {
         });
         editMenu.add(cutMenuItem);
 
-        pasteMenuItem.setMnemonic('p');
         pasteMenuItem.setText("Camiones");
         pasteMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -144,14 +140,6 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         editMenu.add(jMenuItem10);
-
-        jMenuItem11.setText("jMenuItem11");
-        jMenuItem11.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem11ActionPerformed(evt);
-            }
-        });
-        editMenu.add(jMenuItem11);
 
         menuBar.add(editMenu);
 
@@ -399,10 +387,6 @@ public class Principal extends javax.swing.JFrame {
         frm.setVisible(true);
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
-    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem11ActionPerformed
-
     /**
      * Punto de entrada de la aplicación. Configura el Look and Feel Nimbus (si
      * está disponible) y lanza el formulario de login en el hilo de eventos de
@@ -451,7 +435,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
-    private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

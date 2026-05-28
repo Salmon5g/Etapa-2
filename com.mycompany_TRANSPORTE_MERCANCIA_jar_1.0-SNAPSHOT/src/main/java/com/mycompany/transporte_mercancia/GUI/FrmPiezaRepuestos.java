@@ -38,6 +38,7 @@ public class FrmPiezaRepuestos extends javax.swing.JInternalFrame {
         initComponents();
         configurarTabla();
         cargarTabla();
+        activarModoNuevo();
 
         // Listener de selección en tabla
         tbl_piezas.getSelectionModel().addListSelectionListener(e -> {
@@ -58,6 +59,7 @@ public class FrmPiezaRepuestos extends javax.swing.JInternalFrame {
 
                 sto_txt.setText(tbl_piezas.getValueAt(fila, 4).toString());
             }
+            activarModoEditar();
         });
     }
 
@@ -330,6 +332,7 @@ public class FrmPiezaRepuestos extends javax.swing.JInternalFrame {
         nueva.setNombre(nombre);
         nueva.setDescripcion(descripcion);
         nueva.setStock(stock);
+        
 
         if (dao.create(nueva)) {
             JOptionPane.showMessageDialog(this,
@@ -344,6 +347,7 @@ public class FrmPiezaRepuestos extends javax.swing.JInternalFrame {
 
     private void bt_limpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_limpiarActionPerformed
         limpiar();
+        activarModoNuevo();
     }//GEN-LAST:event_bt_limpiarActionPerformed
 
     /**
@@ -367,7 +371,7 @@ public class FrmPiezaRepuestos extends javax.swing.JInternalFrame {
 
         int confirm = JOptionPane.showConfirmDialog(this,
                 "¿Está seguro de eliminar esta pieza?", "Confirmar", JOptionPane.YES_NO_OPTION);
-
+        
         if (confirm == JOptionPane.YES_OPTION) {
             if (dao.delete(idSeleccionado)) {
                 JOptionPane.showMessageDialog(this,
@@ -380,6 +384,7 @@ public class FrmPiezaRepuestos extends javax.swing.JInternalFrame {
                         "Error", JOptionPane.ERROR_MESSAGE);
             }
         }
+        activarModoNuevo();
     }//GEN-LAST:event_bt_eliminarActionPerformed
 
     private void bt_editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_editarActionPerformed
@@ -443,6 +448,7 @@ public class FrmPiezaRepuestos extends javax.swing.JInternalFrame {
                 "Pieza actualizada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         cargarTabla();
         limpiar();
+        activarModoNuevo();
     }//GEN-LAST:event_bt_editarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -453,6 +459,26 @@ public class FrmPiezaRepuestos extends javax.swing.JInternalFrame {
         dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
+     /**
+     * Activa el modo edición en el formulario, habilitando los botones de
+     * cancelar, modificar y eliminar, y deshabilitando el botón de registrar.
+     */
+    private void activarModoEditar() {
+        this.bt_limpiar.setEnabled(true);
+        this.bt_editar.setEnabled(true);
+        this.bt_eliminar.setEnabled(true);
+        this.bt_agregar.setEnabled(false);
+    }
+
+    /**
+     * Activa el modo nuevo para ingresar un equipo.
+     */
+    private void activarModoNuevo() {
+        this.bt_limpiar.setEnabled(false);
+        this.bt_editar.setEnabled(false);
+        this.bt_eliminar.setEnabled(false);
+        this.bt_agregar.setEnabled(true);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_agregar;
