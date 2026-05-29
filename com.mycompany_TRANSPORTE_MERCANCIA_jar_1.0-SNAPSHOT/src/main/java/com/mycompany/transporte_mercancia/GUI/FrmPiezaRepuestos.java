@@ -549,12 +549,12 @@ public class FrmPiezaRepuestos extends javax.swing.JInternalFrame {
         //   bt_limpiar  → gris   (neutral)
         //   jButton2    → celeste (actualizar)
         //   jButton1    → coral  (cerrar)
-        estilizarBoton(bt_agregar,  MINT,     BG_DARK,  "＋ Agregar",    FONT_BTN);
-        estilizarBoton(bt_editar,   CYAN,     BG_DARK,  "✎ Editar",      FONT_BTN);
-        estilizarBoton(bt_eliminar, CORAL,    BG_DARK,  "✕ Eliminar",    FONT_BTN);
-        estilizarBoton(bt_limpiar,  GRAY_BTN, BG_DARK,  "↺ Limpiar",     FONT_BTN);
-        estilizarBoton(jButton2,    CYAN,     BG_DARK,  "⟳ Actualizar",  FONT_BTN);
-        estilizarBoton(jButton1,    CORAL,    BG_DARK,  "✕ Cerrar",      FONT_BTN);
+        estilizarBoton(bt_agregar,  MINT,     BG_DARK,  "+ Agregar",    FONT_BTN);
+        estilizarBoton(bt_editar,   CYAN,     BG_DARK,  "# Editar",      FONT_BTN);
+        estilizarBoton(bt_eliminar, CORAL,    BG_DARK,  "X Eliminar",    FONT_BTN);
+        estilizarBoton(bt_limpiar,  GRAY_BTN, BG_DARK,  "* Limpiar",     FONT_BTN);
+        estilizarBoton(jButton2,    CYAN,     BG_DARK,  "🔄 Actualizar",  FONT_BTN);
+        estilizarBoton(jButton1,    CORAL,    BG_DARK,  "X Cerrar",      FONT_BTN);
 
         // ── Tabla ────────────────────────────────────────────────────────────
         tbl_piezas.setBackground(BG_MID);

@@ -34,6 +34,7 @@ public class FrmConsultaMantenimientoEquipos extends javax.swing.JInternalFrame 
      */
     public FrmConsultaMantenimientoEquipos() {
         initComponents();
+        aplicarEstilos();
         initConsulta();
     }
 
@@ -535,6 +536,196 @@ public class FrmConsultaMantenimientoEquipos extends javax.swing.JInternalFrame 
 
     private final SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yyyy");
     private final DAOMantenimientoEquipo dao = new DAOMantenimientoEquipo();
+    
+    
+    
+    private void aplicarEstilos() {
+
+        // ── Colores base ─────────────────────────────────────────────────────
+        java.awt.Color BG_DARK   = new java.awt.Color(0x0A192F);
+        java.awt.Color BG_MID    = new java.awt.Color(0x172A45);
+        java.awt.Color BG_FIELD  = new java.awt.Color(0x1F3460);
+        java.awt.Color MINT      = new java.awt.Color(0x64FFDA);
+        java.awt.Color CYAN      = new java.awt.Color(0x57CBF2);
+        java.awt.Color CORAL     = new java.awt.Color(0xFF6B6B);
+        java.awt.Color GRAY_BTN  = new java.awt.Color(0x8892B0);
+        java.awt.Color TEXT_MAIN = new java.awt.Color(0xCCD6F6);
+        java.awt.Color ROW_ALT   = new java.awt.Color(0x112240);
+
+        // ── Fuentes ──────────────────────────────────────────────────────────
+        java.awt.Font FONT_LABEL = new java.awt.Font("Segoe UI", java.awt.Font.BOLD,  12);
+        java.awt.Font FONT_FIELD = new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 13);
+        java.awt.Font FONT_BTN   = new java.awt.Font("Segoe UI", java.awt.Font.BOLD,  12);
+
+        // ── Panel principal ──────────────────────────────────────────────────
+        getContentPane().setBackground(BG_DARK);
+
+        // ── Título del InternalFrame ─────────────────────────────────────────
+        setTitle("🔍  Consulta de Mantenimientos");
+        setBackground(BG_MID);
+
+        // ── Labels de filtro ─────────────────────────────────────────────────
+        javax.swing.JLabel[] labels = { jLabel1, jLabel2, jLabel3 };
+        for (javax.swing.JLabel lbl : labels) {
+            if (lbl != null) {
+                lbl.setForeground(TEXT_MAIN);
+                lbl.setFont(FONT_LABEL);
+            }
+        }
+
+        // ── Label de total de registros ──────────────────────────────────────
+        if (lbl_total != null) {
+            lbl_total.setForeground(MINT);
+            lbl_total.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
+        }
+
+        // ── Campo número de serie ─────────────────────────────────────────────
+        if (txt_num_serie != null) {
+            txt_num_serie.setBackground(BG_FIELD);
+            txt_num_serie.setForeground(TEXT_MAIN);
+            txt_num_serie.setCaretColor(MINT);
+            txt_num_serie.setFont(FONT_FIELD);
+            txt_num_serie.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+                javax.swing.BorderFactory.createLineBorder(MINT, 1, true),
+                javax.swing.BorderFactory.createEmptyBorder(4, 8, 4, 8)
+            ));
+        }
+
+        // ── ComboBox tipo mantenimiento ───────────────────────────────────────
+        if (cmb_tipo_mant != null) {
+            cmb_tipo_mant.setBackground(BG_FIELD);
+            cmb_tipo_mant.setForeground(TEXT_MAIN);
+            cmb_tipo_mant.setFont(FONT_FIELD);
+            cmb_tipo_mant.setBorder(javax.swing.BorderFactory.createLineBorder(MINT, 1, true));
+            cmb_tipo_mant.setRenderer(new javax.swing.DefaultListCellRenderer() {
+                @Override
+                public java.awt.Component getListCellRendererComponent(
+                        javax.swing.JList<?> list, Object value, int index,
+                        boolean isSelected, boolean cellHasFocus) {
+                    super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                    setBackground(isSelected ? MINT : BG_FIELD);
+                    setForeground(isSelected ? BG_DARK : TEXT_MAIN);
+                    setFont(FONT_FIELD);
+                    setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 8, 4, 8));
+                    return this;
+                }
+            });
+        }
+
+        // ── DateChoosers (fecha desde / hasta) ───────────────────────────────
+        com.toedter.calendar.JDateChooser[] fechas = { jdc_fecha_desde, jdc_fecha_hasta };
+        for (com.toedter.calendar.JDateChooser dc : fechas) {
+            if (dc == null) continue;
+            dc.setBackground(BG_DARK);
+            dc.setForeground(TEXT_MAIN);
+            dc.setFont(FONT_FIELD);
+            dc.setBorder(javax.swing.BorderFactory.createLineBorder(MINT, 1, true));
+            if (dc.getDateEditor() != null
+                    && dc.getDateEditor().getUiComponent() instanceof javax.swing.JTextField) {
+                javax.swing.JTextField tfDate =
+                    (javax.swing.JTextField) dc.getDateEditor().getUiComponent();
+                tfDate.setBackground(BG_FIELD);
+                tfDate.setForeground(TEXT_MAIN);
+                tfDate.setCaretColor(MINT);
+                tfDate.setFont(FONT_FIELD);
+            }
+        }
+
+        // ── Botones ───────────────────────────────────────────────────────────
+        //   bt_buscar       → menta  (acción principal de búsqueda)
+        //   bt_limpiar      → gris   (neutral / resetear filtros)
+        //   bt_ver_detalles → celeste (acción secundaria)
+        //   jButton1        → coral  (cerrar ventana)
+        estilizarBoton(bt_buscar,       MINT,     BG_DARK, "O Buscar",       FONT_BTN);
+        estilizarBoton(bt_limpiar,      GRAY_BTN, BG_DARK, "* Limpiar",       FONT_BTN);
+        estilizarBoton(bt_ver_detalles, CYAN,     BG_DARK, "# Ver Detalles", FONT_BTN);
+        estilizarBoton(jButton1,        CORAL,    BG_DARK, "X Cerrar",        FONT_BTN);
+
+        // ── Tabla de historial ────────────────────────────────────────────────
+        tbl_historial.setBackground(BG_MID);
+        tbl_historial.setForeground(TEXT_MAIN);
+        tbl_historial.setFont(FONT_FIELD);
+        tbl_historial.setRowHeight(26);
+        tbl_historial.setGridColor(new java.awt.Color(0x1F3460));
+        tbl_historial.setSelectionBackground(MINT);
+        tbl_historial.setSelectionForeground(BG_DARK);
+        tbl_historial.setShowHorizontalLines(true);
+        tbl_historial.setShowVerticalLines(false);
+
+        // Cabecera de tabla
+        javax.swing.table.JTableHeader header = tbl_historial.getTableHeader();
+        header.setBackground(BG_MID);
+        header.setForeground(MINT);
+        header.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
+        ((javax.swing.table.DefaultTableCellRenderer) header.getDefaultRenderer())
+            .setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        // Renderer con filas alternas
+        tbl_historial.setDefaultRenderer(Object.class,
+            new javax.swing.table.DefaultTableCellRenderer() {
+                @Override
+                public java.awt.Component getTableCellRendererComponent(
+                        javax.swing.JTable table, Object value, boolean isSelected,
+                        boolean hasFocus, int row, int column) {
+                    super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                    if (isSelected) {
+                        setBackground(MINT);
+                        setForeground(BG_DARK);
+                    } else {
+                        setBackground(row % 2 == 0 ? BG_MID : ROW_ALT);
+                        setForeground(TEXT_MAIN);
+                    }
+                    setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
+                    return this;
+                }
+            }
+        );
+
+        // ── ScrollPane ────────────────────────────────────────────────────────
+        if (jScrollPane1 != null) {
+            jScrollPane1.setBackground(BG_DARK);
+            jScrollPane1.getViewport().setBackground(BG_MID);
+            jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(
+                new java.awt.Color(0x1F3460), 1));
+        }
+    }
+
+    /**
+     * Aplica estilo visual uniforme a un JButton.
+     * @param btn     Botón a estilizar
+     * @param bg      Color de fondo
+     * @param fg      Color de texto
+     * @param texto   Texto/icono del botón
+     * @param fuente  Fuente a usar
+     */
+    private void estilizarBoton(javax.swing.JButton btn,
+                                java.awt.Color bg,
+                                java.awt.Color fg,
+                                String texto,
+                                java.awt.Font fuente) {
+        if (btn == null) return;
+        btn.setText(texto);
+        btn.setBackground(bg);
+        btn.setForeground(fg);
+        btn.setFont(fuente);
+        btn.setFocusPainted(false);
+        btn.setBorderPainted(false);
+        btn.setOpaque(true);
+        btn.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.HAND_CURSOR));
+        btn.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+            javax.swing.BorderFactory.createLineBorder(bg.darker(), 1, true),
+            javax.swing.BorderFactory.createEmptyBorder(6, 14, 6, 14)
+        ));
+        // Efecto hover
+        btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override public void mouseEntered(java.awt.event.MouseEvent e) {
+                btn.setBackground(bg.brighter());
+            }
+            @Override public void mouseExited(java.awt.event.MouseEvent e) {
+                btn.setBackground(bg);
+            }
+        });
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_buscar;
     private javax.swing.JButton bt_limpiar;

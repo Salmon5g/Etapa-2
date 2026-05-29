@@ -154,7 +154,7 @@ public class FrmAsignarSoftware extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jButton1))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(99, 99, 99)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -174,10 +174,10 @@ public class FrmAsignarSoftware extends javax.swing.JInternalFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(bt_eliminar)
                                     .addComponent(bt_agregar))
-                                .addGap(78, 78, 78)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(bt_modificar)
-                                    .addComponent(bt_cancelar))))
+                                    .addComponent(bt_modificar, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(bt_cancelar, javax.swing.GroupLayout.Alignment.TRAILING))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18))
@@ -559,12 +559,12 @@ public class FrmAsignarSoftware extends javax.swing.JInternalFrame {
         }
 
         // ── Botones con código de color ───────────────────────────────────────
-        estilizarBoton(bt_agregar,   MINT,     BG_DARK,  "＋ Asignar",    FONT_BTN);
-        estilizarBoton(bt_modificar, CYAN,     BG_DARK,  "✎ Modificar",   FONT_BTN);
-        estilizarBoton(bt_eliminar,  CORAL,    BG_DARK,  "✕ Eliminar",    FONT_BTN);
-        estilizarBoton(bt_cancelar,  GRAY_BTN, BG_DARK,  "↩ Cancelar",    FONT_BTN);
-        estilizarBoton(jButton2,     CYAN,     BG_DARK,  "⟳ Actualizar",  FONT_BTN);
-        estilizarBoton(jButton1,     CORAL,    BG_DARK,  "✕ Cerrar",      FONT_BTN);
+        estilizarBoton(bt_agregar,   MINT,     BG_DARK,  "+ Asignar",    FONT_BTN);
+        estilizarBoton(bt_modificar, CYAN,     BG_DARK,  "# Modificar",   FONT_BTN);
+        estilizarBoton(bt_eliminar,  CORAL,    BG_DARK,  "X Eliminar",    FONT_BTN);
+        estilizarBoton(bt_cancelar,  GRAY_BTN, BG_DARK,  "* Cancelar",    FONT_BTN);
+        estilizarBoton(jButton2,     CYAN,     BG_DARK,  "🔄 Actualizar",  FONT_BTN);
+        estilizarBoton(jButton1,     CORAL,    BG_DARK,  "X Cerrar",      FONT_BTN);
 
         // ── Tabla ────────────────────────────────────────────────────────────
         tbl_asignaciones.setBackground(BG_MID);

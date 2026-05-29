@@ -37,7 +37,7 @@
                       <Component id="jButton1" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="99" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
@@ -62,10 +62,10 @@
                                   <Component id="bt_eliminar" min="-2" max="-2" attributes="0"/>
                                   <Component id="bt_agregar" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="78" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="bt_modificar" min="-2" max="-2" attributes="0"/>
-                                  <Component id="bt_cancelar" min="-2" max="-2" attributes="0"/>
+                                  <Component id="bt_modificar" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="bt_cancelar" alignment="1" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>

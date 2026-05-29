@@ -39,6 +39,7 @@ public class FrmMantenimientoEquipos extends javax.swing.JInternalFrame {
      */
     public FrmMantenimientoEquipos() {
         initComponents();
+        aplicarEstilos();
         cargarTabla();
         cargarComboEquipo();
         cargarComboTipo();
@@ -228,87 +229,86 @@ public class FrmMantenimientoEquipos extends javax.swing.JInternalFrame {
                 .addGap(44, 44, 44)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(bt_actualizar_pestaña)
-                        .addGap(30, 30, 30)
-                        .addComponent(bt_cerrar_pestaña)
-                        .addGap(26, 26, 26))
-                    .addGroup(layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel2)
+                                        .addComponent(jLabel1))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(cmb_equipo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txt_id, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(jLabel3)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cmb_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(jLabel6)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(jLabel4)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(dc_fecha_entrada, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(jLabel7)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(cmb_estado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel5))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(24, 24, 24)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel2)
-                                            .addComponent(jLabel1))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(cmb_equipo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txt_id, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(cmb_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jLabel6)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(dc_fecha_entrada, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(jLabel7)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(cmb_estado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(179, 179, 179)
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(bt_actualizar_pestaña)
+                                .addGap(30, 30, 30)
+                                .addComponent(bt_cerrar_pestaña))
+                            .addGroup(layout.createSequentialGroup()
                                 .addGap(172, 172, 172)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(bt_eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(69, 69, 69)
-                                        .addComponent(bt_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
                                         .addGap(8, 8, 8)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel8)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jLabel9)
-                                                    .addComponent(jLabel10))
-                                                .addGap(50, 50, 50)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(spn_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(cmb_pieza, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                            .addComponent(bt_agregar_pieza, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel9)
+                                            .addComponent(jLabel10))
+                                        .addGap(50, 50, 50)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(spn_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(cmb_pieza, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(bt_quitar_pieza))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
+                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(bt_agregar_pieza, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(47, 47, 47)
-                                        .addComponent(bt_quitar_pieza))))
+                                        .addComponent(bt_eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(69, 69, 69)
+                                        .addComponent(bt_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(26, 26, 26))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(147, 147, 147)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 761, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(147, 147, 147)
                                 .addComponent(bt_registrar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(49, 49, 49)
                                 .addComponent(bt_modificar, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(160, 160, 160)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 769, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 444, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(111, 111, 111))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(bt_actualizar_pestaña)
-                    .addComponent(bt_cerrar_pestaña)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel8))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(bt_actualizar_pestaña)
+                            .addComponent(bt_cerrar_pestaña)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel5)
+                        .addComponent(jLabel8)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -325,41 +325,44 @@ public class FrmMantenimientoEquipos extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cmb_equipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(9, 9, 9)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(cmb_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3))
-                                .addGap(12, 12, 12)
+                                    .addComponent(jLabel3)
+                                    .addComponent(cmb_tipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(dc_fecha_entrada, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(spn_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel10)))
-                        .addGap(9, 9, 9)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmb_estado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(bt_quitar_pieza)
-                            .addComponent(bt_agregar_pieza)
-                            .addComponent(jLabel7))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel6)))
+                                    .addComponent(dc_fecha_entrada, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(cmb_estado, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel6)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(spn_cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel10))
+                                .addGap(47, 47, 47)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(bt_quitar_pieza)
+                                    .addComponent(bt_agregar_pieza)))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
+                        .addGap(31, 31, 31)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(68, 68, 68)
+                .addGap(63, 63, 63)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(bt_registrar)
                     .addComponent(bt_modificar)
                     .addComponent(bt_eliminar)
                     .addComponent(bt_cancelar))
-                .addGap(28, 28, 28)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(100, Short.MAX_VALUE))
+                .addContainerGap(104, Short.MAX_VALUE))
         );
 
         pack();
@@ -763,6 +766,266 @@ private void activarModoTerminado() {
     bt_agregar_pieza.setEnabled(false);
     bt_quitar_pieza .setEnabled(false);
 }
+
+ private void aplicarEstilos() {
+
+        // ── Colores base ─────────────────────────────────────────────────────
+        java.awt.Color BG_DARK   = new java.awt.Color(0x0A192F);
+        java.awt.Color BG_MID    = new java.awt.Color(0x172A45);
+        java.awt.Color BG_FIELD  = new java.awt.Color(0x1F3460);
+        java.awt.Color MINT      = new java.awt.Color(0x64FFDA);
+        java.awt.Color CYAN      = new java.awt.Color(0x57CBF2);
+        java.awt.Color CORAL     = new java.awt.Color(0xFF6B6B);
+        java.awt.Color GRAY_BTN  = new java.awt.Color(0x8892B0);
+        java.awt.Color TEXT_MAIN = new java.awt.Color(0xCCD6F6);
+        java.awt.Color ROW_ALT   = new java.awt.Color(0x112240);
+
+        // ── Fuentes ──────────────────────────────────────────────────────────
+        java.awt.Font FONT_LABEL = new java.awt.Font("Segoe UI", java.awt.Font.BOLD,  12);
+        java.awt.Font FONT_FIELD = new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 13);
+        java.awt.Font FONT_BTN   = new java.awt.Font("Segoe UI", java.awt.Font.BOLD,  12);
+
+        // ── Panel principal ──────────────────────────────────────────────────
+        getContentPane().setBackground(BG_DARK);
+
+        // ── Título del InternalFrame ─────────────────────────────────────────
+        setTitle("🔧  Mantenimiento de Equipos");
+        setBackground(BG_MID);
+
+        // ── Labels ───────────────────────────────────────────────────────────
+        javax.swing.JLabel[] labels = {
+            jLabel1, jLabel2, jLabel3, jLabel4, jLabel5,
+            jLabel6, jLabel7, jLabel8, jLabel9, jLabel10
+        };
+        for (javax.swing.JLabel lbl : labels) {
+            if (lbl != null) {
+                lbl.setForeground(TEXT_MAIN);
+                lbl.setFont(FONT_LABEL);
+            }
+        }
+
+        // ── Campo ID (solo lectura) ───────────────────────────────────────────
+        if (txt_id != null) {
+            txt_id.setBackground(BG_MID);
+            txt_id.setForeground(GRAY_BTN);
+            txt_id.setFont(FONT_FIELD);
+            txt_id.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+                javax.swing.BorderFactory.createLineBorder(BG_MID, 1),
+                javax.swing.BorderFactory.createEmptyBorder(4, 8, 4, 8)
+            ));
+        }
+
+        // ── TextArea descripción ──────────────────────────────────────────────
+        if (txt_descripcion != null) {
+            txt_descripcion.setBackground(BG_FIELD);
+            txt_descripcion.setForeground(TEXT_MAIN);
+            txt_descripcion.setCaretColor(MINT);
+            txt_descripcion.setFont(FONT_FIELD);
+            txt_descripcion.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+                javax.swing.BorderFactory.createLineBorder(MINT, 1, true),
+                javax.swing.BorderFactory.createEmptyBorder(4, 8, 4, 8)
+            ));
+        }
+
+        // ── ComboBoxes ────────────────────────────────────────────────────────
+        javax.swing.JComboBox<?>[] combos = { cmb_equipo, cmb_tipo, cmb_estado, cmb_pieza };
+        for (javax.swing.JComboBox<?> cmb : combos) {
+            if (cmb == null) continue;
+            cmb.setBackground(BG_FIELD);
+            cmb.setForeground(TEXT_MAIN);
+            cmb.setFont(FONT_FIELD);
+            cmb.setBorder(javax.swing.BorderFactory.createLineBorder(MINT, 1, true));
+            // Renderer para las opciones desplegadas
+            cmb.setRenderer(new javax.swing.DefaultListCellRenderer() {
+                @Override
+                public java.awt.Component getListCellRendererComponent(
+                        javax.swing.JList<?> list, Object value, int index,
+                        boolean isSelected, boolean cellHasFocus) {
+                    super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                    setBackground(isSelected ? MINT : BG_FIELD);
+                    setForeground(isSelected ? BG_DARK : TEXT_MAIN);
+                    setFont(FONT_FIELD);
+                    setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 8, 4, 8));
+                    return this;
+                }
+            });
+        }
+
+        // ── Spinner de cantidad ───────────────────────────────────────────────
+        if (spn_cantidad != null) {
+            spn_cantidad.setBackground(BG_FIELD);
+            spn_cantidad.setForeground(TEXT_MAIN);
+            spn_cantidad.setFont(FONT_FIELD);
+            spn_cantidad.setBorder(javax.swing.BorderFactory.createLineBorder(MINT, 1, true));
+            java.awt.Component editor = spn_cantidad.getEditor();
+            if (editor instanceof javax.swing.JSpinner.DefaultEditor) {
+                javax.swing.JTextField tf = ((javax.swing.JSpinner.DefaultEditor) editor).getTextField();
+                tf.setBackground(BG_FIELD);
+                tf.setForeground(TEXT_MAIN);
+                tf.setCaretColor(MINT);
+                tf.setFont(FONT_FIELD);
+                tf.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 6, 2, 6));
+            }
+        }
+
+        // ── DateChooser fecha de entrada ──────────────────────────────────────
+        if (dc_fecha_entrada != null) {
+            dc_fecha_entrada.setBackground(BG_DARK);
+            dc_fecha_entrada.setForeground(TEXT_MAIN);
+            dc_fecha_entrada.setFont(FONT_FIELD);
+            dc_fecha_entrada.setBorder(javax.swing.BorderFactory.createLineBorder(MINT, 1, true));
+            if (dc_fecha_entrada.getDateEditor() != null
+                    && dc_fecha_entrada.getDateEditor().getUiComponent() instanceof javax.swing.JTextField) {
+                javax.swing.JTextField tfDate =
+                    (javax.swing.JTextField) dc_fecha_entrada.getDateEditor().getUiComponent();
+                tfDate.setBackground(BG_FIELD);
+                tfDate.setForeground(TEXT_MAIN);
+                tfDate.setCaretColor(MINT);
+                tfDate.setFont(FONT_FIELD);
+            }
+        }
+
+        // ── Botones principales ───────────────────────────────────────────────
+        //   bt_registrar      → menta  (acción principal)
+        //   bt_modificar      → celeste (editar)
+        //   bt_eliminar       → coral  (peligro)
+        //   bt_cancelar       → gris   (neutral)
+        //   bt_actualizar_pestaña → celeste
+        //   bt_cerrar_pestaña     → coral
+        //   bt_agregar_pieza  → menta  (agregar al detalle)
+        //   bt_quitar_pieza   → coral  (quitar del detalle)
+        estilizarBoton(bt_registrar,       MINT,     BG_DARK, "+ Registrar",    FONT_BTN);
+        estilizarBoton(bt_modificar,       CYAN,     BG_DARK, "# Modificar",     FONT_BTN);
+        estilizarBoton(bt_eliminar,        CORAL,    BG_DARK, "X Eliminar",      FONT_BTN);
+        estilizarBoton(bt_cancelar,        GRAY_BTN, BG_DARK, "* Cancelar",      FONT_BTN);
+        estilizarBoton(bt_actualizar_pestaña, CYAN,  BG_DARK, "🔄 Actualizar",   FONT_BTN);
+        estilizarBoton(bt_cerrar_pestaña,  CORAL,    BG_DARK, "X Cerrar",        FONT_BTN);
+        estilizarBoton(bt_agregar_pieza,   MINT,     BG_DARK, "+ Agregar",FONT_BTN);
+        estilizarBoton(bt_quitar_pieza,    CORAL,    BG_DARK, "X Quitar",  FONT_BTN);
+
+        // ── Tabla de mantenimientos ───────────────────────────────────────────
+        tbl_mantenimientos.setBackground(BG_MID);
+        tbl_mantenimientos.setForeground(TEXT_MAIN);
+        tbl_mantenimientos.setFont(FONT_FIELD);
+        tbl_mantenimientos.setRowHeight(26);
+        tbl_mantenimientos.setGridColor(new java.awt.Color(0x1F3460));
+        tbl_mantenimientos.setSelectionBackground(MINT);
+        tbl_mantenimientos.setSelectionForeground(BG_DARK);
+        tbl_mantenimientos.setShowHorizontalLines(true);
+        tbl_mantenimientos.setShowVerticalLines(false);
+
+        javax.swing.table.JTableHeader headerMant = tbl_mantenimientos.getTableHeader();
+        headerMant.setBackground(BG_MID);
+        headerMant.setForeground(MINT);
+        headerMant.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
+        ((javax.swing.table.DefaultTableCellRenderer) headerMant.getDefaultRenderer())
+            .setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        tbl_mantenimientos.setDefaultRenderer(Object.class,
+            new javax.swing.table.DefaultTableCellRenderer() {
+                @Override
+                public java.awt.Component getTableCellRendererComponent(
+                        javax.swing.JTable table, Object value, boolean isSelected,
+                        boolean hasFocus, int row, int column) {
+                    super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                    if (isSelected) {
+                        setBackground(MINT);
+                        setForeground(BG_DARK);
+                    } else {
+                        setBackground(row % 2 == 0 ? BG_MID : ROW_ALT);
+                        setForeground(TEXT_MAIN);
+                    }
+                    setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
+                    return this;
+                }
+            }
+        );
+
+        // ── Tabla de piezas del detalle ──────────────────────────────────────
+        tbl_piezas.setBackground(BG_MID);
+        tbl_piezas.setForeground(TEXT_MAIN);
+        tbl_piezas.setFont(FONT_FIELD);
+        tbl_piezas.setRowHeight(24);
+        tbl_piezas.setGridColor(new java.awt.Color(0x1F3460));
+        tbl_piezas.setSelectionBackground(CYAN);
+        tbl_piezas.setSelectionForeground(BG_DARK);
+        tbl_piezas.setShowHorizontalLines(true);
+        tbl_piezas.setShowVerticalLines(false);
+
+        javax.swing.table.JTableHeader headerPiezas = tbl_piezas.getTableHeader();
+        headerPiezas.setBackground(BG_MID);
+        headerPiezas.setForeground(CYAN);
+        headerPiezas.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
+        ((javax.swing.table.DefaultTableCellRenderer) headerPiezas.getDefaultRenderer())
+            .setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        tbl_piezas.setDefaultRenderer(Object.class,
+            new javax.swing.table.DefaultTableCellRenderer() {
+                @Override
+                public java.awt.Component getTableCellRendererComponent(
+                        javax.swing.JTable table, Object value, boolean isSelected,
+                        boolean hasFocus, int row, int column) {
+                    super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                    if (isSelected) {
+                        setBackground(CYAN);
+                        setForeground(BG_DARK);
+                    } else {
+                        setBackground(row % 2 == 0 ? BG_MID : ROW_ALT);
+                        setForeground(TEXT_MAIN);
+                    }
+                    setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
+                    return this;
+                }
+            }
+        );
+
+        // ── ScrollPanes ───────────────────────────────────────────────────────
+        javax.swing.JScrollPane[] scrolls = { jScrollPane1, jScrollPane2, jScrollPane3 };
+        for (javax.swing.JScrollPane sp : scrolls) {
+            if (sp == null) continue;
+            sp.setBackground(BG_DARK);
+            sp.getViewport().setBackground(BG_MID);
+            sp.setBorder(javax.swing.BorderFactory.createLineBorder(
+                new java.awt.Color(0x1F3460), 1));
+        }
+    }
+
+    /**
+     * Aplica estilo visual uniforme a un JButton.
+     * @param btn     Botón a estilizar
+     * @param bg      Color de fondo
+     * @param fg      Color de texto
+     * @param texto   Texto/icono del botón
+     * @param fuente  Fuente a usar
+     */
+    private void estilizarBoton(javax.swing.JButton btn,
+                                java.awt.Color bg,
+                                java.awt.Color fg,
+                                String texto,
+                                java.awt.Font fuente) {
+        if (btn == null) return;
+        btn.setText(texto);
+        btn.setBackground(bg);
+        btn.setForeground(fg);
+        btn.setFont(fuente);
+        btn.setFocusPainted(false);
+        btn.setBorderPainted(false);
+        btn.setOpaque(true);
+        btn.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.HAND_CURSOR));
+        btn.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+            javax.swing.BorderFactory.createLineBorder(bg.darker(), 1, true),
+            javax.swing.BorderFactory.createEmptyBorder(6, 14, 6, 14)
+        ));
+        // Efecto hover
+        btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override public void mouseEntered(java.awt.event.MouseEvent e) {
+                btn.setBackground(bg.brighter());
+            }
+            @Override public void mouseExited(java.awt.event.MouseEvent e) {
+                btn.setBackground(bg);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bt_actualizar_pestaña;

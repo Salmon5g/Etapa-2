@@ -348,7 +348,7 @@ public class Principal extends javax.swing.JFrame {
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         FrmEquiposDeOficina frm = new FrmEquiposDeOficina();
         this.desktopPane.add(frm);
-        frm.setSize(858, 595);
+        frm.setSize(890, 620);
         frm.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
@@ -383,7 +383,7 @@ public class Principal extends javax.swing.JFrame {
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
         FrmAsignarSoftware frm = new FrmAsignarSoftware();
         this.desktopPane.add(frm);
-        frm.setSize(920, 600);
+        frm.setSize(940, 640);
         frm.setVisible(true);
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 

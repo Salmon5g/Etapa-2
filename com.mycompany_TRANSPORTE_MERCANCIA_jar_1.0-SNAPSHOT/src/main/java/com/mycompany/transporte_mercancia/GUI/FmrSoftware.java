@@ -409,146 +409,164 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
 
         return true;
     }
+ private void aplicarEstilos() {
 
-    // ── Método principal de estilos ──────────────────────────────────────────
-    private void aplicarEstilos() {
+        // ── Colores base ─────────────────────────────────────────────────────
+        java.awt.Color BG_DARK   = new java.awt.Color(0x0A192F);
+        java.awt.Color BG_MID    = new java.awt.Color(0x172A45);
+        java.awt.Color BG_FIELD  = new java.awt.Color(0x1F3460);
+        java.awt.Color MINT      = new java.awt.Color(0x64FFDA);
+        java.awt.Color CYAN      = new java.awt.Color(0x57CBF2);
+        java.awt.Color CORAL     = new java.awt.Color(0xFF6B6B);
+        java.awt.Color GRAY_BTN  = new java.awt.Color(0x8892B0);
+        java.awt.Color TEXT_MAIN = new java.awt.Color(0xCCD6F6);
+        java.awt.Color ROW_ALT   = new java.awt.Color(0x112240);
 
-        // Paleta "Deep Ocean" (idéntica al resto de formularios) ──────────────
-        final java.awt.Color BG_PRIMARY = new java.awt.Color(10, 25, 47); // #0A192F  marino profundo
-        final java.awt.Color BG_SECONDARY = new java.awt.Color(23, 42, 69); // #172A45  azul oscuro
-        final java.awt.Color BG_FIELD = new java.awt.Color(31, 52, 96); // #1F3460  azul medio
-        final java.awt.Color ACCENT_MINT = new java.awt.Color(100, 255, 218); // #64FFDA  menta brillante
-        final java.awt.Color ACCENT_BLUE = new java.awt.Color(87, 203, 242); // #57CBF2  celeste
-        final java.awt.Color TEXT_LIGHT = new java.awt.Color(204, 214, 246); // #CCD6F6  blanco lavanda
-        final java.awt.Color BTN_DELETE = new java.awt.Color(255, 107, 107); // #FF6B6B  rojo coral
-        final java.awt.Color BTN_NEUTRAL = new java.awt.Color(136, 146, 176); // #8892B0  gris azulado
-        final java.awt.Color ROW_ODD = new java.awt.Color(17, 34, 64); // #112240
-        final java.awt.Color ROW_EVEN = new java.awt.Color(10, 25, 47); // #0A192F
-        final java.awt.Color ROW_SEL = new java.awt.Color(31, 52, 96); // #1F3460
+        // ── Fuentes ──────────────────────────────────────────────────────────
+        java.awt.Font FONT_LABEL  = new java.awt.Font("Segoe UI", java.awt.Font.BOLD,  12);
+        java.awt.Font FONT_FIELD  = new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 13);
+        java.awt.Font FONT_BTN    = new java.awt.Font("Segoe UI", java.awt.Font.BOLD,  12);
 
-        // Fuentes ─────────────────────────────────────────────────────────────
-        java.awt.Font fLabel = new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12);
-        java.awt.Font fField = new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 12);
-        java.awt.Font fBtn = new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12);
-        java.awt.Font fTable = new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 12);
-        java.awt.Font fHeader = new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12);
+        // ── Panel principal ──────────────────────────────────────────────────
+        getContentPane().setBackground(BG_DARK);
 
-        // Content pane ────────────────────────────────────────────────────────
-        getContentPane().setBackground(BG_PRIMARY);
+        // ── Título del InternalFrame ─────────────────────────────────────────
+        setTitle("💿  Software");
+        setBackground(BG_MID);
 
-        // Labels ──────────────────────────────────────────────────────────────
-        for (javax.swing.JLabel lbl : new javax.swing.JLabel[]{
-            jLabel1, jLabel2, jLabel3, jLabel4}) {
-            lbl.setForeground(TEXT_LIGHT);
-            lbl.setFont(fLabel);
+        // ── Labels ───────────────────────────────────────────────────────────
+        javax.swing.JLabel[] labels = { jLabel1, jLabel2, jLabel3, jLabel4 };
+        for (javax.swing.JLabel lbl : labels) {
+            if (lbl != null) {
+                lbl.setForeground(TEXT_MAIN);
+                lbl.setFont(FONT_LABEL);
+            }
         }
 
-        // Campos de texto ─────────────────────────────────────────────────────
-        javax.swing.border.Border fieldBorder = javax.swing.BorderFactory.createCompoundBorder(
-                javax.swing.BorderFactory.createLineBorder(ACCENT_MINT, 1, true),
-                javax.swing.BorderFactory.createEmptyBorder(3, 6, 3, 6));
-
-        for (javax.swing.JTextField tf : new javax.swing.JTextField[]{
-            txt_id, txt_nombre, txt_version, txt_fabricante}) {
-            tf.setBackground(BG_FIELD);
-            tf.setForeground(TEXT_LIGHT);
-            tf.setCaretColor(ACCENT_MINT);
-            tf.setFont(fField);
-            tf.setBorder(fieldBorder);
+        // ── TextFields editables ─────────────────────────────────────────────
+        javax.swing.JTextField[] fields = { txt_nombre, txt_version, txt_fabricante };
+        for (javax.swing.JTextField tf : fields) {
+            if (tf != null) {
+                tf.setBackground(BG_FIELD);
+                tf.setForeground(TEXT_MAIN);
+                tf.setCaretColor(MINT);
+                tf.setFont(FONT_FIELD);
+                tf.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+                    javax.swing.BorderFactory.createLineBorder(MINT, 1, true),
+                    javax.swing.BorderFactory.createEmptyBorder(4, 8, 4, 8)
+                ));
+            }
         }
-        // ID: fondo más apagado (campo de solo lectura visual)
-        txt_id.setBackground(BG_SECONDARY);
 
-        // Botones (código de colores por función) ─────────────────────────────
-        // Verde menta  → agregar / acción principal
-        estilizarBoton(bt_agregar, ACCENT_MINT,
-                new java.awt.Color(10, 25, 47), fBtn);
+        // ── Campo ID (solo lectura / oculto visualmente) ─────────────────────
+        if (txt_id != null) {
+            txt_id.setBackground(BG_MID);
+            txt_id.setForeground(GRAY_BTN);
+            txt_id.setFont(FONT_FIELD);
+            txt_id.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+                javax.swing.BorderFactory.createLineBorder(BG_MID, 1),
+                javax.swing.BorderFactory.createEmptyBorder(4, 8, 4, 8)
+            ));
+        }
 
-        // Celeste      → modificar
-        estilizarBoton(bt_modificar, ACCENT_BLUE,
-                new java.awt.Color(10, 25, 47), fBtn);
+        // ── Botones con código de color ───────────────────────────────────────
+        //   bt_agregar   → menta  (acción principal / nuevo)
+        //   bt_modificar → celeste (modificar)
+        //   bt_eliminar  → coral  (peligro)
+        //   bt_cancelar  → gris   (neutral)
+        //   jButton2     → celeste (actualizar tabla)
+        //   jButton1     → coral  (cerrar ventana)
+        estilizarBoton(bt_agregar,   MINT,     BG_DARK, "+ Agregar",    FONT_BTN);
+        estilizarBoton(bt_modificar, CYAN,     BG_DARK, "# Modificar",   FONT_BTN);
+        estilizarBoton(bt_eliminar,  CORAL,    BG_DARK, "X Eliminar",    FONT_BTN);
+        estilizarBoton(bt_cancelar,  GRAY_BTN, BG_DARK, "* Cancelar",    FONT_BTN);
+        estilizarBoton(jButton2,     CYAN,     BG_DARK, "🔄 Actualizar",  FONT_BTN);
+        estilizarBoton(jButton1,     CORAL,    BG_DARK, "X Cerrar",      FONT_BTN);
 
-        // Rojo coral   → eliminar
-        estilizarBoton(bt_eliminar, BTN_DELETE,
-                java.awt.Color.WHITE, fBtn);
-
-        // Gris azulado → cancelar
-        estilizarBoton(bt_cancelar, BTN_NEUTRAL,
-                java.awt.Color.WHITE, fBtn);
-
-        // jButton2 = Actualizar: oscuro con borde menta
-        estilizarBoton(jButton2, BG_SECONDARY, ACCENT_MINT, fBtn);
-        jButton2.setBorderPainted(true);
-        jButton2.setBorder(
-                javax.swing.BorderFactory.createLineBorder(ACCENT_MINT, 1, true));
-
-        // jButton1 = Cerrar: oscuro con borde rojo
-        estilizarBoton(jButton1, new java.awt.Color(60, 15, 15), BTN_DELETE, fBtn);
-        jButton1.setBorderPainted(true);
-        jButton1.setBorder(
-                javax.swing.BorderFactory.createLineBorder(BTN_DELETE, 1, true));
-
-        // Tabla ───────────────────────────────────────────────────────────────
-        tbl_software.setBackground(ROW_ODD);
-        tbl_software.setForeground(TEXT_LIGHT);
-        tbl_software.setFont(fTable);
-        tbl_software.setGridColor(BG_SECONDARY);
+        // ── Tabla ────────────────────────────────────────────────────────────
+        tbl_software.setBackground(BG_MID);
+        tbl_software.setForeground(TEXT_MAIN);
+        tbl_software.setFont(FONT_FIELD);
         tbl_software.setRowHeight(26);
-        tbl_software.setSelectionBackground(ROW_SEL);
-        tbl_software.setSelectionForeground(ACCENT_MINT);
+        tbl_software.setGridColor(new java.awt.Color(0x1F3460));
+        tbl_software.setSelectionBackground(MINT);
+        tbl_software.setSelectionForeground(BG_DARK);
         tbl_software.setShowHorizontalLines(true);
         tbl_software.setShowVerticalLines(false);
-        tbl_software.setIntercellSpacing(new java.awt.Dimension(0, 1));
 
-        // Encabezado de tabla
-        javax.swing.table.JTableHeader tableHeader = tbl_software.getTableHeader();
-        tableHeader.setBackground(new java.awt.Color(17, 34, 64));
-        tableHeader.setForeground(ACCENT_MINT);
-        tableHeader.setFont(fHeader);
-        tableHeader.setReorderingAllowed(false);
-        ((javax.swing.table.DefaultTableCellRenderer) tableHeader.getDefaultRenderer())
-                .setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        // Cabecera de tabla
+        javax.swing.table.JTableHeader header = tbl_software.getTableHeader();
+        header.setBackground(BG_MID);
+        header.setForeground(MINT);
+        header.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 12));
+        ((javax.swing.table.DefaultTableCellRenderer) header.getDefaultRenderer())
+            .setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         // Renderer con filas alternas
         tbl_software.setDefaultRenderer(Object.class,
-                new javax.swing.table.DefaultTableCellRenderer() {
-            @Override
-            public java.awt.Component getTableCellRendererComponent(
-                    javax.swing.JTable t, Object val, boolean sel,
-                    boolean focus, int row, int col) {
-                super.getTableCellRendererComponent(t, val, sel, focus, row, col);
-                if (sel) {
-                    setBackground(ROW_SEL);
-                    setForeground(ACCENT_MINT);
-                } else {
-                    setBackground(row % 2 == 0 ? ROW_EVEN : ROW_ODD);
-                    setForeground(TEXT_LIGHT);
+            new javax.swing.table.DefaultTableCellRenderer() {
+                @Override
+                public java.awt.Component getTableCellRendererComponent(
+                        javax.swing.JTable table, Object value, boolean isSelected,
+                        boolean hasFocus, int row, int column) {
+                    super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                    if (isSelected) {
+                        setBackground(MINT);
+                        setForeground(BG_DARK);
+                    } else {
+                        setBackground(row % 2 == 0 ? BG_MID : ROW_ALT);
+                        setForeground(TEXT_MAIN);
+                    }
+                    setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
+                    return this;
                 }
-                setFont(fTable);
-                setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
-                return this;
             }
-        });
+        );
 
-        // ScrollPane ──────────────────────────────────────────────────────────
-        jScrollPane1.getViewport().setBackground(ROW_EVEN);
-        jScrollPane1.setBorder(
-                javax.swing.BorderFactory.createLineBorder(ACCENT_MINT, 1, true));
+        // ── ScrollPane ───────────────────────────────────────────────────────
+        jScrollPane1.setBackground(BG_DARK);
+        jScrollPane1.getViewport().setBackground(BG_MID);
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(
+            new java.awt.Color(0x1F3460), 1));
     }
 
-// ── Método auxiliar reutilizable ─────────────────────────────────────────
+    /**
+     * Aplica estilo visual uniforme a un JButton.
+     * @param btn     Botón a estilizar
+     * @param bg      Color de fondo
+     * @param fg      Color de texto
+     * @param texto   Texto/icono del botón
+     * @param fuente  Fuente a usar
+     */
     private void estilizarBoton(javax.swing.JButton btn,
-            java.awt.Color bg,
-            java.awt.Color fg,
-            java.awt.Font font) {
+                                java.awt.Color bg,
+                                java.awt.Color fg,
+                                String texto,
+                                java.awt.Font fuente) {
+        if (btn == null) return;
+        btn.setText(texto);
         btn.setBackground(bg);
         btn.setForeground(fg);
-        btn.setFont(font);
+        btn.setFont(fuente);
         btn.setFocusPainted(false);
         btn.setBorderPainted(false);
         btn.setOpaque(true);
-        btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.HAND_CURSOR));
+        btn.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+            javax.swing.BorderFactory.createLineBorder(bg.darker(), 1, true),
+            javax.swing.BorderFactory.createEmptyBorder(6, 14, 6, 14)
+        ));
+        // Efecto hover
+        btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override public void mouseEntered(java.awt.event.MouseEvent e) {
+                btn.setBackground(bg.brighter());
+            }
+            @Override public void mouseExited(java.awt.event.MouseEvent e) {
+                btn.setBackground(bg);
+            }
+        });
     }
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
