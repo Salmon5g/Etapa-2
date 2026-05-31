@@ -210,7 +210,17 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+   /**
+ * Registra un nuevo software en la base de datos.
+ * <p>
+ * Este método obtiene los datos ingresados en el formulario,
+ * valida los campos, verifica que no exista un software
+ * duplicado y posteriormente guarda la información en la
+ * base de datos MySQL.
+ * </p>
+ *
+ * @param evt evento generado al presionar el botón agregar
+ */
     private void bt_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_agregarActionPerformed
         String nombre = txt_nombre.getText().trim();
         String version = txt_version.getText().trim();
@@ -237,6 +247,13 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
         limpiarFormulario();
     }//GEN-LAST:event_bt_agregarActionPerformed
 
+    /**
+ * Activa el modo de registro de un nuevo software.
+ * <p>
+ * Habilita el botón de agregar y deshabilita
+ * las opciones de modificar y eliminar.
+ * </p>
+ */
     private void activarModoNuevo() {
 
         bt_agregar.setEnabled(true);
@@ -244,6 +261,17 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
         bt_eliminar.setEnabled(false);
     }
 
+    
+   /**
+ * Modifica los datos de un software existente.
+ * <p>
+ * Verifica que exista un software seleccionado,
+ * valida los campos ingresados y actualiza
+ * la información en la base de datos.
+ * </p>
+ *
+ * @param evt evento generado al presionar el botón modificar
+ */
     private void bt_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_modificarActionPerformed
         if (txt_id.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Seleccione un software de la tabla para modificar.");
@@ -278,14 +306,24 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
         activarModoNuevo();
         limpiarFormulario();
     }//GEN-LAST:event_bt_modificarActionPerformed
-
+/**
+ * Cancela la operación actual y limpia el formulario.
+ *
+ * @param evt evento generado al presionar el botón cancelar
+ */
     private void bt_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_cancelarActionPerformed
         // TODO add your handling code here:
         limpiarFormulario();
         activarModoNuevo();
         tbl_software.clearSelection();
     }//GEN-LAST:event_bt_cancelarActionPerformed
-
+/**
+ * Limpia todos los campos del formulario.
+ * <p>
+ * Restablece los valores de los campos de texto
+ * relacionados al software.
+ * </p>
+ */
     private void limpiarFormulario() {
 
         txt_id.setText("");
@@ -293,7 +331,13 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
         txt_version.setText("");
         txt_fabricante.setText("");
     }
-
+/**
+ * Carga todos los registros de software en la tabla.
+ * <p>
+ * Obtiene los datos desde la base de datos mediante
+ * el DAO y los muestra en el JTable.
+ * </p>
+ */
     public void cargarTabla() {
 
         Object columnas[] = {"ID", "Nombre", "Version", "Fabricante", "Fecha Registro"};
@@ -306,7 +350,11 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
         tbl_software.setModel(modelo);
     }
 
-
+/**
+ * Elimina un software seleccionado de la base de datos.
+ *
+ * @param evt evento generado al presionar el botón eliminar
+ */
     private void bt_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_eliminarActionPerformed
         // TODO add your handling code here:
         int id
@@ -319,7 +367,16 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
         activarModoNuevo();
         limpiarFormulario();
     }//GEN-LAST:event_bt_eliminarActionPerformed
-
+/**
+ * Carga los datos del software seleccionado en el formulario.
+ * <p>
+ * Al seleccionar una fila de la tabla, los datos se
+ * transfieren a los campos de texto para permitir
+ * su edición o eliminación.
+ * </p>
+ *
+ * @param evt evento generado al hacer clic en la tabla
+ */
     private void tbl_softwareMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_softwareMouseClicked
         int fila = tbl_software.getSelectedRow();
 
@@ -340,21 +397,49 @@ public class FmrSoftware extends javax.swing.JInternalFrame {
             activarModoEditar();
         }
     }//GEN-LAST:event_tbl_softwareMouseClicked
-
+/**
+ * Recarga los datos de la tabla de software.
+ *
+ * @param evt evento generado al presionar el botón
+ */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         cargarTabla();
     }//GEN-LAST:event_jButton2ActionPerformed
 
+/**
+ * Cierra la ventana actual.
+ *
+ * @param evt evento generado al presionar el botón salir
+ */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
-
+/**
+ * Activa el modo de edición.
+ * <p>
+ * Deshabilita el botón agregar y habilita
+ * las opciones de modificar y eliminar.
+ * </p>
+ */
     private void activarModoEditar() {
         bt_agregar.setEnabled(false);
         bt_modificar.setEnabled(true);
         bt_eliminar.setEnabled(true);
     }
-
+/**
+ * Valida los campos ingresados en el formulario.
+ * <p>
+ * Verifica que el nombre, versión y fabricante
+ * cumplan con las restricciones definidas,
+ * mostrando mensajes de error en caso contrario.
+ * </p>
+ *
+ * @param nombre nombre del software
+ * @param version versión del software
+ * @param fabricante fabricante del software
+ * @return true si todos los campos son válidos,
+ *         false en caso contrario
+ */
     private boolean validarCampos(String nombre, String version, String fabricante) {
         // --- NOMBRE ---
         if (nombre.isEmpty()) {

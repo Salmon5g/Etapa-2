@@ -220,7 +220,21 @@ public class FrmAsignarSoftware extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Botón que al hacer interacción guarda los datos rellenados
+     * en el formulario y registra una nueva asignación de software
+     * a un equipo de oficina.
+     * <p>
+     * Contiene validaciones básicas para verificar:
+     * <ul>
+     *   <li>Que la fecha haya sido seleccionada.</li>
+     *   <li>Que la asignación no exista previamente.</li>
+     * </ul>
+     * Además, muestra mensajes informativos al usuario según el resultado
+     * de la operación.
+     *
+     * @param evt Evento generado al presionar el botón agregar.
+     */
     private void bt_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_agregarActionPerformed
 
         Software software = (Software) cb_software.getSelectedItem();
@@ -258,6 +272,16 @@ public class FrmAsignarSoftware extends javax.swing.JInternalFrame {
         cargarTabla();        // TODO add your handling code here:
     }//GEN-LAST:event_bt_agregarActionPerformed
 
+   /**
+     * Modifica una asignación existente de software y equipo.
+     * <p>
+     * Valida que exista una asignación seleccionada y que la fecha
+     * de instalación haya sido ingresada antes de actualizar los datos.
+     * Posteriormente actualiza la información en la base de datos,
+     * recarga la tabla y limpia el formulario.
+     *
+     * @param evt Evento generado al presionar el botón modificar.
+     */
     private void bt_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_modificarActionPerformed
         if (idSeleccionado == 0) {
 
@@ -301,6 +325,14 @@ public class FrmAsignarSoftware extends javax.swing.JInternalFrame {
         activarModoNuevo();
         limpiarFormulario();        // TODO add your handling code here:
     }//GEN-LAST:event_bt_modificarActionPerformed
+     /**
+     * Carga todos los equipos de oficina disponibles
+     * en el ComboBox de equipos.
+     * <p>
+     * Primero limpia los elementos existentes y luego
+     * agrega cada equipo obtenido desde la base de datos.
+     */
+    
     private void cargarEquipos() {
 
         cb_equipo.removeAllItems();
@@ -310,7 +342,13 @@ public class FrmAsignarSoftware extends javax.swing.JInternalFrame {
             cb_equipo.addItem(e);
         }
     }
-
+  /**
+     * Carga todos los softwares disponibles
+     * en el ComboBox de software.
+     * <p>
+     * Primero elimina los elementos actuales y posteriormente
+     * agrega los registros obtenidos desde la base de datos.
+     */
     private void cargarSoftware() {
 
         cb_software.removeAllItems();
@@ -319,7 +357,12 @@ public class FrmAsignarSoftware extends javax.swing.JInternalFrame {
             cb_software.addItem(s);
         }
     }
-
+ /**
+     * Carga todas las asignaciones registradas en la tabla.
+     * <p>
+     * Crea un nuevo modelo de tabla, define las columnas y
+     * agrega cada asignación obtenida desde la base de datos.
+     */
     private void cargarTabla() {
 
         DefaultTableModel modelo = new DefaultTableModel();
@@ -347,7 +390,12 @@ public class FrmAsignarSoftware extends javax.swing.JInternalFrame {
 
         tbl_asignaciones.setModel(modelo);
     }
-
+   /**
+     * Limpia todos los campos del formulario.
+     * <p>
+     * Restablece la fecha, los ComboBox, la selección
+     * de la tabla y el identificador seleccionado.
+     */
     private void limpiarFormulario() {
 
         dc_fecha.setDate(null);
@@ -362,6 +410,17 @@ public class FrmAsignarSoftware extends javax.swing.JInternalFrame {
 
         idSeleccionado = 0;
     }
+    
+    
+     /**
+     * Elimina una asignación seleccionada de la tabla.
+     * <p>
+     * Verifica que exista una fila seleccionada antes
+     * de proceder con la eliminación. Posteriormente,
+     * actualiza la tabla y activa el modo nuevo.
+     *
+     * @param evt Evento generado al presionar el botón eliminar.
+     */
     private void bt_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_eliminarActionPerformed
         // Accion de Eliminar //
         int fila = tbl_asignaciones.getSelectedRow();
@@ -383,12 +442,27 @@ public class FrmAsignarSoftware extends javax.swing.JInternalFrame {
         cargarTabla();        // TODO add your handling code here:
        activarModoNuevo();
     }//GEN-LAST:event_bt_eliminarActionPerformed
-
+ /**
+     * Cancela la operación actual y limpia el formulario.
+     * <p>
+     * También restablece el estado de los botones
+     * al modo nuevo.
+     *
+     * @param evt Evento generado al presionar el botón cancelar.
+     */
     private void bt_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bt_cancelarActionPerformed
         limpiarFormulario();        // TODO add your handling code here:
         activarModoNuevo();
     }//GEN-LAST:event_bt_cancelarActionPerformed
-
+/**
+     * Evento ejecutado al seleccionar una fila de la tabla.
+     * <p>
+     * Carga la información de la asignación seleccionada
+     * en los campos del formulario para permitir su edición.
+     * También activa el modo edición.
+     *
+     * @param evt Evento generado al hacer clic sobre la tabla.
+     */
     private void tbl_asignacionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_asignacionesMouseClicked
          int fila = tbl_asignaciones.getSelectedRow();
     if (fila == -1) return;  // ← guarda extra por si acaso
@@ -430,17 +504,34 @@ public class FrmAsignarSoftware extends javax.swing.JInternalFrame {
         }
     }
 
-    activarModoEditar();          // TODO add your handling code here:
+    activarModoEditar();         
     }//GEN-LAST:event_tbl_asignacionesMouseClicked
-
+ /**
+     * Recarga la información de la tabla de asignaciones.
+     *
+     * @param evt Evento generado al presionar el botón actualizar.
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        cargarTabla();        // TODO add your handling code here:
+        cargarTabla();        
     }//GEN-LAST:event_jButton2ActionPerformed
-
+ /**
+     * Cierra la ventana actual del formulario.
+     *
+     * @param evt Evento generado al presionar el botón salir.
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        dispose();        // TODO add your handling code here:
+        dispose();        
     }//GEN-LAST:event_jButton1ActionPerformed
- private void activarModoEditar() {
+ 
+    
+    /**
+     * Activa el modo edición del formulario.
+     * <p>
+     * Habilita los botones de modificar, eliminar y cancelar,
+     * mientras deshabilita el botón agregar.
+     */
+    
+    private void activarModoEditar() {
         this.bt_cancelar.setEnabled(true);
         this.bt_modificar.setEnabled(true);
         this.bt_eliminar.setEnabled(true);
